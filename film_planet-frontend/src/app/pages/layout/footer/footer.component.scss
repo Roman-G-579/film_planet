@@ -1,0 +1,16 @@
+.right-content a {
+  font-size: 1.1rem;
+  text-decoration: none;
+  color: var(--primary-color);
+
+  &:hover {
+    color: orange;
+    transition: color 0.2s;
+  }
+}
+
+::ng-deep .film_planet-dark {
+  & .footer-wrapper { background: var(--p-surface-900); }
+  @apply text-white;
+}
+

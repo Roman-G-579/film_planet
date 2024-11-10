@@ -1,0 +1,55 @@
+<main>
+  <section class="section-1 flex justify-center items-center  select-none">
+    <div class="title-text-wrapper inline-block text-center -mt-32">
+        <h1 class="text-heading  leading-4 mb-[2.5vw]">Film Planet</h1>
+        <h1 class="text-subheading text-right">Find what to watch next</h1>
+    </div>
+  </section>
+
+  <section class="section-2 content-center">
+    <div class="film-posters grid md:grid-cols-2 sm:grid-cols-1 sm:gap-4 p-10">
+      @for (item of filmPanels; track item) {
+        <div class="film-wrapper group relative overflow-hidden rounded-lg  mx-auto mt-20 cursor-pointer">
+          <p-image class="img-poster justify-self-center" [src]="item.image" [alt]="item.title"></p-image>
+          <div
+            class="info-card absolute -bottom-full group-hover:bottom-[5px] bg-black bg-opacity-75 text-white p-4 duration-300 ease-in-out rounded-lg ">
+            <h2 class="text-lg font-bold">{{item.title}}</h2>
+            <p class="text-sm">{{item.year}} - {{item.genres.join(", ")}}</p>
+            <p>Starring: {{item.starring.join(", ")}}</p>
+            <p>Directed by {{item.director}}</p>
+          </div>
+        </div>
+      }
+    </div>
+  </section>
+
+  <section class="section-3 content-center">
+    <div class="text-center delay-[300ms] duration-[600ms] taos:translate-y-[200px] taos:opacity-0" data-taos-offset="300">
+      <h1 class="section-3-heading text-8xl">More Content</h1>
+      <h1 class="section-3-subheading -mt-14">Description of the content</h1>
+    </div>
+  </section>
+
+  <section class="section-4 content-center">
+    <div class="tv-posters grid md:grid-cols-2 sm:grid-cols-1 sm:gap-4 p-10">
+      @for (item of tvPanels; track item) {
+        <div class="tv-wrapper group relative overflow-hidden rounded-lg  mx-auto mt-20 cursor-pointer">
+          <p-image class="img-poster justify-self-center" [src]="item.image" [alt]="item.title"></p-image>
+          <div
+            class="info-card absolute -bottom-full group-hover:bottom-[5px] bg-black bg-opacity-75 text-white p-4 duration-300 ease-in-out rounded-lg ">
+            <h2 class="text-lg font-bold">{{ item.title }}</h2>
+            <p class="text-sm">{{item.year}} - {{item.genres.join(", ")}}</p>
+            <p>Starring: {{item.starring.join(", ")}}</p>
+            <p>Created by {{item.creators.join(", ")}}</p>
+          </div>
+        </div>
+      }
+    </div>
+  </section>
+
+  <section class="section-5 content-center">
+    <div class="text-center delay-[300ms] duration-[600ms] taos:translate-y-[200px] taos:opacity-0" data-taos-offset="300">
+      <p class="font-bold text-2xl text-left p-24 -mt-14">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam urna lacus, maximus sed tortor in, gravida ullamcorper turpis. Ut sem urna, elementum in dui a, facilisis ultricies eros. Nulla consectetur dapibus neque, a accumsan massa gravida et. Suspendisse potenti. In laoreet libero mi, ut porttitor diam porta quis. Integer feugiat nisl at placerat laoreet. Sed et laoreet lorem, nec commodo diam. Nunc ultricies, lectus ac porttitor egestas, ligula justo bibendum diam, ornare porta diam justo id lectus. Quisque ultrices, leo venenatis imperdiet vehicula, sem eros aliquam neque, quis tincidunt arcu neque nec ipsum. Curabitur faucibus leo nec lectus feugiat, et mollis neque ultricies. Vestibulum tempus augue non nibh suscipit pharetra. Vestibulum ultricies aliquam velit, nec cursus arcu sagittis a. In eu odio id tortor sollicitudin sollicitudin. Aliquam bibendum consectetur diam, quis euismod diam tempor nec. Maecenas cursus lectus vitae diam efficitur viverra. Aenean tincidunt felis et purus varius, vel consectetur leo accumsan.</p>
+    </div>
+  </section>
+</main>

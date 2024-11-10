@@ -1,0 +1,44 @@
+:host {
+  --menu-font-size: 1.875rem;
+  --submenu-font-size: 1rem;
+}
+
+::ng-deep .menu-bar {
+
+  .p-menubar-start {
+    gap: 1rem;
+  }
+  .p-menubar-root-list {
+    font-size:  var(--menu-font-size);
+    line-height: 2.25rem;
+  }
+
+  .p-menubar-submenu {
+    font-size: var(--submenu-font-size);
+  }
+
+  .splitbutton-active {
+    border: var(--p-select-focus-border-color) 1px solid;
+    transition:  all 0.2s ease-in-out;
+  }
+
+  .signup-login-link {
+    font-size: 1.4rem;
+    text-decoration: none;
+  }
+
+  i, .signup-login-link, .p-button-text.p-button-secondary {
+    color: var(--p-button-text-color);
+  }
+
+  .signup-login-link:hover,
+  .pi:hover,
+  .p-menubar-item-link:hover,
+  .p-button-text.p-button-secondary:not(:disabled):hover {
+    color: orange;
+    transition: color 0.2s;
+  }
+
+}
+
+
