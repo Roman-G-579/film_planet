@@ -1,11 +1,8 @@
 import {
-  AfterViewInit,
   ChangeDetectionStrategy,
   Component,
-  ElementRef,
   inject,
   OnInit,
-  ViewChild
 } from '@angular/core';
 import {ButtonModule} from "primeng/button";
 import {ToggleSwitchModule} from 'primeng/toggleswitch';
@@ -37,8 +34,7 @@ import {SplitButtonModule} from 'primeng/splitbutton';
   styleUrl: './menu-bar.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class MenuBarComponent implements OnInit, AfterViewInit {
-  @ViewChild('splitButton') splitButton!: ElementRef;
+export class MenuBarComponent implements OnInit {
 
   private readonly router = inject(Router);
 
@@ -62,7 +58,7 @@ export class MenuBarComponent implements OnInit, AfterViewInit {
   menuOptions = [
     {
       label: 'Films',
-      routerLink: '/pages/films',
+      route: '/pages/films/recent',
       items: [
         {
           label: 'Recently released films',
@@ -80,7 +76,7 @@ export class MenuBarComponent implements OnInit, AfterViewInit {
     },
     {
       label: 'TV',
-      route: '/pages/films',
+      route: '/pages/tv/recent',
       items: [
         {
           label: 'Recently released TV Shows',
@@ -98,7 +94,7 @@ export class MenuBarComponent implements OnInit, AfterViewInit {
     },
     {
       label: 'Top 100',
-      route: '/pages/films',
+      route: '/pages/genres',
       items: [
         {
           label: 'Top 100 Films',
@@ -119,10 +115,6 @@ export class MenuBarComponent implements OnInit, AfterViewInit {
     }
   }
 
-  ngAfterViewInit() {
-    console.log(this.splitButton);
-  }
-
   //TODO: change selected language to be based on user preferences
   selectedLanguage = this.languages[0];
 
@@ -141,12 +133,11 @@ export class MenuBarComponent implements OnInit, AfterViewInit {
     console.log("search bar - on")
   }
 
-  //TODO: properly reference splitButton element
-  toggleSplitBtnMenu() {
-    if (this.splitButton?.nativeElement) {
-      this.splitButton.nativeElement.classList.add('splitbutton-active');
-      console.log(this.splitButton)
-    }
-
+  /**
+   * Navigates to the specified route
+   * @param route the destination route
+   */
+  navigate(route: string) {
+    this.router.navigate([route]).then();
   }
 }

@@ -1,13 +1,13 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
-  selector: 'app-films',
+  selector: 'app-films-recent',
   standalone: true,
   imports: [],
-  templateUrl: './films.component.html',
-  styleUrl: './films.component.scss',
+  templateUrl: './films-recent.component.html',
+  styleUrl: './films-recent.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class FilmsComponent {
+export class FilmsRecentComponent {
 
 }

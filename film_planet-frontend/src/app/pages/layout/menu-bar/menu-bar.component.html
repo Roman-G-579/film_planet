@@ -6,7 +6,7 @@
 
 <!--        PROGRAMMATIC TEMPLATE      -->
         @for (item of menuOptions; track item;) {
-          <p-splitButton #splitButton [label]="item.label" [model]="item.items" (onMenuShow)="toggleSplitBtnMenu()" (onMenuHide)="toggleSplitBtnMenu()" (onClick)="null" text severity="secondary"/>
+          <p-splitButton [label]="item.label" [model]="item.items" (onClick)=navigate(item.route) text severity="secondary"/>
         }
 
       </ng-template>
