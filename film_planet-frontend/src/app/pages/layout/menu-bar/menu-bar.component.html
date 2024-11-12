@@ -1,12 +1,17 @@
-<div class="content fixed z-50 w-full">
+<div class="content">
     <p-menubar class="menu-bar" styleClass="!border-0 !rounded-none" >
       <ng-template pTemplate="start">
-        <img class="w-1/12 mr-2" src="assets/logo.png" alt="film planet logo">
+        <img class="w-1/12 mr-2 cursor-pointer" src="assets/logo.png" routerLink="/pages/home" alt="film planet logo">
         <i class="pi pi-search" style="font-size: 1.8rem;" (click)="showSearch()"></i>
 
 <!--        PROGRAMMATIC TEMPLATE      -->
         @for (item of menuOptions; track item;) {
-          <p-splitButton [label]="item.label" [model]="item.items" (onClick)=navigate(item.route) text severity="secondary"/>
+          @if (!item.items.length) {
+            <p-splitButton [label]="item.label" [menuButtonDisabled]="true" dropdownIcon="none" [model]="item.items" (onClick)=navigate(item.route) text severity="secondary"/>
+          }
+          @else {
+            <p-splitButton [label]="item.label" [model]="item.items" (onClick)=navigate(item.route) text severity="secondary"/>
+          }
         }
 
       </ng-template>

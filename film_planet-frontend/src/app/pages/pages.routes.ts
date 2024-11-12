@@ -13,6 +13,15 @@ export default [
   {
     path: 'films',
     loadChildren: () => import('./library/films.routes'),
-    loadComponent: () => import('./films/films.component').then((c) => c.FilmsComponent),
+    loadComponent: () => import('./library/films-recent/films-recent.component').then((c) => c.FilmsRecentComponent),
+  },
+  {
+    path: 'tv',
+    loadChildren: () => import('./library/tv.routes'),
+    loadComponent: () => import('./library/tv-recent/tv-recent.component').then((c) => c.TvRecentComponent),
+  },
+  {
+    path: 'top',
+    loadComponent: () => import('./top/top.component').then((c) => c.TopComponent),
   }
 ] as Route[];

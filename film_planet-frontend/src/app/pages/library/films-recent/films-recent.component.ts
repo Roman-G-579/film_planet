@@ -1,9 +1,14 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
+import {CarouselModule} from 'primeng/carousel';
+import {ButtonModule} from 'primeng/button';
 
 @Component({
   selector: 'app-films-recent',
   standalone: true,
-  imports: [],
+  imports: [
+    CarouselModule,
+    ButtonModule
+  ],
   templateUrl: './films-recent.component.html',
   styleUrl: './films-recent.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush

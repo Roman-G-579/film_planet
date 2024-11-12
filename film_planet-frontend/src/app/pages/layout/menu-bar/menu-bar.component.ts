@@ -94,17 +94,8 @@ export class MenuBarComponent implements OnInit {
     },
     {
       label: 'Top 100',
-      route: '/pages/genres',
-      items: [
-        {
-          label: 'Top 100 Films',
-          routerLink: '/pages/top/films'
-        },
-        {
-          label: 'Top 100 TV Shows',
-          routerLink: '/pages/top/tv',
-        },
-      ]
+      route: '/pages/top',
+      items: [],
     },
   ]
 

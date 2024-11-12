@@ -1,0 +1,7 @@
+// Background colors
+::ng-deep main {
+  background: var(--p-surface-100);
+}
+::ng-deep .film_planet-dark main {
+  background: var(--p-surface-800);
+}
