@@ -1,13 +1,17 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import {CarouselModule, CarouselResponsiveOptions} from 'primeng/carousel';
 import {ButtonModule} from 'primeng/button';
+import {DataViewModule} from 'primeng/dataview';
+import {SkeletonModule} from 'primeng/skeleton';
 
 @Component({
   selector: 'app-films-recent',
   standalone: true,
   imports: [
     CarouselModule,
-    ButtonModule
+    ButtonModule,
+    DataViewModule,
+    SkeletonModule
   ],
   templateUrl: './films-recent.component.html',
   styleUrl: './films-recent.component.scss',
@@ -85,5 +89,66 @@ export class FilmsRecentComponent {
       rating: 9.1
 
     }
-  ]
+  ];
+
+  tableItems = [
+    {
+      title: "The Matrix",
+      year: "1999",
+      genres: ["Action","Sci-Fi","Cyberpunk"],
+      starring: ["Keanu Reeves", "Laurence Fishburne"],
+      director: ["Lana Wachowski","Lilly Wachowski"],
+      image: "assets/posters/10.jpg",
+      rating: 9.2
+    },
+    {
+      title: "Dune Part Two",
+      year: "2024",
+      genres: ["Action", "Sci-Fi"],
+      starring: ["Timothée Chalamet", "Zendaya"],
+      director: "Denis Villeneuve",
+      image: "assets/posters/11.jpg",
+      rating: 9.1
+    },
+    {
+      title: "Alien",
+      year: "1979",
+      genres: ["Sci-Fi", "Horror"],
+      starring: ["Sigourney Weaver", "gourney Weaver"],
+      director: "Ridley Scott",
+      image: "assets/posters/12.jpg",
+      rating: 8.8
+    },
+    {
+      title: "Memento",
+      year: "2000",
+      genres: ["Psychological Thriller"],
+      starring: ["Guy Pearce", "Carrie-Anne Moss"],
+      director: "Christopher Nolan",
+      image: "assets/posters/13.jpg",
+      rating: 9.2
+    },
+    {
+      title: "Raiders of The Lost Ark",
+      year: "1981",
+      genres: ["Adventure"],
+      starring: ["Harrison Ford", "Karen Allen"],
+      director: "Steven Spielberg",
+      image: "assets/posters/14.jpg",
+      rating: 9.1
+    },
+    {
+      title: "The Shining",
+      year: "1980",
+      genres: ["Comedy", "Musical"],
+      starring: ["Jack Nicholson", "Shelley Duvall"],
+      director: "Stanley Kubrick",
+      image: "assets/posters/15.jpg",
+      rating: 8.8
+    }
+  ];
+
+  counterArray(n: number): any[] {
+    return Array(n);
+  }
 }
