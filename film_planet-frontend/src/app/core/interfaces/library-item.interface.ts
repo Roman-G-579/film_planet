@@ -6,7 +6,8 @@ export interface LibraryItem {
   year: number;
   genres: string[];
   starring: string[];
-  directors: string[];
+  directors?: string[];
+  creators?: string[];
   image?: string;
   rating?: number;
 }

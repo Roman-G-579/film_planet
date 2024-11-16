@@ -5,7 +5,7 @@
     </div>
     <div class="w-3/4 inline-block justify-center">
       <p-carousel
-        [value]="libraryItems().slice(0,5)"
+        [value]="carouselItems"
         [numVisible]="5"
         [numScroll]="1"
         [responsiveOptions]="responsiveOptions">
@@ -35,7 +35,7 @@
 
   <section class="table-wrapper  flex justify-center">
     <div class="card w-3/5">
-      <p-dataView [value]="libraryItems().slice(5,10)">
+      <p-dataView [value]="tableItems">
         <ng-template pTemplate="list" let-tableItems>
           <div class="grid grid-cols-12 gap-4 grid-nogutter">
             <div class="col-span-12" *ngFor="let item of tableItems; let first = first" class="col-span-12">
@@ -54,7 +54,7 @@
                   <div class="flex flex-row md:flex-col justify-between items-start gap-2">
                     <div>
                       <div class="text-lg font-medium text-surface-900 dark:text-surface-0 mt-2">{{ item.title }}</div>
-                      <span class="font-medium text-secondary text-sm">{{ item.directors }}</span>
+                      <span class="font-medium text-secondary text-sm">{{ item.directors ? item.directors : item.creators }}</span>
                     </div>
                     <div class="bg-surface-100 dark:bg-surface-700 p-1" style="border-radius: 30px">
                       <div

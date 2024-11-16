@@ -1,4 +1,11 @@
-import {ChangeDetectionStrategy, Component, input, InputSignal} from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  OnInit,
+  signal,
+  WritableSignal
+} from '@angular/core';
 import {ButtonModule} from "primeng/button";
 import {CarouselModule, CarouselResponsiveOptions} from "primeng/carousel";
 import {DataViewModule} from "primeng/dataview";
@@ -6,6 +13,8 @@ import {NgForOf} from "@angular/common";
 import {SharedModule} from "primeng/api";
 import {SkeletonModule} from "primeng/skeleton";
 import {LibraryItem} from '../../core/interfaces/library-item.interface';
+import {LibraryService} from './library.service';
+import {ActivatedRoute} from '@angular/router';
 
 @Component({
   selector: 'app-library',
@@ -22,10 +31,17 @@ import {LibraryItem} from '../../core/interfaces/library-item.interface';
   styleUrl: './library.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class LibraryComponent {
+export class LibraryComponent implements OnInit {
+  protected readonly lib = inject(LibraryService);
+  private route = inject(ActivatedRoute);
 
-  libraryItems: InputSignal<LibraryItem[]> = input<LibraryItem[]>([]);
+  libraryItems: WritableSignal<LibraryItem[]> = signal<LibraryItem[]>([]);
 
+  // Items appearing on the carousel at the top of the page
+  carouselItems: LibraryItem[] = [];
+
+  // Items appearing on the table below the carousel
+  tableItems: LibraryItem[] = [];
 
   responsiveOptions: CarouselResponsiveOptions[] = [
     {
@@ -50,111 +66,20 @@ export class LibraryComponent {
     },
   ];
 
-  carouselItems = [
-    {
-      title: "Pulp Fiction",
-      year: "1994",
-      genres: ["Drama"],
-      starring: ["John Travolta", "Uma Thurman"],
-      director: "Quentin Tarantino",
-      image: "assets/posters/1.jpg",
-      rating: 9.2
-    },
-    {
-      title: "Prisoners",
-      year: "2013",
-      genres: ["Drama", "Psychological Thriller"],
-      starring: ["Hugh Jackman", "Jake Gyllenhaal"],
-      director: "Denis Villeneuve",
-      image: "assets/posters/2.jpg",
-      rating: 9.1
-    },
-    {
-      title: "The Blues Brothers",
-      year: "1980",
-      genres: ["Comedy", "Musical"],
-      starring: ["John Belushi", "Dan Aykroyd"],
-      director: "John Landis",
-      image: "assets/posters/3.jpg",
-      rating: 8.8
-    },
-    {
-      title: "Inception",
-      year: "2010",
-      genres: ["Action", "Adventure"],
-      starring: ["Leonardo DiCaprio", "Joseph Gordon-Levitt"],
-      director: "Christopher Nolan",
-      image: "assets/posters/4.jpg",
-      rating: 9
-    },
-    {
-      title: "The Godfather",
-      year: "1972",
-      genres: ["Drama","Crime"],
-      starring: ["Marlon Brando", "Al Pacino"],
-      director: "Francis Ford Coppola",
-      image: "assets/posters/9.jpg",
-      rating: 9.1
+  ngOnInit() {
+    this.route.data.subscribe(data => {
+      if (data['type'] === 'films') {
+        this.libraryItems.set(this.lib.getRecentFilms());
+      }
+      else if (data['type'] === 'tv') {
+        this.libraryItems.set(this.lib.getRecentTV());
+      }
+    });
 
-    }
-  ];
 
-  tableItems = [
-    {
-      title: "The Matrix",
-      year: "1999",
-      genres: ["Action","Sci-Fi","Cyberpunk"],
-      starring: ["Keanu Reeves", "Laurence Fishburne"],
-      director: ["Lana Wachowski","Lilly Wachowski"],
-      image: "assets/posters/10.jpg",
-      rating: 9.2
-    },
-    {
-      title: "Dune Part Two",
-      year: "2024",
-      genres: ["Action", "Sci-Fi"],
-      starring: ["Timothée Chalamet", "Zendaya"],
-      director: "Denis Villeneuve",
-      image: "assets/posters/11.jpg",
-      rating: 9.1
-    },
-    {
-      title: "Alien",
-      year: "1979",
-      genres: ["Sci-Fi", "Horror"],
-      starring: ["Sigourney Weaver", "gourney Weaver"],
-      director: "Ridley Scott",
-      image: "assets/posters/12.jpg",
-      rating: 8.8
-    },
-    {
-      title: "Memento",
-      year: "2000",
-      genres: ["Psychological Thriller"],
-      starring: ["Guy Pearce", "Carrie-Anne Moss"],
-      director: "Christopher Nolan",
-      image: "assets/posters/13.jpg",
-      rating: 9.2
-    },
-    {
-      title: "Raiders of The Lost Ark",
-      year: "1981",
-      genres: ["Adventure"],
-      starring: ["Harrison Ford", "Karen Allen"],
-      director: "Steven Spielberg",
-      image: "assets/posters/14.jpg",
-      rating: 9.1
-    },
-    {
-      title: "The Shining",
-      year: "1980",
-      genres: ["Comedy", "Musical"],
-      starring: ["Jack Nicholson", "Shelley Duvall"],
-      director: "Stanley Kubrick",
-      image: "assets/posters/15.jpg",
-      rating: 8.8
-    }
-  ];
+    this.carouselItems = this.libraryItems().slice(0,5);
+    this.tableItems = this.libraryItems().slice(5,10);
+  }
 
   counterArray(n: number): any[] {
     return Array(n);

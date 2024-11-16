@@ -12,13 +12,15 @@ export default [
   },
   {
     path: 'films',
-    loadChildren: () => import('./library/films.routes'),
-    loadComponent: () => import('./library/films-recent/films-recent.component').then((c) => c.FilmsRecentComponent),
+    data: { type: 'films' },
+    loadChildren: () => import('./library/library-categories.routes'),
+    loadComponent: () => import('./library/library.component').then((c) => c.LibraryComponent),
   },
   {
     path: 'tv',
-    loadChildren: () => import('./library/tv.routes'),
-    loadComponent: () => import('./library/tv-recent/tv-recent.component').then((c) => c.TvRecentComponent),
+    data: { type: 'tv' },
+    loadChildren: () => import('./library/library-categories.routes'),
+    loadComponent: () => import('./library/library.component').then((c) => c.LibraryComponent),
   },
   {
     path: 'top',
