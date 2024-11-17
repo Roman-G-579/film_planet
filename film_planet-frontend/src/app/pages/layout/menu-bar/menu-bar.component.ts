@@ -27,7 +27,6 @@ import {SplitButtonModule} from 'primeng/splitbutton';
     ToastModule,
     MenuModule,
     MenubarModule,
-    NgIf,
     SplitButtonModule
   ],
   templateUrl: './menu-bar.component.html',
