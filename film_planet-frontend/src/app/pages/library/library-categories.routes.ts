@@ -12,10 +12,6 @@ export default [
     loadComponent: () => import('./library.component').then((c) => c.LibraryComponent),
   },
   {
-    path: 'genres',
-    loadComponent: () => import('../genres/genres.component').then((c) => c.GenresComponent),
-  },
-  {
     path: '**',
     redirectTo: '',
   }

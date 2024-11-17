@@ -10,4 +10,18 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 })
 export class GenresComponent {
 
+  genres: string[] = [
+    "Action",
+    "Adventure",
+    "Biopic",
+    "Comedy",
+    "Crime",
+    "Drama",
+    "Horror",
+    "Musical",
+    "Romance",
+    "Sfi-Fi",
+    "Sports",
+    "Thriller"
+  ]
 }

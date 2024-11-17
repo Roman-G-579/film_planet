@@ -23,6 +23,11 @@ export default [
     loadComponent: () => import('./library/library.component').then((c) => c.LibraryComponent),
   },
   {
+    path: 'genres',
+    loadChildren: () => import('./genres/genres.routes'),
+    loadComponent: () => import('./genres/genres.component').then((c) => c.GenresComponent),
+  },
+  {
     path: 'top',
     loadComponent: () => import('./top/top.component').then((c) => c.TopComponent),
   }

@@ -70,7 +70,7 @@ export class MenuBarComponent implements OnInit {
         },
         {
           label: 'Browse films by genre',
-          routerLink: '/pages/films/genres',
+          routerLink: '/pages/genres/films',
         }
       ]
     },
@@ -88,7 +88,7 @@ export class MenuBarComponent implements OnInit {
         },
         {
           label: 'Browse TV Shows by genre',
-          routerLink: '/pages/tv/genres',
+          routerLink: '/pages/genres/tv',
         }
       ]
     },

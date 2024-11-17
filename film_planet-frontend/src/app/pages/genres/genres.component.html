@@ -1,1 +1,9 @@
-<p>genres works!</p>
+<main>
+  <div class="grid grid-cols-4 gap-4 border px-1 py-10">
+    @for(genre of genres; track genre) {
+      <div class="text-lg bg-primary-500 w-32 h-32 text-center content-center">
+        {{genre}}
+      </div>
+    }
+  </div>
+</main>
