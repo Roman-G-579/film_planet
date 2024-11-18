@@ -1,6 +1,36 @@
-<div class="p-3">
-  <h1>Top Films</h1>
-  <p>Shawshank Redemption</p>
-  <p>The Godfather</p>
-
-</div>
+<main>
+  <div class="top-table-wrapper flex content-center justify-center mt-10">
+    <p-table [value]="topFilms()" [tableStyle]="{ 'min-width': '60rem' }">
+      <ng-template pTemplate="caption">
+        <div class="flex items-center justify-between">
+          <span class="text-xl font-bold">Products</span>
+          <p-button icon="pi pi-refresh" rounded raised />
+        </div>
+      </ng-template>
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Title</th>
+          <th>Poster</th>
+          <th>Directors</th>
+          <th>Genres</th>
+          <th>Rating</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-film>
+        <tr>
+          <td>{{ film.title }}</td>
+          <td>
+            <img
+              [src]="film.image"
+              [alt]="film.title"
+              class="w-24 rounded"
+            />
+          </td>
+          <td>{{ film.directors}}</td>
+          <td>{{ film.genres }}</td>
+          <td>{{ film.rating}}</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</main>
