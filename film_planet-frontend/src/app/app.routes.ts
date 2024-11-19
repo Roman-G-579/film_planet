@@ -13,6 +13,6 @@ export default [
   },
   {
     path: '**',
-    redirectTo: '',
+    redirectTo: 'pages/home',
   }
 ] as Route[];

@@ -30,5 +30,9 @@ export default [
   {
     path: 'top',
     loadComponent: () => import('./top-titles/top-titles.component').then((c) => c.TopTitlesComponent),
+  },
+  {
+    path: '**',
+    redirectTo: 'home'
   }
 ] as Route[];
