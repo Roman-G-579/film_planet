@@ -1,16 +1,35 @@
 <main>
   <div class="top-table-wrapper flex content-center justify-center mt-10">
-    <p-table [value]="topFilms()" [tableStyle]="{ 'min-width': '60rem' }">
+    <p-table [value]="topTitles()" [tableStyle]="{ 'min-width': '60rem' }">
       <ng-template pTemplate="caption">
-        <div class="flex items-center justify-between">
-          <span class="text-xl font-bold">Products</span>
-          <p-button icon="pi pi-refresh" rounded raised />
+        <span class="text-xl font-bold">Top 100 {{resultCriteria()}}</span>
+        <div class="flex justify-end items-center gap-4">
+          <p>Filters:</p>
+          <p-iftalabel class="w-full md:w-56">
+            <p-select [(ngModel)]="selectedMediaType" inputId="dd-mediaType" [options]="mediaTypes"  styleClass="w-full" (onChange)="filterByMediaType(selectedMediaType)" />
+            <label for="dd-mediaType">Media Type</label>
+          </p-iftalabel>
+
+          <p-iftalabel class="w-full md:w-56">
+          <p-calendar
+            class="z-10"
+            [(ngModel)]="selectedYear"
+            inputId="dd-year"
+            view="year"
+            [minDate]="minYear"
+            [maxDate]="maxYear"
+            dateFormat="yy"
+            (onSelect)="filterByYear(selectedYear)"
+            />
+            <label for="dd-year">Year</label>
+          </p-iftalabel>
         </div>
       </ng-template>
       <ng-template pTemplate="header">
         <tr>
           <th>Title</th>
-          <th>Poster</th>
+          <th> </th>
+          <th>Year</th>
           <th>Directors</th>
           <th>Genres</th>
           <th>Rating</th>
@@ -26,6 +45,7 @@
               class="w-24 rounded"
             />
           </td>
+          <td>{{ film.year }}</td>
           <td>{{ film.directors}}</td>
           <td>{{ film.genres }}</td>
           <td>{{ film.rating}}</td>
