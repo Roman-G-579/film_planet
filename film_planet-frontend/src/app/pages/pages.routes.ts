@@ -29,6 +29,6 @@ export default [
   },
   {
     path: 'top',
-    loadComponent: () => import('./top/top.component').then((c) => c.TopComponent),
+    loadComponent: () => import('./top-titles/top-titles.component').then((c) => c.TopTitlesComponent),
   }
 ] as Route[];

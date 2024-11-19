@@ -37,7 +37,7 @@ export class LibraryComponent implements OnInit {
 
   libraryItems: WritableSignal<LibraryItem[]> = signal<LibraryItem[]>([]);
 
-  // Items appearing on the carousel at the top of the page
+  // Items appearing on the carousel at the top-titles of the page
   carouselItems: LibraryItem[] = [];
 
   // Items appearing on the table below the carousel

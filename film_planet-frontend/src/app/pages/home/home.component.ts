@@ -106,7 +106,7 @@ export class HomeComponent implements AfterViewInit {
     let tl_films_enter = gsap.timeline({
       scrollTrigger: {
         trigger: '.film-posters',
-        start: 'top 150%',
+        start: 'top-titles 150%',
         end: 'bottom 90%',
         scrub: 1,
         markers: false,
@@ -128,7 +128,7 @@ export class HomeComponent implements AfterViewInit {
     let tl_tv_enter = gsap.timeline({
       scrollTrigger: {
         trigger: '.tv-posters',
-        start: 'top 150%',
+        start: 'top-titles 150%',
         end: 'bottom 90%',
         scrub: 1,
         markers: false,
@@ -156,7 +156,7 @@ export class HomeComponent implements AfterViewInit {
     let tl_section_3 = gsap.timeline({
       scrollTrigger: {
         trigger: '.section-3',
-        start: 'top 50%',
+        start: 'top-titles 50%',
         end: 'bottom 80%',
         scrub: false,
         markers: false,

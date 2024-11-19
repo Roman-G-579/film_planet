@@ -5,7 +5,7 @@ import {MediaType} from '../../core/enums/media-type.enum';
 @Injectable({
   providedIn: 'root',
 })
-export class TopService {
+export class TopTitlesService {
   topFilms: LibraryItem[] = [
     {
       mediaType: MediaType.Film,
