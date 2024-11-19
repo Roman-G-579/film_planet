@@ -93,7 +93,7 @@ export class MenuBarComponent implements OnInit {
     },
     {
       label: 'Top 100',
-      route: '/pages/top-titles',
+      route: '/pages/top',
       items: [],
     },
   ]
