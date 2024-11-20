@@ -1,29 +1,30 @@
 <main>
-  <div class="top-table-wrapper flex content-center justify-center mt-10">
+  <div class="filter-wrapper flex justify-center">
+    <div class="flex bg-neutral-900 w-4/5 justify-center items-center p-4 rounded-lg gap-4 mt-10">
+      <p>Filters:</p>
+      <p-iftalabel class="w-full md:w-56">
+        <p-select [(ngModel)]="selectedMediaType" inputId="dd-mediaType" [options]="mediaTypes"  styleClass="w-full" (onChange)="filterByMediaType(selectedMediaType)" />
+        <label for="dd-mediaType">Media Type</label>
+      </p-iftalabel>
+
+      <p-iftalabel class="w-full md:w-56">
+        <p-datePicker
+          [(ngModel)]="selectedYear"
+          view="year"
+          [minDate]="minYear"
+          [maxDate]="maxYear"
+          dateFormat="yy"
+          (onSelect)="filterByYear(selectedYear)"/>
+        <label for="dd-year">Year</label>
+      </p-iftalabel>
+      <p-button icon="pi pi-times" (click)="clearFilter()"  rounded raised />
+    </div>
+  </div>
+  <div class="top-table-wrapper flex content-center justify-center mt-64">
     <p-table [value]="topTitles()" [tableStyle]="{ 'min-width': '60rem' }">
       <ng-template pTemplate="caption">
         <span class="text-xl font-bold">Top 100 {{resultCriteria()}}</span>
-        <div class="flex justify-end items-center gap-4">
-          <p>Filters:</p>
-          <p-iftalabel class="w-full md:w-56">
-            <p-select [(ngModel)]="selectedMediaType" inputId="dd-mediaType" [options]="mediaTypes"  styleClass="w-full" (onChange)="filterByMediaType(selectedMediaType)" />
-            <label for="dd-mediaType">Media Type</label>
-          </p-iftalabel>
 
-          <p-iftalabel class="w-full md:w-56">
-          <p-calendar
-            class="z-10"
-            [(ngModel)]="selectedYear"
-            inputId="dd-year"
-            view="year"
-            [minDate]="minYear"
-            [maxDate]="maxYear"
-            dateFormat="yy"
-            (onSelect)="filterByYear(selectedYear)"
-            />
-            <label for="dd-year">Year</label>
-          </p-iftalabel>
-        </div>
       </ng-template>
       <ng-template pTemplate="header">
         <tr>

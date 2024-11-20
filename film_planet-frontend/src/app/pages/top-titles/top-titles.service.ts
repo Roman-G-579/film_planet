@@ -15,8 +15,8 @@ export class TopTitlesService {
   }
 
   //TODO: add filtering if existing filter is already applied
-  filterByYear(year: number) {
-    const filteredItems: LibraryItem[] = LIBRARY_ITEMS.filter((item) => {return item.year == year});
+  filterByYear(items: LibraryItem[], year: number) {
+    const filteredItems: LibraryItem[] = items.filter((item) => { return item.year == year });
     return filteredItems.sort((a,b) => (b.rating ?? 0) - (a.rating ?? 0));
   }
 

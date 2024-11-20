@@ -8,6 +8,7 @@ import {Select} from 'primeng/select';
 import {FormsModule} from '@angular/forms';
 import {MediaType} from '../../core/enums/media-type.enum';
 import {CalendarModule} from 'primeng/calendar';
+import {DatePickerModule} from 'primeng/datepicker';
 
 @Component({
   selector: 'app-top-titles',
@@ -18,7 +19,8 @@ import {CalendarModule} from 'primeng/calendar';
     IftaLabelModule,
     Select,
     FormsModule,
-    CalendarModule
+    CalendarModule,
+    DatePickerModule
   ],
   templateUrl: './top-titles.component.html',
   styleUrl: './top-titles.component.scss',
@@ -37,7 +39,7 @@ export class TopTitlesComponent implements OnInit {
 
   minYear: Date | undefined;
   maxYear: Date | undefined;
-  selectedYear: number | undefined;
+  selectedYear: Date | undefined;
 
   ngOnInit() {
     this.topTitles.set(this.topService.getTopFilmsOfAllTime());
@@ -62,11 +64,13 @@ export class TopTitlesComponent implements OnInit {
     }
   }
 
-  filterByYear(year: number | undefined) {
-    console.log("function called");
+  filterByYear(year: Date | undefined) {
     if (year) {
-      this.topTitles.set(this.topService.filterByYear(year));
+      this.topTitles.set(this.topService.filterByYear(this.topTitles(), year.getFullYear()));
     }
   }
 
+  clearFilter() {
+    this.topTitles.set(this.topService.getTopFilmsOfAllTime());
+  }
 }
