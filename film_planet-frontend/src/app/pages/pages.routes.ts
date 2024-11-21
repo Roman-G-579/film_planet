@@ -28,7 +28,13 @@ export default [
     loadComponent: () => import('./genres/genres.component').then((c) => c.GenresComponent),
   },
   {
-    path: 'top',
+    path: 'top-films',
+    data: { type: 'films' },
+    loadComponent: () => import('./top-titles/top-titles.component').then((c) => c.TopTitlesComponent),
+  },
+  {
+    path: 'top-tv',
+    data: { type: 'tv' },
     loadComponent: () => import('./top-titles/top-titles.component').then((c) => c.TopTitlesComponent),
   },
   {

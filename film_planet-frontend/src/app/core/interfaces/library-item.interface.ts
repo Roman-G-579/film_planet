@@ -4,7 +4,8 @@ export interface LibraryItem {
   mediaType: MediaType;
   title: string;
   year: number;
-  genres: string[];
+  duration?: string;
+  genres: number[];
   starring: string[];
   directors?: string[];
   creators?: string[];

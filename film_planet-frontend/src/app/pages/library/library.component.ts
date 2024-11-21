@@ -15,18 +15,20 @@ import {SkeletonModule} from "primeng/skeleton";
 import {LibraryItem} from '../../core/interfaces/library-item.interface';
 import {LibraryService} from './library.service';
 import {ActivatedRoute} from '@angular/router';
+import {GenreNamesPipe} from '../../core/pipes/genre-names.pipe';
 
 @Component({
   selector: 'app-library',
   standalone: true,
-    imports: [
-        ButtonModule,
-        CarouselModule,
-        DataViewModule,
-        NgForOf,
-        SharedModule,
-        SkeletonModule
-    ],
+  imports: [
+    ButtonModule,
+    CarouselModule,
+    DataViewModule,
+    NgForOf,
+    SharedModule,
+    SkeletonModule,
+    GenreNamesPipe
+  ],
   templateUrl: './library.component.html',
   styleUrl: './library.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush

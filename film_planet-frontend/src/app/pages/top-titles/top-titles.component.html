@@ -1,11 +1,7 @@
 <main>
   <div class="filter-wrapper flex justify-center">
-    <div class="flex bg-neutral-900 w-4/5 justify-center items-center p-4 rounded-lg gap-4 mt-10">
+    <div class="flex bg-neutral-100 dark:bg-neutral-900 w-4/5 justify-center items-center p-4 rounded-lg gap-4 mt-10">
       <p>Filters:</p>
-      <p-iftalabel class="w-full md:w-56">
-        <p-select [(ngModel)]="selectedMediaType" inputId="dd-mediaType" [options]="mediaTypes"  styleClass="w-full" (onChange)="filterByMediaType(selectedMediaType)" />
-        <label for="dd-mediaType">Media Type</label>
-      </p-iftalabel>
 
       <p-iftalabel class="w-full md:w-56">
         <p-datePicker
@@ -17,7 +13,21 @@
           (onSelect)="filterByYear(selectedYear)"/>
         <label for="dd-year">Year</label>
       </p-iftalabel>
-      <p-button icon="pi pi-times" (click)="clearFilter()"  rounded raised />
+
+      <p-iftalabel class="w-full md:w-56">
+        <p-select [(ngModel)]="selectedGenre" inputId="dd-mediaType" [options]="genres" [showClear]="true" styleClass="w-full" (onChange)="filterByGenre(selectedGenre)" (onClear)="removeGenreFilter()" />
+        <label for="dd-mediaType">Genre</label>
+      </p-iftalabel>
+
+      <div class="flex flex-col gap-4">
+        <div class="flex gap-4">
+          <label style="color: lightgrey;">Rating Range {{rangeValues[0]/10}} - {{rangeValues[1]/10}}</label>
+          <p-button icon="pi pi-filter" rounded raised></p-button>
+        </div>
+        <p-slider [(ngModel)]="rangeValues" [range]="true" styleClass="w-56" />
+      </div>
+
+      <p-button icon="pi pi-times" (click)="clearFilters()" rounded raised />
     </div>
   </div>
   <div class="top-table-wrapper flex content-center justify-center mt-64">
@@ -31,25 +41,25 @@
           <th>Title</th>
           <th> </th>
           <th>Year</th>
-          <th>Directors</th>
+          <th>{{selectedMediaType === MediaType.Film ? 'Directors' : 'Creators'}}</th>
           <th>Genres</th>
           <th>Rating</th>
         </tr>
       </ng-template>
-      <ng-template pTemplate="body" let-film>
+      <ng-template pTemplate="body" let-item>
         <tr>
-          <td>{{ film.title }}</td>
+          <td>{{ item.title }}</td>
           <td>
             <img
-              [src]="film.image"
-              [alt]="film.title"
+              [src]="item.image"
+              [alt]="item.title"
               class="w-24 rounded"
             />
           </td>
-          <td>{{ film.year }}</td>
-          <td>{{ film.directors}}</td>
-          <td>{{ film.genres }}</td>
-          <td>{{ film.rating}}</td>
+          <td>{{ item.year }}</td>
+          <td>{{ selectedMediaType === MediaType.Film ? item.directors : item.creators}}</td>
+          <td>{{ item.genres | genreNames }}</td>
+          <td>{{ item.rating }}</td>
         </tr>
       </ng-template>
     </p-table>

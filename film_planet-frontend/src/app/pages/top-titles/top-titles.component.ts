@@ -9,6 +9,10 @@ import {FormsModule} from '@angular/forms';
 import {MediaType} from '../../core/enums/media-type.enum';
 import {CalendarModule} from 'primeng/calendar';
 import {DatePickerModule} from 'primeng/datepicker';
+import {GenreNamesPipe} from '../../core/pipes/genre-names.pipe';
+import {DataUtils} from '../../core/utils/data.utils';
+import {ActivatedRoute} from '@angular/router';
+import {SliderModule} from 'primeng/slider';
 
 @Component({
   selector: 'app-top-titles',
@@ -20,7 +24,9 @@ import {DatePickerModule} from 'primeng/datepicker';
     Select,
     FormsModule,
     CalendarModule,
-    DatePickerModule
+    DatePickerModule,
+    GenreNamesPipe,
+    SliderModule
   ],
   templateUrl: './top-titles.component.html',
   styleUrl: './top-titles.component.scss',
@@ -28,25 +34,37 @@ import {DatePickerModule} from 'primeng/datepicker';
 })
 export class TopTitlesComponent implements OnInit {
   protected readonly topService = inject(TopTitlesService);
+  private route = inject(ActivatedRoute);
+  protected readonly dataUtils = DataUtils;
 
   topTitles: WritableSignal<LibraryItem[]> = signal<LibraryItem[]>([]);
   resultCriteria: WritableSignal<string> = signal("");
 
-  mediaTypes = Object.keys(MediaType).filter((item) => {
-    return isNaN(Number(item));
-  });
-  selectedMediaType: MediaType | undefined;
+  selectedMediaType: MediaType = MediaType.Film;
+
+  genres = this.dataUtils.getGenreNamesFromIds(MediaType.Film);
+  selectedGenre: string | undefined;
 
   minYear: Date | undefined;
   maxYear: Date | undefined;
   selectedYear: Date | undefined;
 
+  rangeValues: number[] = [0.0, 10.0];
+
   ngOnInit() {
-    this.topTitles.set(this.topService.getTopFilmsOfAllTime());
-    this.resultCriteria.set(this.topService.resultCriteria());
+    this.route.data.subscribe((data) => {
+      if (data['type'] === 'films') {
+        this.topTitles.set(this.topService.getTopFilmsOfAllTime());
+        this.resultCriteria.set("Top 100 Films");
+      }
+      else if (data['type'] === 'tv') {
+        this.topTitles.set(this.topService.getTopTvOfAllTime());
+        this.resultCriteria.set("Top 100 TV shows");
+        this.selectedMediaType = MediaType.TV;
+      }
+    });
 
     this.setMinAndMaxYears();
-    console.log(this.mediaTypes)
   }
 
   setMinAndMaxYears() {
@@ -58,19 +76,36 @@ export class TopTitlesComponent implements OnInit {
     this.maxYear.setFullYear(currentYear);
   }
 
-  filterByMediaType(type: MediaType | undefined) {
-    if (type) {
-      this.topTitles.set(this.topService.filterByMediaType(type));
-    }
-  }
-
   filterByYear(year: Date | undefined) {
     if (year) {
-      this.topTitles.set(this.topService.filterByYear(this.topTitles(), year.getFullYear()));
+      this.topTitles.set(this.topService.filterByYear(year.getFullYear(), this.selectedMediaType));
     }
   }
 
-  clearFilter() {
-    this.topTitles.set(this.topService.getTopFilmsOfAllTime());
+  filterByGenre(genre: string | undefined) {
+    if (genre) {
+      this.topTitles.set(this.topService.filterByGenre(genre, this.selectedMediaType));
+    }
   }
+
+  removeGenreFilter() {
+
+  }
+
+  removeYearFilter() {
+
+  }
+
+  clearFilters() {
+    if (this.selectedMediaType === MediaType.Film) {
+      this.topTitles.set(this.topService.getTopFilmsOfAllTime());
+    }
+    else if (this.selectedMediaType === MediaType.TV) {
+      this.topTitles.set(this.topService.getTopTvOfAllTime());
+    }
+    this.selectedYear = undefined;
+    this.selectedGenre = undefined;
+  }
+
+  protected readonly MediaType = MediaType;
 }

@@ -68,6 +68,10 @@ export class MenuBarComponent implements OnInit {
           routerLink: '/pages/films/popular',
         },
         {
+          label: 'Top 100 Films',
+          routerLink: '/pages/top-films',
+        },
+        {
           label: 'Browse films by genre',
           routerLink: '/pages/genres/films',
         }
@@ -86,6 +90,10 @@ export class MenuBarComponent implements OnInit {
           routerLink: '/pages/tv/popular',
         },
         {
+          label: 'Top 100 TV shows',
+          routerLink: '/pages/top-tv',
+        },
+        {
           label: 'Browse TV Shows by genre',
           routerLink: '/pages/genres/tv',
         }
@@ -93,7 +101,7 @@ export class MenuBarComponent implements OnInit {
     },
     {
       label: 'Top 100',
-      route: '/pages/top',
+      route: '/pages/top-films',
       items: [],
     },
   ]
