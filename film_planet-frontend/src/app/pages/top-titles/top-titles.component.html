@@ -1,8 +1,10 @@
 <main>
-  <div class="filter-wrapper flex justify-center">
-    <div class="flex bg-neutral-100 dark:bg-neutral-900 w-4/5 justify-center items-center p-4 rounded-lg gap-4 mt-10">
+  <div class="filter-wrapper grid grid-cols-12 m-auto w-5/6 max-w-screen-xl gap-4 bg-neutral-100 dark:bg-neutral-900 p-4 rounded-lg mt-10  justify-center">
+    <div  class="col-span-1">
       <p>Filters:</p>
+    </div>
 
+    <div class="year-filter-wrapper col-span-3">
       <p-iftalabel class="w-full md:w-56">
         <p-datePicker
           [(ngModel)]="selectedYear"
@@ -13,23 +15,32 @@
           (onSelect)="filterByYear(selectedYear)"/>
         <label for="dd-year">Year</label>
       </p-iftalabel>
+    </div>
 
+    <div class="genre-filter-wrapper col-span-3 m-auto">
       <p-iftalabel class="w-full md:w-56">
         <p-select [(ngModel)]="selectedGenre" inputId="dd-mediaType" [options]="genres" [showClear]="true" styleClass="w-full" (onChange)="filterByGenre(selectedGenre)" (onClear)="removeGenreFilter()" />
         <label for="dd-mediaType">Genre</label>
       </p-iftalabel>
+    </div>
 
-      <div class="flex flex-col gap-4">
-        <div class="flex gap-4">
-          <label style="color: lightgrey;">Rating Range {{rangeValues[0]/10}} - {{rangeValues[1]/10}}</label>
-          <p-button icon="pi pi-filter" rounded raised></p-button>
-        </div>
-        <p-slider [(ngModel)]="rangeValues" [range]="true" styleClass="w-56" />
+    <div class="rating-filter-wrapper col-span-3 gap-4 m-auto">
+      <div class="slider-top-wrapper flex justify-between">
+        <label class="w-[13rem]" style="color: lightgrey;">Rating Range: <b>{{rangeValues[0].toPrecision(2)}}</b> - <b>{{rangeValues[1].toPrecision(2)}}</b></label>
+        <p-button icon="pi pi-filter" size="small" raised (onClick)="filterByRating(rangeValues[0],rangeValues[1])"></p-button>
       </div>
+      <div class="flex justify-center">
+        <p-slider [(ngModel)]="rangeValues" [range]="true" [min]="0.0" [max]="10.0" step="0.1" styleClass="w-[12vw] mt-4" />
+      </div>
+<!--      <div class="row-span-2">-->
+<!--      </div>-->
+    </div>
 
+    <div class="clear-btn-wrapper col-span-2 m-auto">
       <p-button icon="pi pi-times" (click)="clearFilters()" rounded raised />
     </div>
   </div>
+
   <div class="top-table-wrapper flex content-center justify-center mt-64">
     <p-table [value]="topTitles()" [tableStyle]="{ 'min-width': '60rem' }">
       <ng-template pTemplate="caption">

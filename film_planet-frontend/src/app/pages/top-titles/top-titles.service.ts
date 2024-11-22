@@ -31,6 +31,18 @@ export class TopTitlesService {
     return filteredItems.sort((a,b) => (b.rating ?? 0) - (a.rating ?? 0));
   }
 
+  filterByRating(minRating: number, maxRating: number, mediaType: MediaType) {
+    const filteredItems: LibraryItem[] = LIBRARY_ITEMS.filter(
+      (item) => {
+        if (item.rating) {
+          return item.mediaType == mediaType && item.rating >= minRating && item.rating <= maxRating
+        }
+        return false;
+      }
+    );
+    return filteredItems.sort((a,b) => (b.rating ?? 0) - (a.rating ?? 0));
+  }
+
   removeGenreFilter() {
 
   }

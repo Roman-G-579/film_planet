@@ -88,11 +88,18 @@ export class TopTitlesComponent implements OnInit {
     }
   }
 
+  filterByRating(minRating: number, maxRating: number) {
+    this.topTitles.set(this.topService.filterByRating(minRating, maxRating, this.selectedMediaType));
+  }
   removeGenreFilter() {
 
   }
 
   removeYearFilter() {
+
+  }
+
+  removeRatingFilter() {
 
   }
 
