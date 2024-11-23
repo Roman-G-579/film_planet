@@ -45,8 +45,8 @@ export class TopTitlesComponent implements OnInit {
   genres = this.dataUtils.getGenreNamesFromIds(MediaType.Film);
   selectedGenre: string | undefined;
 
-  minYear: Date | undefined;
-  maxYear: Date | undefined;
+  minYear: Date | undefined = new Date(new Date().setFullYear(1900));
+  maxYear: Date | undefined = new Date();
   selectedYear: Date | undefined;
 
   rangeValues: number[] = [0.0, 10.0];
@@ -63,17 +63,6 @@ export class TopTitlesComponent implements OnInit {
         this.selectedMediaType = MediaType.TV;
       }
     });
-
-    this.setMinAndMaxYears();
-  }
-
-  setMinAndMaxYears() {
-    const currentYear = new Date().getFullYear();
-
-    this.minYear = new Date();
-    this.minYear.setFullYear(1900);
-    this.maxYear = new Date();
-    this.maxYear.setFullYear(currentYear);
   }
 
   filterByYear(year: Date | undefined) {
