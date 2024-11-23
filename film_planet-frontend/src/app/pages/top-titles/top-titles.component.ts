@@ -36,13 +36,15 @@ export class TopTitlesComponent implements OnInit {
   protected readonly topService = inject(TopTitlesService);
   private route = inject(ActivatedRoute);
   protected readonly dataUtils = DataUtils;
+  protected readonly MediaType = MediaType;
 
-  topTitles: WritableSignal<LibraryItem[]> = signal<LibraryItem[]>([]);
+  topTitles: WritableSignal<LibraryItem[]> = this.topService.topTitles;
   resultCriteria: WritableSignal<string> = signal("");
 
-  selectedMediaType: MediaType = MediaType.Film;
+  selectedMediaType = this.topService.mediaFilter;
 
-  genres = this.dataUtils.getGenreNamesFromIds(MediaType.Film);
+  //TODO: fix genre list updating  based on media type
+  genres = this.dataUtils.getGenreNamesFromIds(this.selectedMediaType);
   selectedGenre: string | undefined;
 
   minYear: Date | undefined = new Date(new Date().setFullYear(1900));
@@ -54,54 +56,28 @@ export class TopTitlesComponent implements OnInit {
   ngOnInit() {
     this.route.data.subscribe((data) => {
       if (data['type'] === 'films') {
-        this.topTitles.set(this.topService.getTopFilmsOfAllTime());
-        this.resultCriteria.set("Top 100 Films");
+        this.topService.filterByMediaType(MediaType.Film);
+        this.resultCriteria.set("Films");
       }
       else if (data['type'] === 'tv') {
-        this.topTitles.set(this.topService.getTopTvOfAllTime());
-        this.resultCriteria.set("Top 100 TV shows");
-        this.selectedMediaType = MediaType.TV;
+        this.topService.filterByMediaType(MediaType.TV);
+        this.resultCriteria.set("TV shows");
       }
     });
   }
 
-  filterByYear(year: Date | undefined) {
-    if (year) {
-      this.topTitles.set(this.topService.filterByYear(year.getFullYear(), this.selectedMediaType));
-    }
-  }
-
-  filterByGenre(genre: string | undefined) {
-    if (genre) {
-      this.topTitles.set(this.topService.filterByGenre(genre, this.selectedMediaType));
-    }
-  }
-
-  filterByRating(minRating: number, maxRating: number) {
-    this.topTitles.set(this.topService.filterByRating(minRating, maxRating, this.selectedMediaType));
-  }
-  removeGenreFilter() {
-
-  }
-
-  removeYearFilter() {
-
-  }
-
-  removeRatingFilter() {
-
-  }
-
   clearFilters() {
+    this.topService.genreFilter = undefined;
+    this.topService.yearFilter = undefined;
+    this.topService.ratingFilter = [0.0,10];
+
     if (this.selectedMediaType === MediaType.Film) {
-      this.topTitles.set(this.topService.getTopFilmsOfAllTime());
+      this.topService.filterByMediaType(MediaType.Film);
     }
     else if (this.selectedMediaType === MediaType.TV) {
-      this.topTitles.set(this.topService.getTopTvOfAllTime());
+      this.topService.filterByMediaType(MediaType.TV);
     }
-    this.selectedYear = undefined;
-    this.selectedGenre = undefined;
+
   }
 
-  protected readonly MediaType = MediaType;
 }

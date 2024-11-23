@@ -11,15 +11,18 @@
           view="year"
           [minDate]="minYear"
           [maxDate]="maxYear"
+          [showClear]="true"
           dateFormat="yy"
-          (onSelect)="filterByYear(selectedYear)"/>
+          (onSelect)="topService.filterByYear(selectedYear)"
+          (onClear)="topService.removeYearFilter()"
+        />
         <label for="dd-year">Year</label>
       </p-iftalabel>
     </div>
 
     <div class="genre-filter-wrapper col-span-3 m-auto">
       <p-iftalabel class="w-full md:w-56">
-        <p-select [(ngModel)]="selectedGenre" inputId="dd-mediaType" [options]="genres" [showClear]="true" styleClass="w-full" (onChange)="filterByGenre(selectedGenre)" (onClear)="removeGenreFilter()" />
+        <p-select [(ngModel)]="selectedGenre" inputId="dd-mediaType" [options]="genres" [showClear]="true" styleClass="w-full" (onChange)="topService.filterByGenre(selectedGenre)" (onClear)="topService.removeGenreFilter()" />
         <label for="dd-mediaType">Genre</label>
       </p-iftalabel>
     </div>
@@ -27,7 +30,7 @@
     <div class="rating-filter-wrapper col-span-3 gap-4 m-auto">
       <div class="slider-top-wrapper flex justify-between">
         <label class="w-[13rem]" style="color: lightgrey;">Rating Range: <b>{{rangeValues[0].toPrecision(2)}}</b> - <b>{{rangeValues[1].toPrecision(2)}}</b></label>
-        <p-button icon="pi pi-filter" title="Update List" size="small" raised (onClick)="filterByRating(rangeValues[0],rangeValues[1])"></p-button>
+        <p-button icon="pi pi-filter" title="Update List" size="small" raised (onClick)="topService.filterByRating(rangeValues[0],rangeValues[1])"></p-button>
       </div>
       <div class="flex justify-center">
         <p-slider [(ngModel)]="rangeValues" [range]="true" [min]="0.0" [max]="10.0" step="0.1" styleClass="w-[12vw] mt-4" />

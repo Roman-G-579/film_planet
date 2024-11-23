@@ -11,7 +11,7 @@ export class DataUtils {
    */
   static getGenreNamesFromIds(mediaType: MediaType): string[] {
     const genreNames: string[] = [];
-
+    console.log(mediaType)
     // The genre object corresponds to the given media type
     const selectedObject: Record<string,number> = mediaType === MediaType.Film ? FilmGenres : TvGenres;
     const genreIds = Object.values(selectedObject);

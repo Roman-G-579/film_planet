@@ -10,52 +10,64 @@ import {TvGenres} from '../../core/constants/tv-genres.record';
 })
 export class TopTitlesService {
 
+  mediaFilter: MediaType = MediaType.Film;
+  yearFilter: number | undefined;
+  genreFilter: number | undefined;
+
+  /**
+   * ratingFilter[0] = minRating,
+   * ratingFilter[1] = maxRating
+   */
+  ratingFilter: number[] = [0.0,10];
+
+  topTitles: WritableSignal<LibraryItem[]> = signal<LibraryItem[]>([]);
+
+
   filterByMediaType(type: MediaType) {
-    const filteredItems: LibraryItem[] = LIBRARY_ITEMS.filter((item) => {return item.mediaType == type});
-    return filteredItems.sort((a,b) => (b.rating ?? 0) - (a.rating ?? 0));
+    this.mediaFilter = type;
+
+    this.getFilteredList();
   }
 
-  //TODO: add filtering if existing filter is already applied
-  filterByYear(year: number, mediaType: MediaType) {
-    const filteredItems: LibraryItem[] = LIBRARY_ITEMS.filter((item) => { return item.year == year });
-    return filteredItems.sort((a,b) => (b.rating ?? 0) - (a.rating ?? 0));
+  filterByYear(year: Date | undefined) {
+    if (year) {
+      this.yearFilter = year.getFullYear();
+    }
+
+    this.getFilteredList();
   }
 
-  filterByGenre(genre: string, mediaType: MediaType) {
-    const selectedGenreList: Record<string,number> = mediaType === MediaType.Film ? FilmGenres : TvGenres;
-    const genreId: number = selectedGenreList[genre];
+  filterByGenre(genre: string | undefined) {
+    console.log(genre);
+    const selectedGenreList: Record<string,number> = this.mediaFilter === MediaType.Film ? FilmGenres : TvGenres;
+    if (genre) {
+      this.genreFilter = selectedGenreList[genre];
+    }
 
-    const filteredItems: LibraryItem[] = LIBRARY_ITEMS.filter(
-      (item) => { return item.mediaType == mediaType && item.genres.includes(genreId) }
-    );
-    return filteredItems.sort((a,b) => (b.rating ?? 0) - (a.rating ?? 0));
+    this.getFilteredList();
   }
 
-  filterByRating(minRating: number, maxRating: number, mediaType: MediaType) {
-    const filteredItems: LibraryItem[] = LIBRARY_ITEMS.filter(
-      (item) => {
-        if (item.rating) {
-          return item.mediaType == mediaType && item.rating >= minRating && item.rating <= maxRating
-        }
-        return false;
-      }
-    );
-    return filteredItems.sort((a,b) => (b.rating ?? 0) - (a.rating ?? 0));
+  filterByRating(minRating: number, maxRating: number) {
+    this.ratingFilter[0] = (minRating);
+    this.ratingFilter[1] = (maxRating);
+
+    this.getFilteredList();
   }
 
   removeGenreFilter() {
-
+    this.genreFilter = undefined;
+    this.getFilteredList();
   }
 
-  getTopFilmsByYear(year: number): LibraryItem[] {
-    const filteredItems: LibraryItem[] = LIBRARY_ITEMS.filter((item) => {return item.year == year});
-    return filteredItems.sort((a,b) => (b.rating ?? 0) - (a.rating ?? 0));
+  removeYearFilter() {
+    this.yearFilter = undefined;
+    this.getFilteredList();
   }
 
-  getTopTvByYear(year: number): LibraryItem[] {
-    const filteredItems: LibraryItem[] = LIBRARY_ITEMS.filter((item) => {return item.year == year});
-    return filteredItems.sort((a,b) => (b.rating ?? 0) - (a.rating ?? 0));
+  removeRatingFilter() {
+    this.ratingFilter = [0.0,10];
   }
+
 
   getTopFilmsOfAllTime(): LibraryItem[] {
     const filteredItems: LibraryItem[] = LIBRARY_ITEMS.filter((item) => {return item.mediaType == MediaType.Film});
@@ -65,6 +77,25 @@ export class TopTitlesService {
   getTopTvOfAllTime(): LibraryItem[] {
     const filteredItems: LibraryItem[] = LIBRARY_ITEMS.filter((item) => {return item.mediaType == MediaType.TV});
     return filteredItems.sort((a,b) => (b.rating ?? 0) - (a.rating ?? 0));
+  }
+
+  /**
+   * @returns A list of library items filtered based on the values in the filter parameters
+   * (yearFilter, genreFilter, ratingFilter, mediaFilter)
+   */
+  getFilteredList() {
+    const filteredItems: LibraryItem[] = LIBRARY_ITEMS.filter(
+      (item) => {
+        return (
+          (!this.yearFilter || item.year === this.yearFilter) &&
+          (!this.genreFilter || item.genres.includes(this.genreFilter)) &&
+          (!this.ratingFilter || (item.rating && item.rating >= this.ratingFilter[0] && item.rating <= this.ratingFilter[1])) &&
+          (!this.mediaFilter || item.mediaType === this.mediaFilter)
+        );
+      }
+    );
+
+    this.topTitles.set(filteredItems.sort((a,b) => (b.rating ?? 0) - (a.rating ?? 0)));
   }
 
 
