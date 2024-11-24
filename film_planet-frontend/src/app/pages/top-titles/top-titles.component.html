@@ -27,16 +27,17 @@
       </p-iftalabel>
     </div>
 
-    <div class="rating-filter-wrapper col-span-3 gap-4 m-auto">
-      <div class="slider-top-wrapper flex justify-between">
-        <label class="w-[13rem]" style="color: lightgrey;">Rating Range: <b>{{rangeValues[0].toPrecision(2)}}</b> - <b>{{rangeValues[1].toPrecision(2)}}</b></label>
+    <div class="rating-filter-wrapper col-span-3 grid grid-rows-2 grid-flow-col m-auto p-1">
+      <div class="slider-top-wrapper col-span-2 flex ">
+        <!--suppress CssUnresolvedCustomProperty -->
+        <label class="w-[13rem] ml-1" style="color: var(--p-form-field-float-label-color);">Rating Range: <b>{{rangeValues[0].toPrecision(2)}}</b> - <b>{{rangeValues[1].toPrecision(2)}}</b></label>
+      </div>
+      <div class="col-span-2 flex">
+        <p-slider [(ngModel)]="rangeValues" [range]="true" [min]="0.0" [max]="10.0" step="0.1" styleClass="w-[8.5vw] mt-2 ml-3" />
+      </div>
+      <div class="row-span-2 self-center mr-1">
         <p-button icon="pi pi-filter" title="Update List" size="small" raised (onClick)="topService.filterByRating(rangeValues[0],rangeValues[1])"></p-button>
       </div>
-      <div class="flex justify-center">
-        <p-slider [(ngModel)]="rangeValues" [range]="true" [min]="0.0" [max]="10.0" step="0.1" styleClass="w-[12vw] mt-4" />
-      </div>
-<!--      <div class="row-span-2">-->
-<!--      </div>-->
     </div>
 
     <div class="clear-btn-wrapper col-span-2 m-auto">
