@@ -23,7 +23,14 @@ export default [
     loadComponent: () => import('./library/library.component').then((c) => c.LibraryComponent),
   },
   {
-    path: 'genres',
+    path: 'genres-film',
+    data: { type: 'films' },
+    loadChildren: () => import('./genres/genres.routes'),
+    loadComponent: () => import('./genres/genres.component').then((c) => c.GenresComponent),
+  },
+  {
+    path: 'genres-tv',
+    data: { type: 'tv' },
     loadChildren: () => import('./genres/genres.routes'),
     loadComponent: () => import('./genres/genres.component').then((c) => c.GenresComponent),
   },
