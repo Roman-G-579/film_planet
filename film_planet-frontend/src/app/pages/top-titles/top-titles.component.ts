@@ -41,10 +41,9 @@ export class TopTitlesComponent implements OnInit {
   topTitles: WritableSignal<LibraryItem[]> = this.topService.topTitles;
   resultCriteria: WritableSignal<string> = signal("");
 
-  selectedMediaType = this.topService.mediaFilter;
+  selectedMediaType: MediaType = MediaType.Film;
 
-  //TODO: fix genre list updating  based on media type
-  genres = this.dataUtils.getGenreNamesFromIds(this.selectedMediaType);
+  genres: string[] = [];
   selectedGenre: string | undefined;
 
   minYear: Date | undefined = new Date(new Date().setFullYear(1900));
@@ -56,13 +55,16 @@ export class TopTitlesComponent implements OnInit {
   ngOnInit() {
     this.route.data.subscribe((data) => {
       if (data['type'] === 'films') {
-        this.topService.filterByMediaType(MediaType.Film);
+        this.selectedMediaType = MediaType.Film;
         this.resultCriteria.set("Films");
       }
       else if (data['type'] === 'tv') {
-        this.topService.filterByMediaType(MediaType.TV);
+        this.selectedMediaType = MediaType.TV;
         this.resultCriteria.set("TV shows");
       }
+
+      this.topService.filterByMediaType(this.selectedMediaType);
+      this.genres = this.dataUtils.getGenreNamesFromIds(this.selectedMediaType);
     });
   }
 

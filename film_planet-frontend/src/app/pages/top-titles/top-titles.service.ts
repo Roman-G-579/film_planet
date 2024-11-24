@@ -25,7 +25,6 @@ export class TopTitlesService {
 
   filterByMediaType(type: MediaType) {
     this.mediaFilter = type;
-
     this.getFilteredList();
   }
 
