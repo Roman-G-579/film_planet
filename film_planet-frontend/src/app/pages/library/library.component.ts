@@ -76,6 +76,10 @@ export class LibraryComponent implements OnInit {
       else if (data['type'] === 'tv') {
         this.libraryItems.set(this.lib.getRecentTV());
       }
+
+      if (data['category'] === 'genre') {
+        console.log("pages/films/genre-id")
+      }
     });
 
 

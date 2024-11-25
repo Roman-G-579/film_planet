@@ -1,5 +1,5 @@
 import {ChangeDetectionStrategy, Component, inject, OnInit} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, RouterLink} from '@angular/router';
 import {DataUtils} from '../../core/utils/data.utils';
 import {MediaType} from '../../core/enums/media-type.enum';
 import {ButtonModule} from 'primeng/button';
@@ -8,7 +8,8 @@ import {ButtonModule} from 'primeng/button';
   selector: 'app-genres',
   standalone: true,
   imports: [
-    ButtonModule
+    ButtonModule,
+    RouterLink
   ],
   templateUrl: './genres.component.html',
   styleUrl: './genres.component.scss',
@@ -21,13 +22,22 @@ export class GenresComponent implements OnInit {
   genres: string[] = [];
   titleText: string = '';
 
+  /**
+   * The type of genres list displayed in the current page.
+   *
+   * Used in the genre page URLs
+    */
+  routeType: string = '';
+
   ngOnInit() {
     this.route.data.subscribe((data) => {
-      if (data['type'] === 'films') {
+      this.routeType = data['type'];
+
+      if (this.routeType === 'films') {
         this.genres = this.dataUtils.getGenreNamesFromIds(MediaType.Film);
         this.titleText = "Film Genres:"
       }
-      else if (data['type'] === 'tv') {
+      else if (this.routeType === 'tv') {
         this.genres = this.dataUtils.getGenreNamesFromIds(MediaType.TV);
         this.titleText = "TV Genres:"
       }
