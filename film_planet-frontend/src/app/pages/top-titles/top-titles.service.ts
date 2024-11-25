@@ -63,21 +63,6 @@ export class TopTitlesService {
     this.getFilteredList();
   }
 
-  removeRatingFilter() {
-    this.ratingFilter = [0.0,10];
-  }
-
-
-  getTopFilmsOfAllTime(): LibraryItem[] {
-    const filteredItems: LibraryItem[] = LIBRARY_ITEMS.filter((item) => {return item.mediaType == MediaType.Film});
-    return filteredItems.sort((a,b) => (b.rating ?? 0) - (a.rating ?? 0));
-  }
-
-  getTopTvOfAllTime(): LibraryItem[] {
-    const filteredItems: LibraryItem[] = LIBRARY_ITEMS.filter((item) => {return item.mediaType == MediaType.TV});
-    return filteredItems.sort((a,b) => (b.rating ?? 0) - (a.rating ?? 0));
-  }
-
   /**
    * @returns A list of library items filtered based on the values in the filter parameters
    * (yearFilter, genreFilter, ratingFilter, mediaFilter)
