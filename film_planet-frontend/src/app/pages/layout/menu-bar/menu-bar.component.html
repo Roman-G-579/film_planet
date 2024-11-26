@@ -7,10 +7,10 @@
 <!--        PROGRAMMATIC TEMPLATE      -->
         @for (item of menuOptions; track item;) {
           @if (!item.items.length) {
-            <p-splitButton [label]="item.label" [menuButtonDisabled]="true" dropdownIcon="none" [model]="item.items" (onClick)=navigate(item.route) text severity="secondary"/>
+            <p-splitButton [label]="item.label" [menuButtonDisabled]="true" dropdownIcon="none" [model]="item.items" (onClick)="navigate(item.route, item.type)" text severity="secondary"/>
           }
           @else {
-            <p-splitButton [label]="item.label" [model]="item.items" (onClick)=navigate(item.route) text severity="secondary"/>
+            <p-splitButton [label]="item.label" [model]="item.items" (onClick)="navigate(item.route, item.type)" text severity="secondary"/>
           }
         }
 

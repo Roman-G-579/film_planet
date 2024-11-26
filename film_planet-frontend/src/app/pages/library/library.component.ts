@@ -16,6 +16,7 @@ import {LibraryItem} from '../../core/interfaces/library-item.interface';
 import {LibraryService} from './library.service';
 import {ActivatedRoute} from '@angular/router';
 import {GenreNamesPipe} from '../../core/pipes/genre-names.pipe';
+import {map, Observable} from 'rxjs';
 
 @Component({
   selector: 'app-library',
@@ -37,7 +38,18 @@ export class LibraryComponent implements OnInit {
   protected readonly lib = inject(LibraryService);
   private route = inject(ActivatedRoute);
 
+  //TODO: fix library routing
   libraryItems: WritableSignal<LibraryItem[]> = signal<LibraryItem[]>([]);
+
+  // libraryItems$: Observable<LibraryItem[]> = this.route.queryParams.pipe(
+  //   map(params => {
+  //       const res = (params['type'] === 'films') ? this.lib.getRecentFilms() : this.lib.getRecentTV();
+  //       this.carouselItems = res.slice(0,5);
+  //       this.tableItems = res.slice(5,10);
+  //       return res;
+  //     }
+  //   )
+  // );
 
   // Items appearing on the carousel at the top-titles of the page
   carouselItems: LibraryItem[] = [];
@@ -69,23 +81,26 @@ export class LibraryComponent implements OnInit {
   ];
 
   ngOnInit() {
-    this.route.data.subscribe(data => {
-      if (data['type'] === 'films') {
+    this.route.queryParams.subscribe(params => {
+      console.log(params['type'])
+      if (params['type'] === 'films') {
         this.libraryItems.set(this.lib.getRecentFilms());
       }
-      else if (data['type'] === 'tv') {
+      else if (params['type'] === 'tv') {
         this.libraryItems.set(this.lib.getRecentTV());
       }
 
-      if (data['category'] === 'genre') {
-        console.log("pages/films/genre-id")
-      }
+      // if (data['category'] === 'genre') {
+      //   console.log("pages/films/genre-id")
+      // }
     });
 
 
     this.carouselItems = this.libraryItems().slice(0,5);
     this.tableItems = this.libraryItems().slice(5,10);
   }
+
+
 
   counterArray(n: number): any[] {
     return Array(n);

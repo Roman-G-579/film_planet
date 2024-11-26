@@ -1,46 +1,58 @@
-import {ChangeDetectionStrategy, Component, inject, OnInit} from '@angular/core';
-import {ActivatedRoute, RouterLink} from '@angular/router';
+import {ChangeDetectionStrategy, Component, inject} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
 import {DataUtils} from '../../core/utils/data.utils';
 import {MediaType} from '../../core/enums/media-type.enum';
 import {ButtonModule} from 'primeng/button';
+import {map, Observable} from 'rxjs';
+import {AsyncPipe} from '@angular/common';
 
 @Component({
   selector: 'app-genres',
   standalone: true,
   imports: [
     ButtonModule,
-    RouterLink
+    AsyncPipe
   ],
   templateUrl: './genres.component.html',
   styleUrl: './genres.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class GenresComponent implements OnInit {
+export class GenresComponent {
   private route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
   protected readonly dataUtils = DataUtils;
 
-  genres: string[] = [];
-  titleText: string = '';
+  type$: Observable<string> = this.route.queryParams.pipe(
+    map(params => params['type'])
+  );
+  genres$: Observable<string[]> = this.route.queryParams.pipe(
+    map(params => this.getGenres(params['type']))
+  );
+
+  titleText$: Observable<string> = this.route.queryParams.pipe(
+    map(params => this.getTitleText(params['type']))
+  );
+
+  getGenres(type: string): string[] {
+    if (type === 'film') {
+      return this.dataUtils.getGenreNamesFromIds(MediaType.Film);
+    } else if (type === 'tv') {
+      return this.dataUtils.getGenreNamesFromIds(MediaType.TV);
+    }
+    return [];
+  }
+
+  getTitleText(type: string): string {
+    return type === 'film' ? 'Film Genres:' : type === 'tv' ? 'TV Genres:' : '';
+  }
 
   /**
-   * The type of genres list displayed in the current page.
-   *
-   * Used in the genre page URLs
-    */
-  routeType: string = '';
-
-  ngOnInit() {
-    this.route.data.subscribe((data) => {
-      this.routeType = data['type'];
-
-      if (this.routeType === 'films') {
-        this.genres = this.dataUtils.getGenreNamesFromIds(MediaType.Film);
-        this.titleText = "Film Genres:"
-      }
-      else if (this.routeType === 'tv') {
-        this.genres = this.dataUtils.getGenreNamesFromIds(MediaType.TV);
-        this.titleText = "TV Genres:"
-      }
-    });
+   * Navigates to the specified route
+   * @param route the destination route
+   * @param type media type of the associated routes - tv or film
+   */
+  navigate(route: string, type: string) {
+    console.log(route, type);
+    this.router.navigate([route, type],  { queryParams: { type } }).then();
   }
 }

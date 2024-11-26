@@ -11,29 +11,25 @@ export default [
     loadComponent: () => import ('./home/home.component').then((c) => c.HomeComponent),
   },
   {
-    path: 'films',
-    data: { type: 'films' },
+    path: 'library',
     loadChildren: () => import('./library/library-categories.routes'),
-    loadComponent: () => import('./library/library.component').then((c) => c.LibraryComponent),
   },
   {
-    path: 'tv',
-    data: { type: 'tv' },
-    loadChildren: () => import('./library/library-categories.routes'),
-    loadComponent: () => import('./library/library.component').then((c) => c.LibraryComponent),
-  },
-  {
-    path: 'genres-film',
-    data: { type: 'films' },
-    loadChildren: () => import('./genres/genres.routes'),
+    path: 'genres',
     loadComponent: () => import('./genres/genres.component').then((c) => c.GenresComponent),
   },
-  {
-    path: 'genres-tv',
-    data: { type: 'tv' },
-    loadChildren: () => import('./genres/genres.routes'),
-    loadComponent: () => import('./genres/genres.component').then((c) => c.GenresComponent),
-  },
+  // {
+  //   path: 'genres-film',
+  //   data: { type: 'films' },
+  //   loadChildren: () => import('./library/library-categories.routes'),
+  //   //loadComponent: () => import('./genres/genres.component').then((c) => c.GenresComponent),
+  // },
+  // {
+  //   path: 'genres-tv',
+  //   data: { type: 'tv' },
+  //   loadChildren: () => import('./library/library-categories.routes'),
+  //   //loadComponent: () => import('./genres/genres.component').then((c) => c.GenresComponent),
+  // },
   {
     path: 'top-films',
     data: { type: 'films' },
@@ -44,6 +40,11 @@ export default [
     data: { type: 'tv' },
     loadComponent: () => import('./top-titles/top-titles.component').then((c) => c.TopTitlesComponent),
   },
+  // {
+  //   path: 'genres-film/:genre',
+  //   data: { category: 'genre'},
+  //   loadComponent: () => import('./library/library.component').then((c) => c.LibraryComponent),
+  // },
   {
     path: '**',
     redirectTo: 'home'
