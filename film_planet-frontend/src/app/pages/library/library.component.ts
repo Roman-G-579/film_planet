@@ -13,10 +13,10 @@ import {NgForOf} from "@angular/common";
 import {SharedModule} from "primeng/api";
 import {SkeletonModule} from "primeng/skeleton";
 import {LibraryItem} from '../../core/interfaces/library-item.interface';
-import {LibraryService} from './library.service';
+import {LibraryService} from '../../core/services/library.service';
 import {ActivatedRoute} from '@angular/router';
 import {GenreNamesPipe} from '../../core/pipes/genre-names.pipe';
-import {map, Observable} from 'rxjs';
+import {MediaType} from '../../core/enums/media-type.enum';
 
 @Component({
   selector: 'app-library',
@@ -38,18 +38,11 @@ export class LibraryComponent implements OnInit {
   protected readonly lib = inject(LibraryService);
   private route = inject(ActivatedRoute);
 
-  //TODO: fix library routing
-  libraryItems: WritableSignal<LibraryItem[]> = signal<LibraryItem[]>([]);
+  //TODO: fix genre page routing
+  libraryItems: WritableSignal<LibraryItem[]> = this.lib.libraryItems;
 
-  // libraryItems$: Observable<LibraryItem[]> = this.route.queryParams.pipe(
-  //   map(params => {
-  //       const res = (params['type'] === 'films') ? this.lib.getRecentFilms() : this.lib.getRecentTV();
-  //       this.carouselItems = res.slice(0,5);
-  //       this.tableItems = res.slice(5,10);
-  //       return res;
-  //     }
-  //   )
-  // );
+  categoryText: WritableSignal<string> = signal("");
+  mediaTypeText: WritableSignal<string> = signal("");
 
   // Items appearing on the carousel at the top-titles of the page
   carouselItems: LibraryItem[] = [];
@@ -81,26 +74,29 @@ export class LibraryComponent implements OnInit {
   ];
 
   ngOnInit() {
-    this.route.queryParams.subscribe(params => {
-      console.log(params['type'])
-      if (params['type'] === 'films') {
-        this.libraryItems.set(this.lib.getRecentFilms());
+    this.route.data.subscribe((data) => {
+      if (data['type'] === 'film') {
+        this.lib.filterByMediaType(MediaType.Film);
+        this.mediaTypeText.set("Films");
       }
-      else if (params['type'] === 'tv') {
-        this.libraryItems.set(this.lib.getRecentTV());
+      else if (data['type'] === 'tv') {
+        this.lib.filterByMediaType(MediaType.TV);
+        this.mediaTypeText.set("TV shows");
       }
 
-      // if (data['category'] === 'genre') {
-      //   console.log("pages/films/genre-id")
-      // }
+      if(data['category'] === 'recent') {
+        this.lib.filterByRecent();
+        this.categoryText.set("Recent");
+      }
+      else if (data['category'] === 'popular') {
+        this.lib.filterByPopular();
+        this.categoryText.set("Popular");
+      }
     });
-
 
     this.carouselItems = this.libraryItems().slice(0,5);
     this.tableItems = this.libraryItems().slice(5,10);
   }
-
-
 
   counterArray(n: number): any[] {
     return Array(n);

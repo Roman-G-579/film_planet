@@ -22,21 +22,24 @@ export class GenresComponent {
   private readonly router = inject(Router);
   protected readonly dataUtils = DataUtils;
 
-  type$: Observable<string> = this.route.queryParams.pipe(
-    map(params => params['type'])
-  );
-  genres$: Observable<string[]> = this.route.queryParams.pipe(
+  selectedMediaType: string = '';
+  // type$: Observable<string> = this.route.data.pipe(
+  //   map(params => params['type'])
+  // );
+  genres$: Observable<string[]> = this.route.data.pipe(
     map(params => this.getGenres(params['type']))
   );
 
-  titleText$: Observable<string> = this.route.queryParams.pipe(
+  titleText$: Observable<string> = this.route.data.pipe(
     map(params => this.getTitleText(params['type']))
   );
 
   getGenres(type: string): string[] {
     if (type === 'film') {
+      this.selectedMediaType = 'film';
       return this.dataUtils.getGenreNamesFromIds(MediaType.Film);
     } else if (type === 'tv') {
+      this.selectedMediaType = 'tv';
       return this.dataUtils.getGenreNamesFromIds(MediaType.TV);
     }
     return [];
@@ -49,10 +52,10 @@ export class GenresComponent {
   /**
    * Navigates to the specified route
    * @param route the destination route
-   * @param type media type of the associated routes - tv or film
+   * @param genre media type of the associated routes - tv or film
    */
-  navigate(route: string, type: string) {
-    console.log(route, type);
-    this.router.navigate([route, type],  { queryParams: { type } }).then();
+  navigate(route: string, genre: string) {
+    //TODO: make route override existing
+    this.router.navigate([route, this.selectedMediaType, genre],  { queryParams: { type: genre } }).then();
   }
 }

@@ -7,18 +7,33 @@ export default [
     pathMatch: 'full',
   },
   {
-    path: 'recent',
-    data: { category: 'recent'},
+    path: 'tv/recent',
+    data: { type: 'tv', category: 'recent'},
     loadComponent: () => import('./library.component').then((c) => c.LibraryComponent),
   },
   {
-    path: 'popular',
-    data: { category: 'popular'},
+    path: 'tv/popular',
+    data: { type: 'tv', category: 'popular'},
     loadComponent: () => import('./library.component').then((c) => c.LibraryComponent),
   },
   {
-    path: ':genre',
-    data: { category: 'genre'},
+    path: 'tv/:genre',
+    data: { type: 'tv', category: 'genre'},
+    loadComponent: () => import('./library.component').then((c) => c.LibraryComponent),
+  },
+  {
+    path: 'film/recent',
+    data: { type: 'film', category: 'recent'},
+    loadComponent: () => import('./library.component').then((c) => c.LibraryComponent),
+  },
+  {
+    path: 'film/popular',
+    data: { type: 'film', category: 'popular'},
+    loadComponent: () => import('./library.component').then((c) => c.LibraryComponent),
+  },
+  {
+    path: 'film/:genre',
+    data: { type: 'film', category: 'genre'},
     loadComponent: () => import('./library.component').then((c) => c.LibraryComponent),
   },
   {

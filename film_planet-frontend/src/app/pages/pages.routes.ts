@@ -16,7 +16,7 @@ export default [
   },
   {
     path: 'genres',
-    loadComponent: () => import('./genres/genres.component').then((c) => c.GenresComponent),
+    loadChildren: () => import('./genres/genres.routes'),
   },
   // {
   //   path: 'genres-film',

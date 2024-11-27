@@ -57,18 +57,15 @@ export class MenuBarComponent implements OnInit {
   menuOptions = [
     {
       label: 'Films',
-      route: '/pages/library/recent',
-      type: 'film',
+      route: '/pages/library/film/recent',
       items: [
         {
           label: 'Recently released films',
-          routerLink: '/pages/library/recent',
-          queryParams: {type: 'film'}
+          routerLink: '/pages/library/film/recent',
         },
         {
           label: 'Most popular Films',
-          routerLink: '/pages/library/popular',
-          queryParams: {type: 'film'}
+          routerLink: '/pages/library/film/popular',
         },
         {
           label: 'Top 100 Films',
@@ -76,25 +73,21 @@ export class MenuBarComponent implements OnInit {
         },
         {
           label: 'Browse films by genre',
-          routerLink: '/pages/genres',
-          queryParams: {type: 'film'}
+          routerLink: '/pages/genres/film',
         }
       ]
     },
     {
       label: 'TV',
-      route: '/pages/library/recent',
-      type: 'tv',
+      route: '/pages/library/tv/recent',
       items: [
         {
           label: 'Recently released TV Shows',
-          routerLink: '/pages/library/recent',
-          queryParams: {type: 'tv'}
+          routerLink: '/pages/library/tv/recent',
         },
         {
           label: 'Most popular TV Shows',
-          routerLink: '/pages/library/popular',
-          queryParams: {type: 'tv'}
+          routerLink: '/pages/library/tv/popular',
         },
         {
           label: 'Top 100 TV shows',
@@ -102,15 +95,13 @@ export class MenuBarComponent implements OnInit {
         },
         {
           label: 'Browse TV Shows by genre',
-          routerLink: '/pages/genres',
-          queryParams: {type: 'tv'}
+          routerLink: '/pages/genres/tv',
         }
       ]
     },
     {
       label: 'Top 100',
       route: '/pages/top-films',
-      type: 'film',
       items: [],
     },
   ]
@@ -145,8 +136,7 @@ export class MenuBarComponent implements OnInit {
    * @param route the destination route
    * @param type media type of the associated routes - tv or film
    */
-  navigate(route: string, type: string) {
-    console.log(route, type);
-    this.router.navigate([route],  { queryParams: { type } }).then();
+  navigate(route: string) {
+    this.router.navigate([route]).then();
   }
 }

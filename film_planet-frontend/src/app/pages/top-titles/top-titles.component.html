@@ -13,8 +13,8 @@
           [maxDate]="maxYear"
           [showClear]="true"
           dateFormat="yy"
-          (onSelect)="topService.filterByYear(selectedYear)"
-          (onClear)="topService.removeYearFilter()"
+          (onSelect)="lib.filterByYear(selectedYear)"
+          (onClear)="lib.removeDateFilter()"
         />
         <label for="dd-year">Year</label>
       </p-iftalabel>
@@ -22,7 +22,7 @@
 
     <div class="genre-filter-wrapper col-span-3 m-auto">
       <p-iftalabel class="w-full md:w-56">
-        <p-select [(ngModel)]="selectedGenre" inputId="dd-mediaType" [options]="genres" [showClear]="true" styleClass="w-full" (onChange)="topService.filterByGenre(selectedGenre)" (onClear)="topService.removeGenreFilter()" />
+        <p-select [(ngModel)]="selectedGenre" inputId="dd-mediaType" [options]="genres" [showClear]="true" styleClass="w-full" (onChange)="lib.filterByGenre(selectedGenre)" (onClear)="lib.removeGenreFilter()" />
         <label for="dd-mediaType">Genre</label>
       </p-iftalabel>
     </div>
@@ -36,19 +36,21 @@
         <p-slider [(ngModel)]="rangeValues" [range]="true" [min]="0.0" [max]="10.0" step="0.1" styleClass="w-[8.5vw] mt-2 ml-3" />
       </div>
       <div class="row-span-2 self-center mr-1">
-        <p-button icon="pi pi-filter" title="Update List" size="small" raised (onClick)="topService.filterByRating(rangeValues[0],rangeValues[1])"></p-button>
+        <p-button icon="pi pi-filter" title="Update List" size="small" raised (onClick)="lib.filterByRating(rangeValues[0],rangeValues[1])"></p-button>
       </div>
     </div>
 
     <div class="clear-btn-wrapper col-span-2 m-auto">
-      <p-button icon="pi pi-times" title="Clear Filters" (click)="clearFilters()" rounded raised />
+      <p-button icon="pi pi-times" title="Clear Filters" (click)="lib.clearAllFilters()" rounded raised />
     </div>
   </div>
 
   <div class="top-table-wrapper flex content-center justify-center mt-64">
-    <p-table [value]="topTitles()" [tableStyle]="{ 'min-width': '60rem' }">
+
+    <!--suppress TypeScriptValidateTypes -->
+    <p-table [value]="libraryItems()" [tableStyle]="{ 'min-width': '60rem' }">
       <ng-template pTemplate="caption">
-        <span class="text-xl font-bold">Top 100 {{resultCriteria()}}</span>
+        <span class="text-xl font-bold">Top 100 {{titleText()}}</span>
 
       </ng-template>
       <ng-template pTemplate="header">
@@ -71,7 +73,7 @@
               class="w-24 rounded"
             />
           </td>
-          <td>{{ item.year }}</td>
+          <td>{{ item.releaseDate | releaseYear}}</td>
           <td>{{ selectedMediaType === MediaType.Film ? item.directors : item.creators}}</td>
           <td>{{ item.genres | genreNames }}</td>
           <td>{{ item.rating }}</td>
