@@ -6,7 +6,7 @@ export const LIBRARY_ITEMS: LibraryItem[] = [
   {
     mediaType: MediaType.Film,
     title: "Pulp Fiction",
-    year: 1994,
+    releaseDate: new Date(1994, 0, 1),
     genres: [80,18],
     starring: ["John Travolta", "Uma Thurman"],
     directors: ["Quentin Tarantino"],
@@ -16,7 +16,7 @@ export const LIBRARY_ITEMS: LibraryItem[] = [
   {
     mediaType: MediaType.Film,
     title: "Prisoners",
-    year: 2013,
+    releaseDate: 2013,
     genres: [18,53],
     starring: ["Hugh Jackman", "Jake Gyllenhaal"],
     directors: ["Denis Villeneuve"],
@@ -26,7 +26,7 @@ export const LIBRARY_ITEMS: LibraryItem[] = [
   {
     mediaType: MediaType.Film,
     title: "The Blues Brothers",
-    year: 1980,
+    releaseDate: 1980,
     genres: [35,10402],
     starring: ["John Belushi", "Dan Aykroyd"],
     directors: ["John Landis"],
@@ -36,7 +36,7 @@ export const LIBRARY_ITEMS: LibraryItem[] = [
   {
     mediaType: MediaType.Film,
     title: "Inception",
-    year: 2010,
+    releaseDate: 2010,
     genres: [28,12],
     starring: ["Leonardo DiCaprio", "Joseph Gordon-Levitt"],
     directors: ["Christopher Nolan"],
@@ -46,7 +46,7 @@ export const LIBRARY_ITEMS: LibraryItem[] = [
   {
     mediaType: MediaType.Film,
     title: "The Godfather",
-    year: 1972,
+    releaseDate: 1972,
     genres: [80,18],
     starring: ["Marlon Brando", "Al Pacino"],
     directors: ["Francis Ford Coppola"],
@@ -57,7 +57,7 @@ export const LIBRARY_ITEMS: LibraryItem[] = [
   {
     mediaType: MediaType.Film,
     title: "The Matrix",
-    year: 1999,
+    releaseDate: 1999,
     genres: [28,878],
     starring: ["Keanu Reeves", "Laurence Fishburne"],
     directors: ["Lana Wachowski","Lilly Wachowski"],
@@ -67,7 +67,7 @@ export const LIBRARY_ITEMS: LibraryItem[] = [
   {
     mediaType: MediaType.Film,
     title: "Dune Part Two",
-    year: 2024,
+    releaseDate: 2024,
     genres: [28,878],
     starring: ["Timothée Chalamet", "Zendaya"],
     directors: ["Denis Villeneuve"],
@@ -77,7 +77,7 @@ export const LIBRARY_ITEMS: LibraryItem[] = [
   {
     mediaType: MediaType.Film,
     title: "Alien",
-    year: 1979,
+    releaseDate: 1979,
     genres: [878, 27],
     starring: ["Sigourney Weaver", "gourney Weaver"],
     directors: ["Ridley Scott"],
@@ -87,7 +87,7 @@ export const LIBRARY_ITEMS: LibraryItem[] = [
   {
     mediaType: MediaType.Film,
     title: "Memento",
-    year: 2000,
+    releaseDate: 2000,
     genres: [53],
     starring: ["Guy Pearce", "Carrie-Anne Moss"],
     directors: ["Christopher Nolan"],
@@ -97,7 +97,7 @@ export const LIBRARY_ITEMS: LibraryItem[] = [
   {
     mediaType: MediaType.Film,
     title: "Raiders of The Lost Ark",
-    year: 1981,
+    releaseDate: 1981,
     genres: [12],
     starring: ["Harrison Ford", "Karen Allen"],
     directors: ["Steven Spielberg"],
@@ -107,7 +107,7 @@ export const LIBRARY_ITEMS: LibraryItem[] = [
   {
     mediaType: MediaType.Film,
     title: "The Shining",
-    year: 1980,
+    releaseDate: 1980,
     genres: [27],
     starring: ["Jack Nicholson", "Shelley Duvall"],
     directors: ["Stanley Kubrick"],
@@ -117,7 +117,7 @@ export const LIBRARY_ITEMS: LibraryItem[] = [
   {
     mediaType: MediaType.TV,
     title: "The Expanse",
-    year: 2015,
+    releaseDate: 2015,
     genres: [10765, 18],
     starring: ["John Travolta", "Uma Thurman"],
     creators: ["Daniel Abraham", "Mark Fergus", "Ty Franck"],
@@ -127,7 +127,7 @@ export const LIBRARY_ITEMS: LibraryItem[] = [
   {
     mediaType: MediaType.TV,
     title: "South Park",
-    year: 1998,
+    releaseDate: 1998,
     genres: [35],
     starring: ["Trey Parker ","Matt Stone", "Isaac Hayes"],
     creators: ["Trey Parker ","Matt Stone"],
@@ -137,7 +137,7 @@ export const LIBRARY_ITEMS: LibraryItem[] = [
   {
     mediaType: MediaType.TV,
     title: "Severance",
-    year: 2022,
+    releaseDate: 2022,
     genres: [10765, 9648],
     starring: ["Adam Scott", "Zach Cherry", "Britt Lower"],
     creators: ["Dan Erickson"],
@@ -147,7 +147,7 @@ export const LIBRARY_ITEMS: LibraryItem[] = [
   {
     mediaType: MediaType.TV,
     title: "The Wire",
-    year: 2002,
+    releaseDate: 2002,
     genres: [80, 18],
     starring: ["Dominic West", "Lance Reddick", "Sonja Sohn"],
     creators: ["David Simon"],
@@ -157,7 +157,7 @@ export const LIBRARY_ITEMS: LibraryItem[] = [
   {
     mediaType: MediaType.TV,
     title: "John Adams",
-    year: 2008,
+    releaseDate: 2008,
     genres: [18, 10768],
     starring: ["Paul Giamatti", "Laura Linney", "John Dossett"],
     creators: ["Tom Hooper"],
@@ -167,7 +167,7 @@ export const LIBRARY_ITEMS: LibraryItem[] = [
   {
     mediaType: MediaType.TV,
     title: "Better Call Saul",
-    year: 2015,
+    releaseDate: 2015,
     genres: [80, 18],
     starring: ["Bob Odenkirk", "Rhea Seehorn", "Jonathan Banks"],
     creators: ["Vince Gilligan","Peter Gould"],
@@ -177,7 +177,7 @@ export const LIBRARY_ITEMS: LibraryItem[] = [
   {
     mediaType: MediaType.TV,
     title: "Breaking Bad",
-    year: 2008,
+    releaseDate: 2008,
     genres: [80, 18],
     starring: ["Bryan Cranston", "Aaron Paul", "Anna Gunn"],
     creators: ["Vince Gilligan"],
