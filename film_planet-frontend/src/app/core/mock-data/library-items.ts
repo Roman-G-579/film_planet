@@ -115,6 +115,16 @@ export const LIBRARY_ITEMS: LibraryItem[] = [
     rating: 8.8
   },
   {
+    mediaType: MediaType.Film,
+    title: "Gladiator II",
+    releaseDate: new Date(2024, 9, 18),
+    genres: [28,12,18],
+    starring: ["Paul Mescal", "Denzel Washington"],
+    directors: ["Ridley Scott"],
+    image: "assets/posters/19.jpg",
+    rating: 7.3
+  },
+  {
     mediaType: MediaType.TV,
     title: "The Expanse",
     releaseDate: 2015,
@@ -183,5 +193,15 @@ export const LIBRARY_ITEMS: LibraryItem[] = [
     creators: ["Vince Gilligan"],
     image: "assets/posters/18.jpg",
     rating: 9.2
+  },
+  {
+    mediaType: MediaType.TV,
+    title: "Dune: Prophecy",
+    releaseDate: new Date(2024, 9, 31),
+    genres: [10759, 10765],
+    starring: ["Emily Watson", "Olivia Williams", "Travis Fimmel"],
+    creators: ["Dianne Ademu-John", "Alison Schapker"],
+    image: "assets/posters/20.jpg",
+    rating: 7.6
   },
 ];
