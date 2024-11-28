@@ -27,11 +27,19 @@ export class LibraryService {
    */
   ratingFilter: number[] = [0.0,10];
 
+  /**
+   * Filters by the library item's type of media (film, tv etc.)
+   * @param type the chosen media type
+   */
   filterByMediaType(type: MediaType) {
     this.mediaFilter = type;
     //this.getFilteredList();
   }
 
+  /**
+   * Filters by the library item's year of release
+   * @param date the item's release date
+   */
   filterByYear(date: Date | undefined) {
     if (date) {
       this.minDateFilter = new Date(date.getFullYear(), 0, 1);
@@ -42,7 +50,7 @@ export class LibraryService {
   }
 
   /**
-   * Retrieves items released in the last 2 months
+   * Filters by items released in the last 2 months
    */
   filterByRecent() {
     const currentDate = new Date();
@@ -55,6 +63,10 @@ export class LibraryService {
     this.getFilteredList();
   }
 
+  /**
+   * Filters by the library item's genre
+   * @param genre the chosen genre
+   */
   filterByGenre(genre: string | undefined) {
     const selectedGenreList: Record<string,number> = this.mediaFilter === MediaType.Film ? FilmGenres : TvGenres;
     if (genre) {
@@ -64,6 +76,11 @@ export class LibraryService {
     this.getFilteredList();
   }
 
+  /**
+   * Filters by the library item's user rating
+   * @param minRating minimum user rating
+   * @param maxRating maximum user rating
+   */
   filterByRating(minRating: number, maxRating: number) {
     this.ratingFilter[0] = (minRating);
     this.ratingFilter[1] = (maxRating);
@@ -71,18 +88,25 @@ export class LibraryService {
     this.getFilteredList();
   }
 
-
-
+  /**
+   * Filters by recently popular items
+   */
   filterByPopular() {
     this.clearAllFilters();
     this.getFilteredList();
   }
 
+  /**
+   * Clears the genre filter
+   */
   removeGenreFilter() {
     this.genreFilter = undefined;
     this.getFilteredList();
   }
 
+  /**
+   * Clears the date filter
+   */
   removeDateFilter() {
     this.minDateFilter = undefined;
     this.maxDateFilter = undefined;
@@ -90,7 +114,7 @@ export class LibraryService {
   }
 
   /**
-   * Removes the genre, date, and rating filters
+   * Clears the genre, date, and rating filters
    */
   clearAllFilters() {
     this.removeGenreFilter();
