@@ -38,7 +38,6 @@ export class LibraryComponent implements OnInit {
   protected readonly lib = inject(LibraryService);
   private route = inject(ActivatedRoute);
 
-  //TODO: fix genre page routing
   libraryItems: WritableSignal<LibraryItem[]> = this.lib.libraryItems;
 
   categoryText: WritableSignal<string> = signal("");
@@ -74,7 +73,10 @@ export class LibraryComponent implements OnInit {
   ];
 
   ngOnInit() {
+    this.lib.clearAllFilters();
+
     this.route.data.subscribe((data) => {
+      // Selecting media type for current page
       if (data['type'] === 'film') {
         this.lib.filterByMediaType(MediaType.Film);
         this.mediaTypeText.set("Films");
@@ -84,6 +86,7 @@ export class LibraryComponent implements OnInit {
         this.mediaTypeText.set("TV shows");
       }
 
+      // Selecting category of current page
       if(data['category'] === 'recent') {
         this.lib.filterByRecent();
         this.categoryText.set("Recent");
@@ -92,10 +95,19 @@ export class LibraryComponent implements OnInit {
         this.lib.filterByPopular();
         this.categoryText.set("Popular");
       }
+      else if (data['category'] === 'genre') {
+        this.getGenreItems();
+      }
     });
 
     this.carouselItems = this.libraryItems().slice(0,5);
     this.tableItems = this.libraryItems().slice(5,10);
+  }
+
+  getGenreItems() {
+    this.route.paramMap.subscribe((params) => {
+      this.lib.filterByGenre(params.get('genre') || '');
+    })
   }
 
   counterArray(n: number): any[] {

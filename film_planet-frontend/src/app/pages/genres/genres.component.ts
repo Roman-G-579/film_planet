@@ -23,9 +23,7 @@ export class GenresComponent {
   protected readonly dataUtils = DataUtils;
 
   selectedMediaType: string = '';
-  // type$: Observable<string> = this.route.data.pipe(
-  //   map(params => params['type'])
-  // );
+
   genres$: Observable<string[]> = this.route.data.pipe(
     map(params => this.getGenres(params['type']))
   );
@@ -50,12 +48,10 @@ export class GenresComponent {
   }
 
   /**
-   * Navigates to the specified route
-   * @param route the destination route
-   * @param genre media type of the associated routes - tv or film
+   * Navigates to the specified genre page
+   * @param genre the selected genre
    */
-  navigate(route: string, genre: string) {
-    //TODO: make route override existing
-    this.router.navigate([route, this.selectedMediaType, genre],  { queryParams: { type: genre } }).then();
+  navigate(genre: string) {
+    this.router.navigate(['pages','library', this.selectedMediaType, genre]).then();
   }
 }

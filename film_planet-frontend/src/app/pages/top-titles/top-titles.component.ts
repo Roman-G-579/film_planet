@@ -55,6 +55,8 @@ export class TopTitlesComponent implements OnInit {
   rangeValues: number[] = [0.0, 10.0];
 
   ngOnInit() {
+    this.lib.clearAllFilters();
+
     this.route.data.subscribe((data) => {
       if (data['type'] === 'film') {
         this.selectedMediaType = MediaType.Film;
@@ -66,8 +68,8 @@ export class TopTitlesComponent implements OnInit {
       }
 
       this.lib.filterByMediaType(this.selectedMediaType);
-      this.lib.clearAllFilters();
       this.lib.getFilteredList();
+
       this.genres = this.dataUtils.getGenreNamesFromIds(this.selectedMediaType);
     });
   }
