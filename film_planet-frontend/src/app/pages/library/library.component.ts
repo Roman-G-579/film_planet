@@ -29,7 +29,6 @@ import {MediaType} from '../../core/enums/media-type.enum';
     SharedModule,
     SkeletonModule,
     GenreNamesPipe,
-    RouterLink
   ],
   templateUrl: './library.component.html',
   styleUrl: './library.component.scss',
