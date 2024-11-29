@@ -11,9 +11,4 @@ export default  [
     data: { type: 'tv'},
     loadComponent: () => import('./genres.component').then((c) => c.GenresComponent),
   },
-  // {
-  //   path: ':genre',
-  //   data: { category: 'genre'},
-  //   loadComponent: () => import('../library/library.component').then((c) => c.LibraryComponent),
-  // }
 ] as Route[];

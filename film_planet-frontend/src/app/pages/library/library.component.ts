@@ -14,7 +14,7 @@ import {SharedModule} from "primeng/api";
 import {SkeletonModule} from "primeng/skeleton";
 import {LibraryItem} from '../../core/interfaces/library-item.interface';
 import {LibraryService} from '../../core/services/library.service';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router, RouterLink} from '@angular/router';
 import {GenreNamesPipe} from '../../core/pipes/genre-names.pipe';
 import {MediaType} from '../../core/enums/media-type.enum';
 
@@ -28,7 +28,8 @@ import {MediaType} from '../../core/enums/media-type.enum';
     NgForOf,
     SharedModule,
     SkeletonModule,
-    GenreNamesPipe
+    GenreNamesPipe,
+    RouterLink
   ],
   templateUrl: './library.component.html',
   styleUrl: './library.component.scss',
@@ -37,12 +38,14 @@ import {MediaType} from '../../core/enums/media-type.enum';
 export class LibraryComponent implements OnInit {
   protected readonly lib = inject(LibraryService);
   private route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
 
   libraryItems: WritableSignal<LibraryItem[]> = this.lib.libraryItems;
 
   categoryText: WritableSignal<string> = signal("");
   mediaTypeText: WritableSignal<string> = signal("");
 
+  selectedMediaType: WritableSignal<string> = signal("");
   // Items appearing on the carousel at the top-titles of the page
   carouselItems: LibraryItem[] = [];
 
@@ -86,6 +89,8 @@ export class LibraryComponent implements OnInit {
         this.mediaTypeText.set("TV shows");
       }
 
+      this.selectedMediaType.set(data['type']);
+
       // Selecting category of current page
       if(data['category'] === 'recent') {
         this.lib.filterByRecent();
@@ -113,5 +118,11 @@ export class LibraryComponent implements OnInit {
 
   counterArray(n: number): any[] {
     return Array(n);
+  }
+
+  navigate(title: string) {
+    //TODO: add item id to link, add id field to library items
+    //TODO: standardize special characters in route
+    this.router.navigate(['pages', this.selectedMediaType(), title]).then();
   }
 }

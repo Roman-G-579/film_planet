@@ -74,5 +74,4 @@ export class TopTitlesComponent implements OnInit {
     });
   }
 
-  protected readonly Date = Date;
 }

@@ -18,18 +18,14 @@ export default [
     path: 'genres',
     loadChildren: () => import('./genres/genres.routes'),
   },
-  // {
-  //   path: 'genres-film',
-  //   data: { type: 'films' },
-  //   loadChildren: () => import('./library/library-categories.routes'),
-  //   //loadComponent: () => import('./genres/genres.component').then((c) => c.GenresComponent),
-  // },
-  // {
-  //   path: 'genres-tv',
-  //   data: { type: 'tv' },
-  //   loadChildren: () => import('./library/library-categories.routes'),
-  //   //loadComponent: () => import('./genres/genres.component').then((c) => c.GenresComponent),
-  // },
+  {
+    path: 'tv/:item',
+    loadComponent: () => import('./item/item.component').then((c)=> c.ItemComponent),
+  },
+  {
+    path: 'film/:item',
+    loadComponent: () => import('./item/item.component').then((c)=> c.ItemComponent),
+  },
   {
     path: 'top-films',
     data: { type: 'films' },
@@ -40,11 +36,6 @@ export default [
     data: { type: 'tv' },
     loadComponent: () => import('./top-titles/top-titles.component').then((c) => c.TopTitlesComponent),
   },
-  // {
-  //   path: 'genres-film/:genre',
-  //   data: { category: 'genre'},
-  //   loadComponent: () => import('./library/library.component').then((c) => c.LibraryComponent),
-  // },
   {
     path: '**',
     redirectTo: 'home'
