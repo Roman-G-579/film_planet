@@ -107,6 +107,7 @@ export class LibraryComponent implements OnInit {
   getGenreItems() {
     this.route.paramMap.subscribe((params) => {
       this.lib.filterByGenre(params.get('genre') || '');
+      this.categoryText.set(params.get('genre') || '');
     })
   }
 
