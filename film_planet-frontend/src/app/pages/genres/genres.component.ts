@@ -52,6 +52,7 @@ export class GenresComponent {
    * @param genre the selected genre
    */
   navigate(genre: string) {
+    genre = this.dataUtils.sanitizeForUrl(genre);
     this.router.navigate(['pages','library', this.selectedMediaType, genre]).then();
   }
 }

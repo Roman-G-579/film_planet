@@ -17,6 +17,7 @@ import {LibraryService} from '../../core/services/library.service';
 import {ActivatedRoute, Router, RouterLink} from '@angular/router';
 import {GenreNamesPipe} from '../../core/pipes/genre-names.pipe';
 import {MediaType} from '../../core/enums/media-type.enum';
+import {DataUtils} from '../../core/utils/data.utils';
 
 @Component({
   selector: 'app-library',
@@ -36,6 +37,7 @@ import {MediaType} from '../../core/enums/media-type.enum';
 })
 export class LibraryComponent implements OnInit {
   protected readonly lib = inject(LibraryService);
+  protected readonly dataUtils = DataUtils;
   private route = inject(ActivatedRoute);
   private readonly router = inject(Router);
 
@@ -121,7 +123,8 @@ export class LibraryComponent implements OnInit {
 
   navigate(title: string) {
     //TODO: add item id to link, add id field to library items
-    //TODO: standardize special characters in route
+
+    title = this.dataUtils.sanitizeForUrl(title);
     this.router.navigate(['pages', this.selectedMediaType(), title]).then();
   }
 }
