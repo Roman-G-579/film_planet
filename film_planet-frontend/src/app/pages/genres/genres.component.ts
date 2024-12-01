@@ -24,7 +24,7 @@ export class GenresComponent {
 
   selectedMediaType: WritableSignal<MediaType> = signal(MediaType.Film);
 
-  titleText = signal('');
+  titleText: WritableSignal<string> = signal<string>('');
 
   genres$: Observable<string[]> = this.route.data.pipe(
     map(params => this.getGenresAndMediaType(params['type']))
