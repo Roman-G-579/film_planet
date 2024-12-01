@@ -1,1 +1,24 @@
-<p>item works!</p>
+<main>
+  <div class="item-wrapper flex justify-center mt-6">
+      <p-card [style]="{ width: '25rem', overflow: 'hidden' }">
+        <ng-template pTemplate="header">
+          <img alt="Poster" class="w-full" [src]="item().image" />
+        </ng-template>
+        <ng-template pTemplate="title"> {{item().title}} </ng-template>
+        <ng-template pTemplate="info">
+          <p>{{item().mediaType === MediaType.Film ? 'Directed by: ' : 'Created by: '}} {{item().directors?.join(", ") || item().creators?.join(", ") }}</p>
+          <p>Released {{item().releaseDate }}</p>
+          <p>{{itemGenres().join(", ")}}</p>
+        </ng-template>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore sed consequuntur error repudiandae numquam deserunt
+          quisquam repellat libero asperiores earum nam nobis, culpa ratione quam perferendis esse, cupiditate neque quas!
+        </p>
+        <ng-template pTemplate="footer">
+          <div class="flex gap-4 mt-1">
+
+          </div>
+        </ng-template>
+      </p-card>
+  </div>
+</main>
