@@ -4,6 +4,7 @@ import {MediaType} from '../enums/media-type.enum';
 import {LibraryItem} from '../interfaces/library-item.interface';
 import {FilmGenres} from '../constants/film-genres.record';
 import {TvGenres} from '../constants/tv-genres.record';
+import {DataUtils} from '../utils/data.utils';
 
 @Injectable({
   providedIn: 'root',
@@ -13,6 +14,8 @@ import {TvGenres} from '../constants/tv-genres.record';
  * Contains functions related to filtering and sorting items from the media library
  */
 export class LibraryService {
+  protected readonly dataUtils = DataUtils;
+
   libraryItems: WritableSignal<LibraryItem[]> = signal<LibraryItem[]>([]);
 
   mediaFilter: MediaType = MediaType.Film;
@@ -68,9 +71,8 @@ export class LibraryService {
    * @param genre the chosen genre
    */
   filterByGenre(genre: string | undefined) {
-    const selectedGenreList: Record<string,number> = this.mediaFilter === MediaType.Film ? FilmGenres : TvGenres;
     if (genre) {
-      this.genreFilter = selectedGenreList[genre];
+      this.genreFilter = Number(genre);
     }
 
     this.getFilteredList();

@@ -1,5 +1,5 @@
 <main>
-  <h1 class="mt-10 text-center">{{titleText$ | async}}</h1>
+  <h1 class="mt-10 text-center">{{titleText()}}</h1>
   <div class="genres-wrapper flex justify-center">
     <div class="grid grid-cols-2 md:grid-cols-4 w-4/5 lg:w-2/4 gap-4 justify-items-center border px-1 py-10">
       @for(genre of (genres$ | async); track genre) {

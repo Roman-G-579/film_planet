@@ -19,11 +19,7 @@ export default [
     loadChildren: () => import('./genres/genres.routes'),
   },
   {
-    path: 'tv/:item',
-    loadComponent: () => import('./item/item.component').then((c)=> c.ItemComponent),
-  },
-  {
-    path: 'film/:item',
+    path: ':mediatype/:item',
     loadComponent: () => import('./item/item.component').then((c)=> c.ItemComponent),
   },
   {

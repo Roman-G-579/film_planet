@@ -23,4 +23,7 @@ export class ItemComponent {
     image: "",
     rating: 0
   });
+
+  selectedMediaType: string = '';
+  selectedItem: string = '';
 }

@@ -14,10 +14,11 @@ import {SharedModule} from "primeng/api";
 import {SkeletonModule} from "primeng/skeleton";
 import {LibraryItem} from '../../core/interfaces/library-item.interface';
 import {LibraryService} from '../../core/services/library.service';
-import {ActivatedRoute, Router, RouterLink} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {GenreNamesPipe} from '../../core/pipes/genre-names.pipe';
 import {MediaType} from '../../core/enums/media-type.enum';
 import {DataUtils} from '../../core/utils/data.utils';
+import {map, tap} from 'rxjs';
 
 @Component({
   selector: 'app-library',
@@ -46,7 +47,7 @@ export class LibraryComponent implements OnInit {
   categoryText: WritableSignal<string> = signal("");
   mediaTypeText: WritableSignal<string> = signal("");
 
-  selectedMediaType: WritableSignal<string> = signal("");
+  selectedMediaType: WritableSignal<MediaType> = signal(MediaType.Film);
   // Items appearing on the carousel at the top-titles of the page
   carouselItems: LibraryItem[] = [];
 
@@ -82,15 +83,16 @@ export class LibraryComponent implements OnInit {
     this.route.data.subscribe((data) => {
       // Selecting media type for current page
       if (data['type'] === 'film') {
+        this.selectedMediaType.set(MediaType.Film);
         this.lib.filterByMediaType(MediaType.Film);
         this.mediaTypeText.set("Films");
       }
       else if (data['type'] === 'tv') {
+        this.selectedMediaType.set(MediaType.TV);
         this.lib.filterByMediaType(MediaType.TV);
         this.mediaTypeText.set("TV shows");
       }
 
-      this.selectedMediaType.set(data['type']);
 
       // Selecting category of current page
       if(data['category'] === 'recent') {
@@ -102,7 +104,7 @@ export class LibraryComponent implements OnInit {
         this.categoryText.set("Popular");
       }
       else if (data['category'] === 'genre') {
-        this.getGenreItems();
+        this.getGenreItemsAndSetCategoryText();
       }
     });
 
@@ -110,10 +112,18 @@ export class LibraryComponent implements OnInit {
     this.tableItems = this.libraryItems().slice(5,10);
   }
 
-  getGenreItems() {
+  /**
+   * Returns a list of library items matching the specified genre,
+   * and sets a matching value for the title string
+   */
+  getGenreItemsAndSetCategoryText() {
     this.route.paramMap.subscribe((params) => {
+      // Sets the page text based on the given genre
+      const genreName = this.dataUtils.getGenreNameFromId(Number(params.get('genre')), this.selectedMediaType());
+      this.categoryText.set(genreName);
+
+      // Filters the library items based on the given genre
       this.lib.filterByGenre(params.get('genre') || '');
-      this.categoryText.set(params.get('genre') || '');
     })
   }
 
@@ -121,10 +131,13 @@ export class LibraryComponent implements OnInit {
     return Array(n);
   }
 
+  /**
+   * Navigates to the specified film or tv show page
+   * @param title the title of the film/tv show
+   */
   navigate(title: string) {
     //TODO: add item id to link, add id field to library items
 
-    title = this.dataUtils.sanitizeForUrl(title);
     this.router.navigate(['pages', this.selectedMediaType(), title]).then();
   }
 }

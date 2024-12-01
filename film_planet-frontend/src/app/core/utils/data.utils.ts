@@ -25,20 +25,29 @@ export class DataUtils {
     return genreNames;
   }
 
-  /**
-   * Sanitizes the given string for use in webpage urls.
-   * -Removes leading and trailing whitespaces
-   * -Converts the string to lowercase
-   * -Replaces spaces with hyphens
-   * -Removes special characters
-   * @param text the given string
-   */
-  static sanitizeForUrl(text: string): string {
-    return text
-      .trim()
-      .toLowerCase()
-      .replace(/[\s]+/g, '-')
-      .replace(/[^a-z0-9-]/g, '')
-      .replace(/-+/g, '-'); // Replace multiple hyphens with a single one
+  static getGenreNameFromId(genreId: number, mediaType: MediaType): string {
+    const genresObject: Record<string, number> = mediaType === MediaType.Film ? FilmGenres : TvGenres;
+    return Object.keys(genresObject).find((key) => genresObject[key] === genreId) || '';
   }
+  static getGenreIdFromName(genreName: string, mediaType: MediaType): number {
+    const genresObject: Record<string, number> = mediaType === MediaType.Film ? FilmGenres : TvGenres;
+    return genresObject[genreName];
+  }
+
+  // /**
+  //  * Sanitizes the given string for use in webpage urls.
+  //  * -Removes leading and trailing whitespaces
+  //  * -Converts the string to lowercase
+  //  * -Replaces spaces with hyphens
+  //  * -Removes special characters
+  //  * @param text the given string
+  //  */
+  // static sanitizeString(text: string): string {
+  //   return text
+  //     .trim()
+  //     .toLowerCase()
+  //     .replace(/[\s]+/g, '-')
+  //     .replace(/[^a-z0-9-]/g, '')
+  //     .replace(/-+/g, '-'); // Replace multiple hyphens with a single one
+  // }
 }

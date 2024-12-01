@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, inject} from '@angular/core';
+import {ChangeDetectionStrategy, Component, computed, inject, signal, WritableSignal} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {DataUtils} from '../../core/utils/data.utils';
 import {MediaType} from '../../core/enums/media-type.enum';
@@ -22,29 +22,25 @@ export class GenresComponent {
   private readonly router = inject(Router);
   protected readonly dataUtils = DataUtils;
 
-  selectedMediaType: string = '';
+  selectedMediaType: WritableSignal<MediaType> = signal(MediaType.Film);
+
+  titleText = computed(() =>
+    this.route.snapshot.data['type'] == 'film' ? 'Film Genres:' : 'TV Genres:'
+  )
 
   genres$: Observable<string[]> = this.route.data.pipe(
     map(params => this.getGenres(params['type']))
   );
 
-  titleText$: Observable<string> = this.route.data.pipe(
-    map(params => this.getTitleText(params['type']))
-  );
-
   getGenres(type: string): string[] {
     if (type === 'film') {
-      this.selectedMediaType = 'film';
+      this.selectedMediaType.set(MediaType.Film);
       return this.dataUtils.getGenreNamesFromIds(MediaType.Film);
     } else if (type === 'tv') {
-      this.selectedMediaType = 'tv';
+      this.selectedMediaType.set(MediaType.TV);
       return this.dataUtils.getGenreNamesFromIds(MediaType.TV);
     }
     return [];
-  }
-
-  getTitleText(type: string): string {
-    return type === 'film' ? 'Film Genres:' : type === 'tv' ? 'TV Genres:' : '';
   }
 
   /**
@@ -52,7 +48,7 @@ export class GenresComponent {
    * @param genre the selected genre
    */
   navigate(genre: string) {
-    genre = this.dataUtils.sanitizeForUrl(genre);
-    this.router.navigate(['pages','library', this.selectedMediaType, genre]).then();
+    const genreId = this.dataUtils.getGenreIdFromName(genre, this.selectedMediaType());
+    this.router.navigate(['pages','library', this.selectedMediaType().toLowerCase(), genreId]).then();
   }
 }
