@@ -2,9 +2,6 @@ import {Injectable, signal, WritableSignal} from '@angular/core';
 import { LIBRARY_ITEMS} from '../mock-data/library-items';
 import {MediaType} from '../enums/media-type.enum';
 import {LibraryItem} from '../interfaces/library-item.interface';
-import {FilmGenres} from '../constants/film-genres.record';
-import {TvGenres} from '../constants/tv-genres.record';
-import {DataUtils} from '../utils/data.utils';
 
 @Injectable({
   providedIn: 'root',
@@ -14,8 +11,6 @@ import {DataUtils} from '../utils/data.utils';
  * Contains functions related to filtering and sorting items from the media library
  */
 export class LibraryService {
-  protected readonly dataUtils = DataUtils;
-
   libraryItems: WritableSignal<LibraryItem[]> = signal<LibraryItem[]>([]);
 
   mediaFilter: MediaType = MediaType.Film;
@@ -96,6 +91,17 @@ export class LibraryService {
   filterByPopular() {
     this.clearAllFilters();
     this.getFilteredList();
+  }
+
+  //TODO: load data using item's id as a parameter instead of name
+  /**
+   * Retrieves an item from the library matching the given name
+   * @param title the name of the film or tv show
+   */
+  getItemByName(title: string) {
+    return LIBRARY_ITEMS.find( (item) => {
+      return item.title === title;
+    });
   }
 
   /**
