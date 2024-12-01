@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, computed, inject, signal, WritableSignal} from '@angular/core';
+import {ChangeDetectionStrategy, Component, computed, inject, OnInit, signal, WritableSignal} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {DataUtils} from '../../core/utils/data.utils';
 import {MediaType} from '../../core/enums/media-type.enum';
@@ -24,20 +24,20 @@ export class GenresComponent {
 
   selectedMediaType: WritableSignal<MediaType> = signal(MediaType.Film);
 
-  titleText = computed(() =>
-    this.route.snapshot.data['type'] == 'film' ? 'Film Genres:' : 'TV Genres:'
-  )
+  titleText = signal('');
 
   genres$: Observable<string[]> = this.route.data.pipe(
-    map(params => this.getGenres(params['type']))
+    map(params => this.getGenresAndMediaType(params['type']))
   );
 
-  getGenres(type: string): string[] {
+  getGenresAndMediaType(type: string): string[] {
     if (type === 'film') {
       this.selectedMediaType.set(MediaType.Film);
+      this.titleText.set('Film Genres:');
       return this.dataUtils.getGenreNamesFromIds(MediaType.Film);
     } else if (type === 'tv') {
       this.selectedMediaType.set(MediaType.TV);
+      this.titleText.set('TV Genres:');
       return this.dataUtils.getGenreNamesFromIds(MediaType.TV);
     }
     return [];
