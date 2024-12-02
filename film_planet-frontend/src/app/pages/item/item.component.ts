@@ -34,26 +34,19 @@ export class ItemComponent implements OnInit {
     image: "",
     rating: 0
   });
-  itemGenres: WritableSignal<string[]> = signal<string[]>([]);
-
-  selectedMediaType: string = '';
-  selectedItem: string = '';
+  itemGenres = signal<string[]>([]);
 
   ngOnInit() {
     this.route.paramMap.subscribe(params => {
       const itemName = params.get('item') || '';
-      const retrievedItem = this.lib.getItemByName(itemName);
+      const retrievedItem = this.lib.retrieveItemByName(itemName);
 
       if (retrievedItem) {
         this.item.set(retrievedItem);
 
-        let genreArray = [];
-        for (let genre of retrievedItem.genres) {
-         genreArray.push(this.dataUtils.getGenreNameFromId(genre, retrievedItem.mediaType));
-        }
-        this.itemGenres.set(genreArray);
+        this.itemGenres.set(this.dataUtils.getGenreNamesFromIds(retrievedItem.mediaType, retrievedItem.genres));
       }
-    })
+    });
 
   }
 

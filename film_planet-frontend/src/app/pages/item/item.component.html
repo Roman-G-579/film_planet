@@ -1,24 +1,58 @@
 <main>
-  <div class="item-wrapper flex justify-center mt-6">
-      <p-card [style]="{ width: '25rem', overflow: 'hidden' }">
-        <ng-template pTemplate="header">
-          <img alt="Poster" class="w-full" [src]="item().image" />
-        </ng-template>
-        <ng-template pTemplate="title"> {{item().title}} </ng-template>
-        <ng-template pTemplate="info">
+  <div class="item-wrapper flex flex-col w-4/5 justify-center mt-6">
+    <div class="main-content-wrapper grid grid-rows-4 grid-flow-col gap-4">
+      <div class="poster-wrapper row-span-4">
+        <img alt="Poster" class="w-full" [src]="item().image" />
+      </div>
+      <div class="title-wrapper row-span-2 col-span-2">
+        <div class="title-left-side"><h1>{{item().title}} ({{item().releaseDate}})</h1></div>
+        <div class="title-right-side"><h1>{{item().rating}} </h1></div>
+      </div>
+      <div class="overview-wrapper col-span-2"><b>Overview: </b> {{item().overview}}</div>
+      <div class="starring-wrapper col-span-2"><b>Starring: </b> {{item().starring.join(", ")}}</div>
+    </div>
+    <div class="secondary-content-wrapper grid grid-cols-3">
+      <div class="secondary-content-left-side grid-rows-2">
+        <div class="genres-wrapper">{{itemGenres().join(", ")}}</div>
+        <div class="directors-creators-wrapper">
           <p>{{item().mediaType === MediaType.Film ? 'Directed by: ' : 'Created by: '}} {{item().directors?.join(", ") || item().creators?.join(", ") }}</p>
-          <p>Released {{item().releaseDate }}</p>
-          <p>{{itemGenres().join(", ")}}</p>
-        </ng-template>
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore sed consequuntur error repudiandae numquam deserunt
-          quisquam repellat libero asperiores earum nam nobis, culpa ratione quam perferendis esse, cupiditate neque quas!
-        </p>
-        <ng-template pTemplate="footer">
-          <div class="flex gap-4 mt-1">
+        </div>
+      </div>
+      <div class="secondary-content-right-side">
+        <button>Videos</button>
+        <button>Images</button>
+      </div>
+    </div>
+    <div class="full-cast-wrapper">
 
-          </div>
-        </ng-template>
-      </p-card>
+    </div>
+    <div class="reviews-wrapper">
+
+    </div>
+    <div class="episodes-wrapper">
+
+    </div>
   </div>
 </main>
+
+
+<!--<p-card [style]="{ width: '25rem', overflow: 'hidden' }">-->
+<!--  <ng-template pTemplate="header">-->
+<!--    <img alt="Poster" class="w-full" [src]="item().image" />-->
+<!--  </ng-template>-->
+<!--  <ng-template pTemplate="title"> {{item().title}} </ng-template>-->
+<!--  <ng-template pTemplate="info">-->
+<!--    <p>{{item().mediaType === MediaType.Film ? 'Directed by: ' : 'Created by: '}} {{item().directors?.join(", ") || item().creators?.join(", ") }}</p>-->
+<!--    <p>Released {{item().releaseDate }}</p>-->
+<!--    <p>{{itemGenres().join(", ")}}</p>-->
+<!--  </ng-template>-->
+<!--  <p>-->
+<!--    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore sed consequuntur error repudiandae numquam deserunt-->
+<!--    quisquam repellat libero asperiores earum nam nobis, culpa ratione quam perferendis esse, cupiditate neque quas!-->
+<!--  </p>-->
+<!--  <ng-template pTemplate="footer">-->
+<!--    <div class="flex gap-4 mt-1">-->
+
+<!--    </div>-->
+<!--  </ng-template>-->
+<!--</p-card>-->
