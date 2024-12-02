@@ -4,7 +4,9 @@ export interface LibraryItem {
   mediaType: MediaType;
   title: string;
   releaseDate: Date | number;
+  endYear?: Date | number; // for tv shows
   duration?: number;
+  overview?: string;
   genres: number[];
   starring: string[];
   directors?: string[];
