@@ -18,7 +18,6 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {GenreNamesPipe} from '../../core/pipes/genre-names.pipe';
 import {MediaType} from '../../core/enums/media-type.enum';
 import {DataUtils} from '../../core/utils/data.utils';
-import {map, tap} from 'rxjs';
 
 @Component({
   selector: 'app-library',
@@ -118,8 +117,11 @@ export class LibraryComponent implements OnInit {
    */
   getGenreItemsAndSetCategoryText() {
     this.route.paramMap.subscribe((params) => {
+
+      const genreNum = Number(params.get('genre'));
+
       // Sets the page text based on the given genre
-      const genreName = this.dataUtils.getGenreNameFromId(Number(params.get('genre')), this.selectedMediaType());
+      const genreName = this.dataUtils.getGenreNameFromId(genreNum, this.selectedMediaType());
       this.categoryText.set(genreName);
 
       // Filters the library items based on the given genre
