@@ -98,7 +98,7 @@ export class LibraryService {
    * Retrieves an item from the library matching the given name
    * @param title the name of the film or tv show
    */
-  getItemByName(title: string) {
+  retrieveItemByName(title: string) {
     return LIBRARY_ITEMS.find( (item) => {
       return item.title === title;
     });
