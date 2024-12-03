@@ -28,26 +28,33 @@ export class ItemComponent implements OnInit {
     releaseDate: new Date(),
     duration: 0,
     genres:[],
-    starring: [],
-    directors:[],
-    creators: [],
-    image: "",
-    rating: 0
+    starring: []
   });
-  itemGenres = signal<string[]>([]);
+  itemGenres: WritableSignal<string[]> = signal<string[]>([]);
+  releaseYear: WritableSignal<number> = signal<number>(0);
+  endYear: WritableSignal<number | undefined> = signal<number | undefined>(undefined);
 
   ngOnInit() {
     this.route.paramMap.subscribe(params => {
       const itemName = params.get('item') || '';
-      const retrievedItem = this.lib.retrieveItemByName(itemName);
 
-      if (retrievedItem) {
-        this.item.set(retrievedItem);
-
-        this.itemGenres.set(this.dataUtils.getGenreNamesFromIds(retrievedItem.mediaType, retrievedItem.genres));
-      }
+      this.setParams(itemName);
     });
 
+  }
+
+  setParams(itemName: string) {
+    const retrievedItem = this.lib.retrieveItemByName(itemName);
+
+    if (retrievedItem) {
+      this.item.set(retrievedItem);
+      this.itemGenres.set(this.dataUtils.getGenreNamesFromIds(retrievedItem.mediaType, retrievedItem.genres));
+
+      this.releaseYear.set(this.dataUtils.getYearFromDate(retrievedItem.releaseDate));
+      if (retrievedItem.endYear) {
+        this.endYear.set(this.dataUtils.getYearFromDate(retrievedItem.endYear));
+      }
+    }
   }
 
 }

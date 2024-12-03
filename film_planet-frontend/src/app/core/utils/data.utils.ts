@@ -28,14 +28,36 @@ export class DataUtils {
     return genreNames;
   }
 
+  /**
+   * Converts a single genre ID to its matching genre name
+   * @param genreId the id of the genre
+   * @param mediaType the media type that the genre is associated with (Film or TV)
+   */
   static getGenreNameFromId(genreId: number, mediaType: MediaType): string {
     const genresObject: Record<string, number> = mediaType === MediaType.Film ? FilmGenres : TvGenres;
     return Object.keys(genresObject).find((key) => genresObject[key] === genreId) || '';
   }
 
+  /**
+   * Converts a single genre name to its matching genre id
+   * @param genreName the name of the genre
+   * @param mediaType the media type that the genre is associated with (Film or TV)
+   */
   static getGenreIdFromName(genreName: string, mediaType: MediaType): number {
     const genresObject: Record<string, number> = mediaType === MediaType.Film ? FilmGenres : TvGenres;
     return genresObject[genreName];
+  }
+
+  /**
+   * Converts a date object to a year
+   * If the date is already a number, returns it as is
+   * @param date the given date object or number
+   */
+  static getYearFromDate(date: Date | number) {
+    if (date instanceof Date) {
+      return date.getFullYear(); // Extracts the year if it's a Date object
+    }
+    return date; // Returns the original input if it's already a number
   }
 
 }

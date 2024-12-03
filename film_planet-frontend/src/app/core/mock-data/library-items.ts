@@ -1,6 +1,5 @@
 import {LibraryItem} from '../interfaces/library-item.interface';
 import {MediaType} from '../enums/media-type.enum';
-import {FilmGenres} from '../constants/film-genres.record';
 
 export const LIBRARY_ITEMS: LibraryItem[] = [
   {
@@ -45,8 +44,9 @@ export const LIBRARY_ITEMS: LibraryItem[] = [
   },
   {
     mediaType: MediaType.Film,
-    title: "The Godfather",
+    title: "The Godfather The Godfather The Godfather The Godfather The Godfather The Godfather",
     releaseDate: 1972,
+    overview: 'The aging patriarch of an organized crime dynasty transfers control of his clandestine empire to his reluctant son.',
     genres: [80,18],
     starring: ["Marlon Brando", "Al Pacino"],
     directors: ["Francis Ford Coppola"],

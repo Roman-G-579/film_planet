@@ -1,58 +1,48 @@
 <main>
-  <div class="item-wrapper flex flex-col w-4/5 justify-center mt-6">
-    <div class="main-content-wrapper grid grid-rows-4 grid-flow-col gap-4">
-      <div class="poster-wrapper row-span-4">
-        <img alt="Poster" class="w-full" [src]="item().image" />
+  <div class="item-wrapper flex flex-col w-11/12 m-auto mt-6">
+    <section class="main-content-wrapper grid  grid-cols-4 grid-flow-col gap-x-4">
+      <div class="poster-wrapper row-span-6">
+        <img alt="Poster" class="w-full"  [src]="item().image" />
       </div>
-      <div class="title-wrapper row-span-2 col-span-2">
-        <div class="title-left-side"><h1>{{item().title}} ({{item().releaseDate}})</h1></div>
-        <div class="title-right-side"><h1>{{item().rating}} </h1></div>
+      <div class="title-wrapper col-span-2 row-span-2 flex  items-center">
+        <h1 class="text-5xl">
+          <b>{{item().title}}</b>
+          <span class="text-surface-400"> ({{releaseYear()}})</span></h1>
+      </div>
+      <div class="genres-wrapper col-span-2 flex items-center">
+        <div class="genres-wrapper col-span-2">{{itemGenres().join(", ")}}</div>
       </div>
       <div class="overview-wrapper col-span-2"><b>Overview: </b> {{item().overview}}</div>
-      <div class="starring-wrapper col-span-2"><b>Starring: </b> {{item().starring.join(", ")}}</div>
-    </div>
-    <div class="secondary-content-wrapper grid grid-cols-3">
-      <div class="secondary-content-left-side grid-rows-2">
-        <div class="genres-wrapper">{{itemGenres().join(", ")}}</div>
-        <div class="directors-creators-wrapper">
-          <p>{{item().mediaType === MediaType.Film ? 'Directed by: ' : 'Created by: '}} {{item().directors?.join(", ") || item().creators?.join(", ") }}</p>
-        </div>
+      <div class="starring-wrapper col-span-2 flex items-center"><b>Starring: </b> {{item().starring.join(", ")}}</div>
+      <div class="directors-creators-wrapper col-span-2 flex items-center">
+        <p><b>{{item().mediaType === MediaType.Film ? 'Directed by: ' : 'Created by: '}}</b> {{item().directors?.join(", ") || item().creators?.join(", ") }}</p>
       </div>
-      <div class="secondary-content-right-side">
-        <button>Videos</button>
-        <button>Images</button>
+      <div class="rating-wrapper text-5xl flex flex-row gap-2 items-center justify-end col-span-1">
+        <i class="pi pi-star-fill" style="font-size: 2.5rem; color: gold"></i>
+        <p>{{item().rating}}</p>
       </div>
-    </div>
-    <div class="full-cast-wrapper">
+    </section>
 
-    </div>
-    <div class="reviews-wrapper">
+<!--    <section class="secondary-content-wrapper grid grid-cols-3">-->
+<!--      <div class="secondary-content-left-side grid-rows-2">-->
+<!--        <div class="genres-wrapper">{{itemGenres().join(", ")}}</div>-->
+<!--        <div class="directors-creators-wrapper">-->
+<!--          <p>{{item().mediaType === MediaType.Film ? 'Directed by: ' : 'Created by: '}} {{item().directors?.join(", ") || item().creators?.join(", ") }}</p>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--      <div class="secondary-content-right-side">-->
+<!--        <button>Videos</button>-->
+<!--        <button>Images</button>-->
+<!--      </div>-->
+<!--    </section>-->
+<!--    <section class="full-cast-wrapper">-->
 
-    </div>
-    <div class="episodes-wrapper">
+<!--    </section>-->
+<!--    <section class="reviews-wrapper">-->
 
-    </div>
+<!--    </section>-->
+<!--    <section class="episodes-wrapper">-->
+
+<!--    </section>-->
   </div>
 </main>
-
-
-<!--<p-card [style]="{ width: '25rem', overflow: 'hidden' }">-->
-<!--  <ng-template pTemplate="header">-->
-<!--    <img alt="Poster" class="w-full" [src]="item().image" />-->
-<!--  </ng-template>-->
-<!--  <ng-template pTemplate="title"> {{item().title}} </ng-template>-->
-<!--  <ng-template pTemplate="info">-->
-<!--    <p>{{item().mediaType === MediaType.Film ? 'Directed by: ' : 'Created by: '}} {{item().directors?.join(", ") || item().creators?.join(", ") }}</p>-->
-<!--    <p>Released {{item().releaseDate }}</p>-->
-<!--    <p>{{itemGenres().join(", ")}}</p>-->
-<!--  </ng-template>-->
-<!--  <p>-->
-<!--    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore sed consequuntur error repudiandae numquam deserunt-->
-<!--    quisquam repellat libero asperiores earum nam nobis, culpa ratione quam perferendis esse, cupiditate neque quas!-->
-<!--  </p>-->
-<!--  <ng-template pTemplate="footer">-->
-<!--    <div class="flex gap-4 mt-1">-->
-
-<!--    </div>-->
-<!--  </ng-template>-->
-<!--</p-card>-->
