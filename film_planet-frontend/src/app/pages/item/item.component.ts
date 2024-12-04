@@ -6,7 +6,7 @@ import {ActivatedRoute, RouterLink} from '@angular/router';
 import {CardModule} from 'primeng/card';
 import {DataUtils} from '../../core/utils/data.utils';
 import {ButtonModule} from 'primeng/button';
-import {NgIf, NgTemplateOutlet} from '@angular/common';
+import {NgIf} from '@angular/common';
 
 @Component({
   selector: 'app-item',
@@ -15,7 +15,6 @@ import {NgIf, NgTemplateOutlet} from '@angular/common';
     CardModule,
     ButtonModule,
     RouterLink,
-    NgTemplateOutlet,
     NgIf
   ],
   templateUrl: './item.component.html',
