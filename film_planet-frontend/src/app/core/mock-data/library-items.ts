@@ -44,7 +44,7 @@ export const LIBRARY_ITEMS: LibraryItem[] = [
   },
   {
     mediaType: MediaType.Film,
-    title: "The Godfather The Godfather The Godfather The Godfather The Godfather The Godfather",
+    title: "The Godfather",
     releaseDate: 1972,
     overview: 'The aging patriarch of an organized crime dynasty transfers control of his clandestine empire to his reluctant son.',
     genres: [80,18],
@@ -118,6 +118,7 @@ export const LIBRARY_ITEMS: LibraryItem[] = [
     mediaType: MediaType.Film,
     title: "Gladiator II",
     releaseDate: new Date(2024, 9, 18),
+    overview: 'After his home is conquered by the tyrannical emperors who now lead Rome, Lucius is forced to enter the Colosseum and must look to his past to find strength to return the glory of Rome to its people.',
     genres: [28,12,18],
     starring: ["Paul Mescal", "Denzel Washington"],
     directors: ["Ridley Scott"],

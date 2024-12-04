@@ -3,7 +3,7 @@ import { Route } from '@angular/router';
 export default [
   {
     path: '',
-    redirectTo: 'popular',
+    redirectTo: 'film/popular',
     pathMatch: 'full',
   },
   {

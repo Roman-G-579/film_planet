@@ -1,3 +1,8 @@
 .main-content-wrapper {
-  grid-template-rows: 100px 100px 50px 100px 35px 35px
+  grid-template-rows: 0.5fr 0.35fr 1fr 0.25fr 0.25fr 1fr;
+  grid-template-columns: 350px 1fr 1fr 1fr;
+}
+
+::ng-deep .media-buttons .p-button-label {
+  font-size: 20px;
 }

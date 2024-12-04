@@ -1,10 +1,10 @@
 <main>
-  <div class="item-wrapper flex flex-col w-11/12 m-auto mt-6">
-    <section class="main-content-wrapper grid  grid-cols-4 grid-flow-col gap-x-4">
+  <div class="item-wrapper flex flex-col w-10/12 m-auto mt-6">
+    <section class="main-content-wrapper grid grid-flow-col gap-x-4">
       <div class="poster-wrapper row-span-6">
         <img alt="Poster" class="w-full"  [src]="item().image" />
       </div>
-      <div class="title-wrapper col-span-2 row-span-2 flex  items-center">
+      <div class="title-wrapper col-span-2  flex  items-center">
         <h1 class="text-5xl">
           <b>{{item().title}}</b>
           <span class="text-surface-400"> ({{releaseYear()}})</span></h1>
@@ -13,36 +13,52 @@
         <div class="genres-wrapper col-span-2">{{itemGenres().join(", ")}}</div>
       </div>
       <div class="overview-wrapper col-span-2"><b>Overview: </b> {{item().overview}}</div>
-      <div class="starring-wrapper col-span-2 flex items-center"><b>Starring: </b> {{item().starring.join(", ")}}</div>
-      <div class="directors-creators-wrapper col-span-2 flex items-center">
-        <p><b>{{item().mediaType === MediaType.Film ? 'Directed by: ' : 'Created by: '}}</b> {{item().directors?.join(", ") || item().creators?.join(", ") }}</p>
+      <div class="starring-wrapper col-span-2 flex items-center">
+        <p>
+          <b>Starring:</b>
+          @for (actor of item().starring; track actor) {
+            <p-button [label]="actor" [link]="true" [routerLink]="['/pages/library/film/popular']" />
+          }
       </div>
-      <div class="rating-wrapper text-5xl flex flex-row gap-2 items-center justify-end col-span-1">
-        <i class="pi pi-star-fill" style="font-size: 2.5rem; color: gold"></i>
-        <p>{{item().rating}}</p>
+      <div class="directors-creators-wrapper col-span-2 flex items-center">
+        <p><b>{{item().mediaType === MediaType.Film ? 'Directed by: ' : 'Created by: '}}</b>
+        @for (person of item().directors || item().creators; track person) {
+          <p-button [label]="person" [link]="true" [routerLink]="['/pages/library/film/popular']" />
+        }
+      </div>
+      <div class="media-buttons-wrapper flex justify-end col-span-3">
+        <div class="media-buttons flex gap-4">
+          <p-button class="flex" styleClass="w-52" label="Videos" iconPos="top">
+            <span class="pi pi-youtube" style="font-size: 2.5rem;"></span>
+          </p-button>
+          <p-button class="flex" styleClass="w-52" label="Images" iconPos="top">
+            <span class="pi pi-image" style="font-size: 2.5rem;"></span>
+          </p-button>
+        </div>
+      </div>
+      <div class="rating-wrapper flex flex-col items-end justify-center mt-7  ">
+        <div class="rating-num flex gap-2 text-5xl -mb-4">
+          <i class="pi pi-star-fill" style="font-size: 2.5rem; color: gold"></i>
+          <span><b>{{item().rating}}</b></span>
+        </div>
+        <p>5000 Ratings</p>
       </div>
     </section>
 
-<!--    <section class="secondary-content-wrapper grid grid-cols-3">-->
-<!--      <div class="secondary-content-left-side grid-rows-2">-->
-<!--        <div class="genres-wrapper">{{itemGenres().join(", ")}}</div>-->
-<!--        <div class="directors-creators-wrapper">-->
-<!--          <p>{{item().mediaType === MediaType.Film ? 'Directed by: ' : 'Created by: '}} {{item().directors?.join(", ") || item().creators?.join(", ") }}</p>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--      <div class="secondary-content-right-side">-->
-<!--        <button>Videos</button>-->
-<!--        <button>Images</button>-->
-<!--      </div>-->
-<!--    </section>-->
-<!--    <section class="full-cast-wrapper">-->
+    <section class="reviews-wrapper">
+      <div class="reviews-header"><h1>Reviews:</h1></div>
+      <p *ngIf="reviews()">There are no reviews for this title yet.</p>
 
-<!--    </section>-->
-<!--    <section class="reviews-wrapper">-->
+      @for (review of reviews(); track review) {
+        <p>review</p>
+      }
+    </section>
 
-<!--    </section>-->
-<!--    <section class="episodes-wrapper">-->
-
-<!--    </section>-->
+    <section class="episodes-wrapper" *ngIf="episodes()">
+      <h1>Episodes:</h1>
+      @for (episode of episodes(); track episode) {
+        <p>{{episode}}</p>
+      }
+    </section>
   </div>
 </main>

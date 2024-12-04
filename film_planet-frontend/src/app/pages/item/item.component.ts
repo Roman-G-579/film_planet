@@ -2,15 +2,21 @@ import {ChangeDetectionStrategy, Component, inject, OnInit, signal, WritableSign
 import {LibraryItem} from '../../core/interfaces/library-item.interface';
 import {MediaType} from '../../core/enums/media-type.enum';
 import {LibraryService} from '../../core/services/library.service';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, RouterLink} from '@angular/router';
 import {CardModule} from 'primeng/card';
 import {DataUtils} from '../../core/utils/data.utils';
+import {ButtonModule} from 'primeng/button';
+import {NgIf, NgTemplateOutlet} from '@angular/common';
 
 @Component({
   selector: 'app-item',
   standalone: true,
   imports: [
-    CardModule
+    CardModule,
+    ButtonModule,
+    RouterLink,
+    NgTemplateOutlet,
+    NgIf
   ],
   templateUrl: './item.component.html',
   styleUrl: './item.component.scss',
@@ -33,6 +39,8 @@ export class ItemComponent implements OnInit {
   itemGenres: WritableSignal<string[]> = signal<string[]>([]);
   releaseYear: WritableSignal<number> = signal<number>(0);
   endYear: WritableSignal<number | undefined> = signal<number | undefined>(undefined);
+  episodes: WritableSignal<string[] | undefined> = signal<string[] | undefined>(undefined);
+  reviews: WritableSignal<string[]> = signal<string[]>([])
 
   ngOnInit() {
     this.route.paramMap.subscribe(params => {
@@ -40,9 +48,12 @@ export class ItemComponent implements OnInit {
 
       this.setParams(itemName);
     });
-
   }
 
+  /**
+   * Sets relevant parameters using the item's metadata
+   * @param itemName the name of the item TODO: change to id
+   */
   setParams(itemName: string) {
     const retrievedItem = this.lib.retrieveItemByName(itemName);
 
