@@ -1,6 +1,7 @@
 import {MediaType} from '../enums/media-type.enum';
 
 export interface LibraryItem {
+  id: number;
   mediaType: MediaType;
   title: string;
   releaseDate: Date | number;
