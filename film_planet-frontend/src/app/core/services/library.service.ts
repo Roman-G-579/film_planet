@@ -2,6 +2,7 @@ import {Injectable, signal, WritableSignal} from '@angular/core';
 import { LIBRARY_ITEMS} from '../mock-data/library-items';
 import {MediaType} from '../enums/media-type.enum';
 import {LibraryItem} from '../interfaces/library-item.interface';
+import {SEASONS} from '../mock-data/seasons';
 
 @Injectable({
   providedIn: 'root',
@@ -93,15 +94,20 @@ export class LibraryService {
     this.getFilteredList();
   }
 
-  //TODO: load data using item's id as a parameter instead of name
   /**
    * Retrieves an item from the library matching the given name
-   * @param title the name of the film or tv show
+   * @param id the TMDB id of the film or tv show
    */
-  retrieveItemByName(title: string) {
+  retrieveItemById(id: number): LibraryItem | undefined {
     return LIBRARY_ITEMS.find( (item) => {
-      return item.title === title;
+      return item.id === id;
     });
+  }
+
+  getShowSeasons(id: number) {
+    return SEASONS.filter( (season) => {
+      return season.series_id === id;
+    })
   }
 
   /**

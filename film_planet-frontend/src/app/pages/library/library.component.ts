@@ -135,11 +135,14 @@ export class LibraryComponent implements OnInit {
 
   /**
    * Navigates to the specified film or tv show page
-   * @param title the title of the film/tv show
+   * @param title the title of the film/tv show in string form
+   * @param id the unique id of the film/tv show
    */
-  navigate(title: string) {
-    //TODO: add item id to link, add id field to library items
-
-    this.router.navigate(['pages', this.selectedMediaType(), title]).then();
+  navigate(id: number, title: string) {
+    const urlTitle = `${id}-${title
+      .toLowerCase() // Convert to lowercase
+      .replace(/[^a-z0-9\s-]/g, '') // Remove special characters except spaces and hyphens
+      .replace(/\s+/g, '-')}`; // Replace spaces with hyphens
+    this.router.navigate(['pages', this.selectedMediaType(), urlTitle]).then();
   }
 }

@@ -54,10 +54,10 @@
       }
     </section>
 
-    <section class="episodes-wrapper" *ngIf="episodes()">
-      <h1>Episodes:</h1>
-      @for (episode of episodes(); track episode) {
-        <p>{{episode}}</p>
+    <section class="seasons-wrapper" *ngIf="seasons()">
+      <h1>Seasons:</h1>
+      @for (season of seasons(); track season) {
+        <p>{{season.name || 'Season One'}}</p>
       }
     </section>
   </div>

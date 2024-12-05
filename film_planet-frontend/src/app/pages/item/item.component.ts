@@ -7,6 +7,8 @@ import {CardModule} from 'primeng/card';
 import {DataUtils} from '../../core/utils/data.utils';
 import {ButtonModule} from 'primeng/button';
 import {NgIf} from '@angular/common';
+import {Episode} from '../../core/interfaces/episode.interface';
+import {Season} from '../../core/interfaces/season.interface';
 
 @Component({
   selector: 'app-item',
@@ -28,6 +30,7 @@ export class ItemComponent implements OnInit {
   protected readonly MediaType = MediaType;
 
   item: WritableSignal<LibraryItem> = signal<LibraryItem>({
+    id: 0,
     mediaType: MediaType.Film,
     title: "",
     releaseDate: new Date(),
@@ -38,23 +41,27 @@ export class ItemComponent implements OnInit {
   itemGenres: WritableSignal<string[]> = signal<string[]>([]);
   releaseYear: WritableSignal<number> = signal<number>(0);
   endYear: WritableSignal<number | undefined> = signal<number | undefined>(undefined);
-  episodes: WritableSignal<string[] | undefined> = signal<string[] | undefined>(undefined);
+  seasons: WritableSignal<Season[] | undefined> = signal<Season[] | undefined>(undefined);
+  episodes: WritableSignal<Episode[] | undefined> = signal<Episode[] | undefined>(undefined);
   reviews: WritableSignal<string[]> = signal<string[]>([])
 
   ngOnInit() {
     this.route.paramMap.subscribe(params => {
+      // Extracts the full item name from the url (id + title)
       const itemName = params.get('item') || '';
 
-      this.setParams(itemName);
+      // Extracts the id part of the full name, before the first hyphen
+      const id = +itemName.split('-')[0];
+      this.setParams(id);
     });
   }
 
   /**
    * Sets relevant parameters using the item's metadata
-   * @param itemName the name of the item TODO: change to id
+   * @param id the id of the item
    */
-  setParams(itemName: string) {
-    const retrievedItem = this.lib.retrieveItemByName(itemName);
+  setParams(id: number) {
+    const retrievedItem = this.lib.retrieveItemById(id);
 
     if (retrievedItem) {
       this.item.set(retrievedItem);
@@ -63,6 +70,10 @@ export class ItemComponent implements OnInit {
       this.releaseYear.set(this.dataUtils.getYearFromDate(retrievedItem.releaseDate));
       if (retrievedItem.endYear) {
         this.endYear.set(this.dataUtils.getYearFromDate(retrievedItem.endYear));
+      }
+
+      if (retrievedItem.mediaType === MediaType.TV) {
+        this.seasons.set(this.lib.getShowSeasons(id));
       }
     }
   }
