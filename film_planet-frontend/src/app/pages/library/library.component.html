@@ -38,7 +38,7 @@
       <p-dataView [value]="tableItems">
         <ng-template pTemplate="list" let-tableItems>
           <div class="grid grid-cols-12 gap-4 grid-nogutter">
-            <div class="col-span-12" *ngFor="let item of tableItems; let first = first" class="col-span-12">
+            <div class="col-span-12" *ngFor="let item of tableItems; let first = first">
               <div
                 class="flex flex-col sm:flex-row sm:items-center p-6 gap-4"
                 [ngClass]="{ 'border-t border-surface-200 dark:border-surface-700': !first }"
@@ -59,7 +59,7 @@
                     <div class="bg-surface-100 dark:bg-surface-700 p-1" style="border-radius: 30px">
                       <div
                         class="bg-surface-0 dark:bg-surface-900 flex items-center gap-2 justify-center py-1 px-2"
-                        style="border-radius: 30px; box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.04), 0px 1px 2px 0px rgba(0, 0, 0, 0.06)"
+                        style="border-radius: 30px; box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.04), 0 1px 2px 0 rgba(0, 0, 0, 0.06)"
                       >
                                         <span class="text-surface-900 dark:text-surface-0 font-medium text-sm">{{
                                             item.rating
