@@ -3,6 +3,7 @@ import { LIBRARY_ITEMS} from '../mock-data/library-items';
 import {MediaType} from '../enums/media-type.enum';
 import {LibraryItem} from '../interfaces/library-item.interface';
 import {SEASONS} from '../mock-data/seasons';
+import {EPISODES} from '../mock-data/episodes';
 
 @Injectable({
   providedIn: 'root',
@@ -104,9 +105,24 @@ export class LibraryService {
     });
   }
 
+  /**
+   * Returns every season with a series id matching the given id
+   * @param id the id that each season's series_id value is compared with
+   */
   getShowSeasons(id: number) {
     return SEASONS.filter( (season) => {
       return season.series_id === id;
+    })
+  }
+
+  /**
+   * //TODO: place episode objects directly inside season objects to avoid searching through the entire database
+   * Returns every episode with a season id matching the given id
+   * @param id the id that each episode's season_id value is compared with
+   */
+  getSeasonEpisodes(id: number) {
+    return EPISODES.filter( (episode) => {
+      return episode.season_id === id;
     })
   }
 

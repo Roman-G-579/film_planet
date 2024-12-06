@@ -6,9 +6,11 @@ import {ActivatedRoute, RouterLink} from '@angular/router';
 import {CardModule} from 'primeng/card';
 import {DataUtils} from '../../core/utils/data.utils';
 import {ButtonModule} from 'primeng/button';
-import {NgIf} from '@angular/common';
-import {Episode} from '../../core/interfaces/episode.interface';
+import {NgClass, NgIf} from '@angular/common';
 import {Season} from '../../core/interfaces/season.interface';
+import {Accordion, AccordionContent, AccordionHeader, AccordionPanel} from 'primeng/accordion';
+import {FieldsetModule} from 'primeng/fieldset';
+import {Tab, TabList, TabPanel, TabPanels, Tabs} from 'primeng/tabs';
 
 @Component({
   selector: 'app-item',
@@ -17,7 +19,18 @@ import {Season} from '../../core/interfaces/season.interface';
     CardModule,
     ButtonModule,
     RouterLink,
-    NgIf
+    NgIf,
+    Accordion,
+    AccordionPanel,
+    AccordionHeader,
+    AccordionContent,
+    FieldsetModule,
+    Tabs,
+    TabList,
+    Tab,
+    TabPanels,
+    TabPanel,
+    NgClass
   ],
   templateUrl: './item.component.html',
   styleUrl: './item.component.scss',
@@ -41,9 +54,10 @@ export class ItemComponent implements OnInit {
   itemGenres: WritableSignal<string[]> = signal<string[]>([]);
   releaseYear: WritableSignal<number> = signal<number>(0);
   endYear: WritableSignal<number | undefined> = signal<number | undefined>(undefined);
-  seasons: WritableSignal<Season[] | undefined> = signal<Season[] | undefined>(undefined);
-  episodes: WritableSignal<Episode[] | undefined> = signal<Episode[] | undefined>(undefined);
+  seasons: WritableSignal<Season[]> = signal<Season[]>([]);
   reviews: WritableSignal<string[]> = signal<string[]>([])
+
+  activeTab: number = 0;
 
   ngOnInit() {
     this.route.paramMap.subscribe(params => {
@@ -74,6 +88,13 @@ export class ItemComponent implements OnInit {
 
       if (retrievedItem.mediaType === MediaType.TV) {
         this.seasons.set(this.lib.getShowSeasons(id));
+
+        for (const idx in this.seasons()) {
+          const season = this.seasons()[idx];
+          season.episodes = this.lib.getSeasonEpisodes(season.id);
+        }
+
+
       }
     }
   }

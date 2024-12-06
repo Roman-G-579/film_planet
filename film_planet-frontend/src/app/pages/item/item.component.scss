@@ -6,3 +6,7 @@
 ::ng-deep .media-buttons .p-button-label {
   font-size: 20px;
 }
+
+::ng-deep .p-tablist-content .p-tablist-tab-list  {
+  background: var(--p-neutral-900);
+}

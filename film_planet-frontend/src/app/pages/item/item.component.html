@@ -54,11 +54,34 @@
       }
     </section>
 
-    <section class="seasons-wrapper" *ngIf="seasons()">
+    <section class="seasons-wrapper min-h-[500px] mb-8" *ngIf="item().mediaType === MediaType.TV">
       <h1>Seasons:</h1>
-      @for (season of seasons(); track season) {
-        <p>{{season.name || 'Season One'}}</p>
-      }
+        <p-tabs [(value)]="activeTab" scrollable lazy>
+          <p-tablist>
+            @for(season of seasons(); track season){
+              <p-tab [value]="season.id">
+                <i class="pi" [ngClass]="activeTab === season.id ? 'pi-circle-on' : 'pi-circle-off'"></i>
+                {{ season.name || ('Season ' + season.number)}}
+              </p-tab>
+            }
+          </p-tablist>
+          <p-tabpanels>
+            @for(season of seasons(); track season){
+              <p-tabpanel [value]="season.id">
+                <p-accordion [value]="season.id" [multiple]="true">
+                  @for (episode of season.episodes; track episode) {
+                    <p-accordion-panel [value]="episode.id">
+                      <p-accordion-header>{{episode.number}} &nbsp;&nbsp; {{ episode.name }}</p-accordion-header>
+                      <p-accordion-content>
+                        <p class="m-0">{{ episode.description }}</p>
+                      </p-accordion-content>
+                    </p-accordion-panel>
+                  }
+                </p-accordion>
+              </p-tabpanel>
+            }
+          </p-tabpanels>
+        </p-tabs>
     </section>
   </div>
 </main>
