@@ -3,6 +3,7 @@ export interface Episode {
   series_id: number;
   season_id: number;
   name: string;
+  number: number;
   description?: string;
   duration?: number; // In minutes
   releaseDate?: Date;
