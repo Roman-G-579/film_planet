@@ -50,17 +50,35 @@
       <p *ngIf="reviews()">There are no reviews for this title yet.</p>
 
       @for (review of reviews(); track review) {
-        <p>review</p>
+        <p-panel [toggleable]="true" toggler="header" collapsed>
+          <ng-template pTemplate="header">
+            <div class="flex items-center gap-2 cursor-pointer">
+              <span class="flex font-bold">A Review by {{review.author}}</span>
+            </div>
+          </ng-template>
+          <ng-template pTemplate="footer">
+            <div class="flex flex-wrap items-center justify-between gap-4">
+              <div class="flex items-center gap-2">
+                <p-button rounded text><i class="pi pi-user"></i> {{review.author}}</p-button>
+                <i class="pi pi-star-fill"></i>{{review.rating}}
+              </div>
+              <span class="text-surface-500 dark:text-surface-400">Written on {{review.created_at | date: 'MMMM d, y'}}</span>
+            </div>
+          </ng-template>
+          <p class="m-0">
+            {{review.content}}
+          </p>
+        </p-panel>
       }
     </section>
 
     <section class="seasons-wrapper min-h-[500px] mb-8" *ngIf="item().mediaType === MediaType.TV">
       <h1>Seasons:</h1>
-        <p-tabs [(value)]="activeTab" scrollable lazy>
+        <p-tabs [(value)]="activeSeason" scrollable lazy>
           <p-tablist>
             @for(season of seasons(); track season){
               <p-tab [value]="season.id">
-                <i class="pi" [ngClass]="activeTab === season.id ? 'pi-circle-on' : 'pi-circle-off'"></i>
+                <i class="pi" [ngClass]="activeSeason === season.id ? 'pi-circle-on' : 'pi-circle-off'"></i>
                 {{ season.name || ('Season ' + season.number)}}
               </p-tab>
             }
@@ -73,7 +91,19 @@
                     <p-accordion-panel [value]="episode.id">
                       <p-accordion-header>{{episode.number}} &nbsp;&nbsp; {{ episode.name }}</p-accordion-header>
                       <p-accordion-content>
-                        <p class="m-0">{{ episode.description }}</p>
+                        <p class="m-0 mb-2">{{ episode.description }}</p>
+                        <div class="ep-info-wrapper text-sm text-surface-500 dark:text-surface-400">
+                          <div class="additional-episode-info flex flex-col ">
+                            <span>Directed by {{ episode.directors }}</span>
+                            <span>Written by {{ episode.writers }}</span>
+                            <span>Released {{ episode.releaseDate | date: 'MMMM d, y' }}</span>
+                          </div>
+                          <div class="ep-duration-wrapper flex justify-end">
+                            <span>Running time: {{episode.duration || 0 | minutesToHours}}</span>
+                          </div>
+                        </div>
+
+
                       </p-accordion-content>
                     </p-accordion-panel>
                   }

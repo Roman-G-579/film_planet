@@ -6,11 +6,14 @@ import {ActivatedRoute, RouterLink} from '@angular/router';
 import {CardModule} from 'primeng/card';
 import {DataUtils} from '../../core/utils/data.utils';
 import {ButtonModule} from 'primeng/button';
-import {NgClass, NgIf} from '@angular/common';
+import {DatePipe, NgClass, NgIf} from '@angular/common';
 import {Season} from '../../core/interfaces/season.interface';
 import {Accordion, AccordionContent, AccordionHeader, AccordionPanel} from 'primeng/accordion';
 import {FieldsetModule} from 'primeng/fieldset';
 import {Tab, TabList, TabPanel, TabPanels, Tabs} from 'primeng/tabs';
+import {PanelModule} from 'primeng/panel';
+import {Review} from '../../core/interfaces/review.interface';
+import {MinutesToHoursPipe} from '../../core/pipes/minutes-to-hours.pipe';
 
 @Component({
   selector: 'app-item',
@@ -30,7 +33,10 @@ import {Tab, TabList, TabPanel, TabPanels, Tabs} from 'primeng/tabs';
     Tab,
     TabPanels,
     TabPanel,
-    NgClass
+    NgClass,
+    PanelModule,
+    DatePipe,
+    MinutesToHoursPipe
   ],
   templateUrl: './item.component.html',
   styleUrl: './item.component.scss',
@@ -55,9 +61,10 @@ export class ItemComponent implements OnInit {
   releaseYear: WritableSignal<number> = signal<number>(0);
   endYear: WritableSignal<number | undefined> = signal<number | undefined>(undefined);
   seasons: WritableSignal<Season[]> = signal<Season[]>([]);
-  reviews: WritableSignal<string[]> = signal<string[]>([])
+  reviews: WritableSignal<Review[]> = signal<Review[]>([])
 
-  activeTab: number = 0;
+  // The currently expanded tab of the seasons list
+  activeSeason: number = 0;
 
   ngOnInit() {
     this.route.paramMap.subscribe(params => {
@@ -75,7 +82,7 @@ export class ItemComponent implements OnInit {
    * @param id the id of the item
    */
   setParams(id: number) {
-    const retrievedItem = this.lib.retrieveItemById(id);
+    const retrievedItem = this.lib.getItemById(id);
 
     if (retrievedItem) {
       this.item.set(retrievedItem);
@@ -86,6 +93,8 @@ export class ItemComponent implements OnInit {
         this.endYear.set(this.dataUtils.getYearFromDate(retrievedItem.endYear));
       }
 
+      this.reviews.set(this.lib.getReviewsByItemId(id));
+
       if (retrievedItem.mediaType === MediaType.TV) {
         this.seasons.set(this.lib.getShowSeasons(id));
 
@@ -93,8 +102,6 @@ export class ItemComponent implements OnInit {
           const season = this.seasons()[idx];
           season.episodes = this.lib.getSeasonEpisodes(season.id);
         }
-
-
       }
     }
   }

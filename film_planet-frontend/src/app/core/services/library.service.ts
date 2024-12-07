@@ -4,6 +4,7 @@ import {MediaType} from '../enums/media-type.enum';
 import {LibraryItem} from '../interfaces/library-item.interface';
 import {SEASONS} from '../mock-data/seasons';
 import {EPISODES} from '../mock-data/episodes';
+import {REVIEWS} from '../mock-data/reviews';
 
 @Injectable({
   providedIn: 'root',
@@ -99,7 +100,7 @@ export class LibraryService {
    * Retrieves an item from the library matching the given name
    * @param id the TMDB id of the film or tv show
    */
-  retrieveItemById(id: number): LibraryItem | undefined {
+  getItemById(id: number): LibraryItem | undefined {
     return LIBRARY_ITEMS.find( (item) => {
       return item.id === id;
     });
@@ -112,7 +113,7 @@ export class LibraryService {
   getShowSeasons(id: number) {
     return SEASONS.filter( (season) => {
       return season.series_id === id;
-    })
+    });
   }
 
   /**
@@ -123,9 +124,18 @@ export class LibraryService {
   getSeasonEpisodes(id: number) {
     return EPISODES.filter( (episode) => {
       return episode.season_id === id;
-    })
+    });
   }
 
+  /**
+   * Returns every review written for the item with the given id
+   * @param id the id of the film or tv show
+   */
+  getReviewsByItemId(id: number) {
+    return REVIEWS.filter( (review) => {
+      return review.item_id === id;
+    });
+  }
   /**
    * Clears the genre filter
    */

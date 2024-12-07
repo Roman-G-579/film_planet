@@ -10,3 +10,13 @@
 ::ng-deep .p-tablist-content .p-tablist-tab-list  {
   background: var(--p-neutral-900);
 }
+
+::ng-deep .p-tablist-tab-list .p-tab:not(.p-tab-active):not(.p-disabled):hover {
+  color: var(--p-primary-color);
+}
+
+::ng-deep .p-panel .p-panel-header:hover {
+  color: var(--p-primary-color);
+  transition: 0.3s;
+  cursor: pointer;
+}

@@ -15,7 +15,7 @@ body, html {
 }
 
 i:hover {
-  color: orange;
+  color: var(--p-primary-color);
   transition: color 0.2s;
   cursor: pointer;
 }
