@@ -58,14 +58,14 @@
           <th>Title</th>
           <th> </th>
           <th>Year</th>
-          <th>{{selectedMediaType === MediaType.Film ? 'Directors' : 'Creators'}}</th>
+          <th>{{selectedMediaType() === MediaType.Film ? 'Directors' : 'Creators'}}</th>
           <th>Genres</th>
           <th>Rating</th>
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-item>
         <tr>
-          <td>{{ item.title }}</td>
+          <td><p-button [label]="item.title" [link]="true " (onClick)="navigate(item.id,item.title)"/></td>
           <td>
             <img
               [src]="item.image"
@@ -74,7 +74,11 @@
             />
           </td>
           <td>{{ item.releaseDate | releaseYear}}</td>
-          <td>{{ selectedMediaType === MediaType.Film ? item.directors : item.creators}}</td>
+          <td>
+            @for (person of item.directors || item.creators; track person) {
+              <p-button [label]="person" [link]="true" [routerLink]="['/pages/library/film/popular']"/>
+            }
+          </td>
           <td>{{ item.genres | genreNames }}</td>
           <td>{{ item.rating }}</td>
         </tr>
