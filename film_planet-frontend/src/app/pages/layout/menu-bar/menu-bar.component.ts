@@ -134,7 +134,6 @@ export class MenuBarComponent implements OnInit {
   /**
    * Navigates to the specified route
    * @param route the destination route
-   * @param type media type of the associated routes - tv or film
    */
   navigate(route: string) {
     this.router.navigate([route]).then();
