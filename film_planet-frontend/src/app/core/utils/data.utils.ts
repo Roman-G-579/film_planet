@@ -42,11 +42,12 @@ export class DataUtils {
   /**
    * Converts a single genre name to its matching genre id
    * @param genreName the name of the genre
-   * @param mediaType the media type that the genre is associated with (Film or TV)
    */
-  static getGenreIdFromName(genreName: string, mediaType: MediaType): number {
-    const genresObject: Record<string, number> = mediaType === MediaType.Film ? FilmGenres : TvGenres;
-    return genresObject[genreName];
+  static getGenreIdFromName(genreName: string | undefined): number {
+    if ( genreName) {
+      return FilmGenres[genreName] || TvGenres[genreName];
+    }
+    return 0;
   }
 
   /**
