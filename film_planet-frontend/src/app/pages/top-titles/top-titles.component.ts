@@ -10,7 +10,7 @@ import {CalendarModule} from 'primeng/calendar';
 import {DatePickerModule} from 'primeng/datepicker';
 import {GenreNamesPipe} from '../../core/pipes/genre-names.pipe';
 import {DataUtils} from '../../core/utils/data.utils';
-import {ActivatedRoute, Router, RouterLink} from '@angular/router';
+import {ActivatedRoute, RouterLink} from '@angular/router';
 import {SliderModule} from 'primeng/slider';
 import {LibraryService} from '../../core/services/library.service';
 import {ReleaseYearPipe} from '../../core/pipes/release-year.pipe';
@@ -38,7 +38,6 @@ import {ReleaseYearPipe} from '../../core/pipes/release-year.pipe';
 export class TopTitlesComponent implements OnInit {
   protected readonly lib = inject(LibraryService);
   private route = inject(ActivatedRoute);
-  private readonly router = inject(Router);
   protected readonly dataUtils = DataUtils;
   protected readonly MediaType = MediaType;
 
