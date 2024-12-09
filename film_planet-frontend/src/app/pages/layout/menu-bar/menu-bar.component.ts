@@ -13,7 +13,6 @@ import {ToastModule} from 'primeng/toast';
 import {MenuModule} from 'primeng/menu';
 import {Router} from '@angular/router';
 import {MenubarModule} from 'primeng/menubar';
-import {NgIf} from '@angular/common';
 import {SplitButtonModule} from 'primeng/splitbutton';
 
 @Component({

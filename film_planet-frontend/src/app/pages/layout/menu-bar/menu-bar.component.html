@@ -7,7 +7,7 @@
 <!--        PROGRAMMATIC TEMPLATE      -->
         @for (item of menuOptions; track item;) {
           @if (!item.items.length) {
-            <p-splitButton [label]="item.label" [menuButtonDisabled]="true" dropdownIcon="none" [model]="item.items" (onClick)="navigate(item.route)" text severity="secondary"/>
+            <a [routerLink]="item.route"><p-button [label]="item.label" text /></a>
           }
           @else {
             <p-splitButton [label]="item.label" [model]="item.items" (onClick)="navigate(item.route)" text severity="secondary"/>
