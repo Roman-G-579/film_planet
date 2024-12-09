@@ -24,7 +24,7 @@ export const appConfig: ApplicationConfig = {
       routes,
       withComponentInputBinding(),
       withInMemoryScrolling({ scrollPositionRestoration: 'enabled' }),
-      withHashLocation(),
+
     ),
     provideHttpClient(withInterceptors([authInterceptor]), withFetch()),
     provideAnimations(),
