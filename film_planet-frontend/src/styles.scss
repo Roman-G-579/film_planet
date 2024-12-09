@@ -14,12 +14,6 @@ body, html {
   width: 100%;
 }
 
-i:hover {
-  color: var(--p-primary-color);
-  transition: color 0.2s;
-  cursor: pointer;
-}
-
 /* PrimeNG Layer */
 @layer primeng {}
 

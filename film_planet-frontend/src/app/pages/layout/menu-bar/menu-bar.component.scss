@@ -35,7 +35,7 @@
   .pi:hover,
   .p-menubar-item-link:hover,
   .p-button-text.p-button-secondary:not(:disabled):hover {
-    color: orange;
+    color: var(--p-primary-color);
     transition: color 0.2s;
   }
 
