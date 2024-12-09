@@ -1,5 +1,5 @@
 import {ChangeDetectionStrategy, Component, computed, inject, OnInit, signal, WritableSignal} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
+import {ActivatedRoute, Router, RouterLink} from '@angular/router';
 import {DataUtils} from '../../core/utils/data.utils';
 import {MediaType} from '../../core/enums/media-type.enum';
 import {ButtonModule} from 'primeng/button';
@@ -11,7 +11,8 @@ import {AsyncPipe} from '@angular/common';
   standalone: true,
   imports: [
     ButtonModule,
-    AsyncPipe
+    AsyncPipe,
+    RouterLink
   ],
   templateUrl: './genres.component.html',
   styleUrl: './genres.component.scss',
@@ -41,14 +42,5 @@ export class GenresComponent {
       return this.dataUtils.getGenreNamesFromIds(MediaType.TV);
     }
     return [];
-  }
-
-  /**
-   * Navigates to the specified genre page
-   * @param genre the selected genre
-   */
-  navigate(genre: string) {
-    const genreId = this.dataUtils.getGenreIdFromName(genre, this.selectedMediaType());
-    this.router.navigate(['pages','library', this.selectedMediaType().toLowerCase(), genreId]).then();
   }
 }

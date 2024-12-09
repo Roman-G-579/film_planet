@@ -14,7 +14,7 @@ import {SharedModule} from "primeng/api";
 import {SkeletonModule} from "primeng/skeleton";
 import {LibraryItem} from '../../core/interfaces/library-item.interface';
 import {LibraryService} from '../../core/services/library.service';
-import {ActivatedRoute, Router} from '@angular/router';
+import {ActivatedRoute, Router, RouterLink} from '@angular/router';
 import {GenreNamesPipe} from '../../core/pipes/genre-names.pipe';
 import {MediaType} from '../../core/enums/media-type.enum';
 import {DataUtils} from '../../core/utils/data.utils';
@@ -30,6 +30,7 @@ import {DataUtils} from '../../core/utils/data.utils';
     SharedModule,
     SkeletonModule,
     GenreNamesPipe,
+    RouterLink,
   ],
   templateUrl: './library.component.html',
   styleUrl: './library.component.scss',
@@ -133,16 +134,4 @@ export class LibraryComponent implements OnInit {
     return Array(n);
   }
 
-  /**
-   * Navigates to the specified film or tv show page
-   * @param title the title of the film/tv show in string form
-   * @param id the unique id of the film/tv show
-   */
-  navigate(id: number, title: string) {
-    const urlTitle = `${id}-${title
-      .toLowerCase() // Convert to lowercase
-      .replace(/[^a-z0-9\s-]/g, '') // Remove special characters except spaces and hyphens
-      .replace(/\s+/g, '-')}`; // Replace spaces with hyphens
-    this.router.navigate(['pages', this.selectedMediaType(), urlTitle]).then();
-  }
 }

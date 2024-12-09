@@ -3,7 +3,7 @@
   <div class="genres-wrapper flex justify-center">
     <div class="grid grid-cols-2 md:grid-cols-4 w-4/5 lg:w-2/4 gap-4 justify-items-center border px-1 py-10">
       @for(genre of (genres$ | async); track genre) {
-        <p-button styleClass="w-32 h-14 md:h-32" label="{{genre}}" size="large" raised  (onClick)="navigate(genre)"/>
+        <a [routerLink]="['/','pages','library',selectedMediaType().toLowerCase(),dataUtils.getGenreIdFromName(genre,selectedMediaType())]"><p-button styleClass="w-32 h-14 md:h-32" label="{{genre}}" size="large" raised/></a>
       }
     </div>
   </div>

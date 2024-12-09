@@ -1,6 +1,7 @@
 import {FilmGenres} from '../constants/film-genres.record';
 import {MediaType} from '../enums/media-type.enum';
 import {TvGenres} from '../constants/tv-genres.record';
+import {LibraryItem} from '../interfaces/library-item.interface';
 
 export class DataUtils {
 
@@ -58,6 +59,20 @@ export class DataUtils {
       return date.getFullYear(); // Extracts the year if it's a Date object
     }
     return date; // Returns the original input if it's already a number
+  }
+
+  /**
+   * Takes a library item's details and creates a link based on them
+   * @param item the library items, containing the film or TV show's relevant metadata
+   * @returns URL based on the given data
+   */
+  static generateItemLink(item: LibraryItem): string[] {
+    const itemName = `${item.id}-${item.title
+      .toLowerCase() // Convert to lowercase
+      .replace(/[^a-z0-9\s-]/g, '') // Remove special characters except spaces and hyphens
+      .replace(/\s+/g, '-')}`;
+
+    return ['/', 'pages', item.mediaType.toLowerCase(), itemName];
   }
 
 }

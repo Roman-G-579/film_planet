@@ -10,20 +10,24 @@
         [numScroll]="1"
         [responsiveOptions]="responsiveOptions">
         <ng-template let-item pTemplate="item" >
-          <div class="border border-surface-200 dark:border-surface-700 rounded m-2 p-4 cursor-pointer" (click)="navigate(item.id, item.title)">
+          <div class="border border-surface-200 dark:border-surface-700 rounded m-2 p-4">
             <div class="mb-4">
               <div class="relative mx-auto">
-                <img
-                  src="{{item.image}}"
-                  [alt]="item.title"
-                  class="img-poster rounded-border" />
+                <a [routerLink]="dataUtils.generateItemLink(item)">
+                  <img
+                    src="{{item.image}}"
+                    [alt]="item.title"
+                    class="img-poster rounded-border" />
+                </a>
               </div>
             </div>
-            <div class="mb-4 font-medium">
-              {{ item.title }}
-            </div>
+
             <div class="flex justify-between items-center">
+              <div class=" font-medium">
+                {{ item.title }}
+              </div>
               <div class="mt-0 font-semibold text-xl">
+                <i class="pi pi-star-fill text-yellow-500"></i>
                 {{ item.rating }}
               </div>
             </div>
@@ -44,16 +48,20 @@
                 [ngClass]="{ 'border-t border-surface-200 dark:border-surface-700': !first }"
               >
                 <div class="md:w-40 relative">
-                  <img
-                    class="block xl:block mx-auto rounded-border w-full"
-                    [src]="item.image"
-                    [alt]="item.title"
-                  />
+                  <a [routerLink]="dataUtils.generateItemLink(item)">
+                    <img
+                      class="block xl:block mx-auto rounded-border w-full"
+                      [src]="item.image"
+                      [alt]="item.title"
+                    />
+                  </a>
                 </div>
                 <div class="flex flex-col md:flex-row justify-between md:items-center flex-1 gap-6">
                   <div class="flex flex-row md:flex-col justify-between items-start gap-2">
                     <div>
-                      <div class="text-lg font-medium text-surface-900 dark:text-surface-0 mt-2 cursor-pointer" (click)="navigate(item.id, item.title)">{{ item.title }}</div>
+                      <a class="no-underline" [routerLink]="dataUtils.generateItemLink(item)">
+                        <div class="text-lg font-medium text-surface-900 dark:text-surface-0 mt-2 hover:text-primary "> {{ item.title }} </div>
+                      </a>
                       <span class="font-medium text-secondary text-sm">{{ item.directors ? item.directors : item.creators }}</span>
                     </div>
                     <div class="bg-surface-100 dark:bg-surface-700 p-1" style="border-radius: 30px">
@@ -82,6 +90,7 @@
           </div>
         </ng-template>
 
+<!--        skeleton components     -->
         @if(!tableItems) {
           <ng-template pTemplate="list" let-tableItems>
             <div class="flex flex-col">
