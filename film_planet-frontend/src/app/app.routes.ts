@@ -1,4 +1,4 @@
-import {Route, Routes} from '@angular/router';
+import {Route} from '@angular/router';
 
 export default [
   {
