@@ -5,6 +5,7 @@ import {LibraryItem} from '../interfaces/library-item.interface';
 import {SEASONS} from '../mock-data/seasons';
 import {EPISODES} from '../mock-data/episodes';
 import {REVIEWS} from '../mock-data/reviews';
+import {DataUtils} from '../utils/data.utils';
 
 @Injectable({
   providedIn: 'root',
@@ -14,6 +15,8 @@ import {REVIEWS} from '../mock-data/reviews';
  * Contains functions related to filtering and sorting items from the media library
  */
 export class LibraryService {
+  protected readonly dataUtils = DataUtils;
+
   libraryItems: WritableSignal<LibraryItem[]> = signal<LibraryItem[]>([]);
 
   mediaFilter: MediaType = MediaType.Film;
@@ -66,13 +69,15 @@ export class LibraryService {
 
   /**
    * Filters by the library item's genre
-   * @param genre the chosen genre
+   * @param genre the chosen genre - either its id, or its name
    */
-  filterByGenre(genre: string | undefined) {
-    if (genre) {
+  filterByGenre(genre: string | number | undefined) {
+    if (Number(genre)) {
       this.genreFilter = Number(genre);
     }
-
+    else {
+      this.genreFilter = this.dataUtils.getGenreIdFromName(<string>genre);
+    }
     this.getFilteredList();
   }
 

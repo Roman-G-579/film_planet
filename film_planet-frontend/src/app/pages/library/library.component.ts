@@ -119,14 +119,14 @@ export class LibraryComponent implements OnInit {
   getGenreItemsAndSetCategoryText() {
     this.route.paramMap.subscribe((params) => {
 
-      const genreNum = Number(params.get('genre'));
-
-      // Sets the page text based on the given genre
-      const genreName = this.dataUtils.getGenreNameFromId(genreNum, this.selectedMediaType());
-      this.categoryText.set(genreName);
+      const genre = params.get('genre') || '';
 
       // Filters the library items based on the given genre
-      this.lib.filterByGenre(params.get('genre') || '');
+      this.lib.filterByGenre(genre);
+
+      // Sets the page text based on the given genre
+      const genreName = this.dataUtils.getGenreNameFromId(Number(genre), this.selectedMediaType());
+      this.categoryText.set(genreName);
     })
   }
 
