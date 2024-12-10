@@ -6,6 +6,7 @@ import {expressLogger} from "./controllers/logger.controller";
 import {errorHandler} from "./middlewares/error.middleware";
 import {connectToDb} from "./config/db";
 import {Config} from "./config/config";
+import libraryRouter from "./routes/library.router";
 
 const app = express();
 const httpServer = createServer(app);
@@ -24,7 +25,11 @@ app.use(express.json());
 
 
 // middlewares (routers etc.)
+app.get('/api/ping', (req, res) => {
+    res.send({ name: Config.PACKAGE, port: Config.PORT, version: Config.VERSION });
+});
 
+app.use('/api/library', libraryRouter);
 
 // error handler
 app.use(errorHandler);

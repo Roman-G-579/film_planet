@@ -23,4 +23,5 @@ export class Config {
 
     public static JWT_SECRET = process.env.JWT_SECRET || 'secret';
 
+    public static TMDB_API_KEY = process.env.TMDB_API_KEY || '';
 }

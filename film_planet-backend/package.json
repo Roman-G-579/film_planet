@@ -10,8 +10,8 @@
     "prettier:check": "prettier --list-different \"./**/*.{js,ts}\""
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "Roman Guriy",
+  "license": "MIT",
   "description": "",
   "dependencies": {
     "cors": "^2.8.5",
