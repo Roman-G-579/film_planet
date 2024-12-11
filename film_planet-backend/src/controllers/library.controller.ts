@@ -1,7 +1,6 @@
 import {Config} from "../config/config";
-import {NextFunction, Request, RequestHandler, Response} from "express";
+import {NextFunction, Request, Response} from "express";
 import httpStatus from "http-status";
-import HttpStatus from 'http-status';
 
 /**
  * Contains function related to the retrieval of tmdb items (films, tv shows, actors etc.)
@@ -16,19 +15,9 @@ const options = {
 };
 
 export async function getRecentFilmsMiddleware(req: Request, res: Response, next: NextFunction) {
-
-
     try {
-        // let test = req.header('test');
-        //
-        // if (!test) {
-        //     return res.status(400).send({ error: 'Error reading parameter' });
-        // }
         const response = await fetch('https://api.themoviedb.org/3/movie/now_playing?language=en-US&page=1', options);
         const data = await response.json();
-        //    .then(res => res.json())
-          //  .then(res => console.log(res))
-            //.catch(err => console.error(err));
 
         return res.status(httpStatus.OK).send(data);
     } catch (err) {
@@ -39,44 +28,56 @@ export async function getRecentFilmsMiddleware(req: Request, res: Response, next
 
 export async function getPopularFilmsMiddleware(req: Request, res: Response, next: NextFunction) {
     try {
-        fetch('https://api.themoviedb.org/3/movie/popular?language=en-US&page=1', options)
-            .then(res => res.json())
-            .then(res => console.log(res))
-            .catch(err => console.error(err));
+        const response = await fetch('https://api.themoviedb.org/3/movie/popular?language=en-US&page=1', options);
+        const data = await response.json();
 
-        return res.status(httpStatus.OK).send(res);
+        return res.status(httpStatus.OK).send(data);
     } catch (err) {
         next(err);
     }
 }
 
-export async function loginMiddleware(req: Request, res: Response, next: NextFunction) {
+export async function getTopFilmsMiddleware(req: Request, res: Response, next: NextFunction) {
     try {
-        const { email, password } = req.body;
+        const response = await fetch('https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=1', options);
+        const data = await response.json();
 
-        // Check if email and password are provided
-        if (!email || !password) {
-            return res
-                .status(HttpStatus.BAD_REQUEST)
-                .json({ message: 'Email and password are required' });
-        }
+        return res.status(httpStatus.OK).send(data);
+    } catch (err) {
+        next(err);
+    }
+}
 
-        // Find the user by email
-        const user = {name: 'aaa', id: 123};
-        if (!user) {
-            return res.status(HttpStatus.UNAUTHORIZED).json({ message: 'Invalid email or password' });
-        }
+export async function getRecentTVMiddleware(req: Request, res: Response, next: NextFunction) {
+    try {
+        const response = await fetch('https://api.themoviedb.org/3/tv/on_the_air?language=en-US&page=1', options);
+        const data = await response.json();
 
-        // Compare the provided password with the stored hashed password
-        //const isMatch = await bcrypt.compare(password, user.password);
-        // if (!isMatch) {
-        //     return res.status(HttpStatus.UNAUTHORIZED).json({ message: 'Invalid email or password' });
-        // }
+        return res.status(httpStatus.OK).send(data);
+    } catch (err) {
+        console.error(err);
+        next(err);
+    }
+}
 
-        // Generate a JWT token
-        const token = 24;
-        // Return the token
-        return res.status(HttpStatus.OK).json({ token, user });
+export async function getPopularTVMiddleware(req: Request, res: Response, next: NextFunction) {
+    try {
+        const response = await fetch('https://api.themoviedb.org/3/tv/popular?language=en-US&page=1', options);
+        const data = await response.json();
+
+        return res.status(httpStatus.OK).send(data);
+    } catch (err) {
+        console.error(err);
+        next(err);
+    }
+}
+
+export async function getTopTVMiddleware(req: Request, res: Response, next: NextFunction) {
+    try {
+        const response = await fetch('https://api.themoviedb.org/3/tv/top_rated?language=en-US&page=1', options);
+        const data = await response.json();
+
+        return res.status(httpStatus.OK).send(data);
     } catch (err) {
         next(err);
     }

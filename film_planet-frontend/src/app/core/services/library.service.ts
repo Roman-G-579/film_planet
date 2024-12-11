@@ -1,4 +1,4 @@
-import {Injectable, signal, WritableSignal} from '@angular/core';
+import {inject, Injectable, signal, WritableSignal} from '@angular/core';
 import { LIBRARY_ITEMS} from '../mock-data/library-items';
 import {MediaType} from '../enums/media-type.enum';
 import {LibraryItem} from '../interfaces/library-item.interface';
@@ -6,6 +6,8 @@ import {SEASONS} from '../mock-data/seasons';
 import {EPISODES} from '../mock-data/episodes';
 import {REVIEWS} from '../mock-data/reviews';
 import {DataUtils} from '../utils/data.utils';
+import {environment} from '../../../environments/environment';
+import {HttpClient} from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
@@ -16,6 +18,8 @@ import {DataUtils} from '../utils/data.utils';
  */
 export class LibraryService {
   protected readonly dataUtils = DataUtils;
+  private readonly http = inject(HttpClient);
+  private readonly apiUrl = `${environment.apiUrl}`;
 
   libraryItems: WritableSignal<LibraryItem[]> = signal<LibraryItem[]>([]);
 
@@ -55,8 +59,20 @@ export class LibraryService {
 
   /**
    * Filters by items released in the last 2 months
+   *
+   * //TODO: take media type as parameter in filterByRecent,filterByPopular,filterByTop
    */
   filterByRecent() {
+    const { href } = new URL(`library/film/recent`, this.apiUrl);
+    this.http.get(href).subscribe({
+      next: (data) => {
+        console.log(data);
+      },
+      error: (err) => {
+        console.log(err);
+      }
+    });
+
     const currentDate = new Date();
 
     const minDate = new Date(currentDate);
@@ -97,8 +113,30 @@ export class LibraryService {
    * Filters by recently popular items
    */
   filterByPopular() {
+    const { href } = new URL(`library/film/popular`, this.apiUrl);
+    this.http.get(href).subscribe({
+      next: (data) => {
+        console.log(data);
+      },
+      error: (err) => {
+        console.log(err);
+      }
+    });
+
     this.clearAllFilters();
     this.getFilteredList();
+  }
+
+  filterByTop() {
+    const { href } = new URL(`library/film/top`, this.apiUrl);
+    this.http.get(href).subscribe({
+      next: (data) => {
+        console.log(data);
+      },
+      error: (err) => {
+        console.log(err);
+      }
+    });
   }
 
   /**
