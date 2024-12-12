@@ -52,9 +52,9 @@ export class ItemComponent implements OnInit {
     id: 0,
     mediaType: MediaType.Film,
     title: "",
-    releaseDate: new Date(),
+    release_date: new Date(),
     duration: 0,
-    genres:[],
+    genre_ids:[],
     starring: []
   });
   itemGenres: WritableSignal<string[]> = signal<string[]>([]);
@@ -86,9 +86,9 @@ export class ItemComponent implements OnInit {
 
     if (retrievedItem) {
       this.item.set(retrievedItem);
-      this.itemGenres.set(this.dataUtils.getGenreNamesFromIds(retrievedItem.mediaType, retrievedItem.genres));
+      this.itemGenres.set(this.dataUtils.getGenreNamesFromIds(retrievedItem.mediaType, retrievedItem.genre_ids));
 
-      this.releaseYear.set(this.dataUtils.getYearFromDate(retrievedItem.releaseDate));
+      this.releaseYear.set(this.dataUtils.getYearFromDate(retrievedItem.release_date));
       if (retrievedItem.endYear) {
         this.endYear.set(this.dataUtils.getYearFromDate(retrievedItem.endYear));
       }

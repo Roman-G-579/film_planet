@@ -2,7 +2,7 @@
   <div class="item-wrapper flex flex-col w-10/12 m-auto mt-6">
     <section class="main-content-wrapper grid grid-flow-col gap-x-4">
       <div class="poster-wrapper row-span-6">
-        <img alt="Poster" class="w-full"  [src]="item().image" />
+        <img alt="Poster" class="w-full"  [src]="item().poster_path" />
       </div>
       <div class="title-wrapper col-span-2  flex  items-center">
         <h1 class="text-5xl">
@@ -39,7 +39,7 @@
       <div class="rating-wrapper flex flex-col items-end justify-center mt-7  ">
         <div class="rating-num flex gap-2 text-5xl -mb-4">
           <i class="pi pi-star-fill" style="font-size: 2.5rem; color: gold"></i>
-          <span><b>{{item().rating}}</b></span>
+          <span><b>{{item().vote_average}}</b></span>
         </div>
         <p>5000 Ratings</p>
       </div>

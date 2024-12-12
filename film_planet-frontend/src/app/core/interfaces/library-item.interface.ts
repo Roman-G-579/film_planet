@@ -4,14 +4,14 @@ export interface LibraryItem {
   id: number;
   mediaType: MediaType;
   title: string;
-  releaseDate: Date | number;
+  release_date: Date | number;
   endYear?: Date | number; // for tv shows
   duration?: number;
   overview?: string;
-  genres: number[];
-  starring: string[];
+  genre_ids: number[];
+  starring?: string[];
   directors?: string[];
   creators?: string[];
-  image?: string;
-  rating?: number;
+  poster_path?: string;
+  vote_average?: number;
 }
