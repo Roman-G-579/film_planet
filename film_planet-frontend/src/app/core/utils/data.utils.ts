@@ -76,4 +76,21 @@ export class DataUtils {
     return ['/', 'pages', item.mediaType.toLowerCase(), itemName];
   }
 
+  /**
+   * Converts a JSON object of a library item to a LibraryItem object
+   * @param data the JSON object (cast to LibraryItem)
+   * @returns the item in LibraryItem form
+   */
+  static convertToLibraryItem(data: LibraryItem): LibraryItem {
+    const item: LibraryItem = {
+      id: data.id,
+      title: data.title,
+      mediaType: data.mediaType,
+      release_date: data.release_date,
+      genre_ids: data.genre_ids
+    }
+
+    return item;
+  }
+
 }
