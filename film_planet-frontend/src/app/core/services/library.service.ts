@@ -7,7 +7,8 @@ import {EPISODES} from '../mock-data/episodes';
 import {REVIEWS} from '../mock-data/reviews';
 import {DataUtils} from '../utils/data.utils';
 import {environment} from '../../../environments/environment';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {ItemList} from '../interfaces/api-responses/item-list-response.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -25,8 +26,8 @@ export class LibraryService {
 
   mediaFilter: MediaType = MediaType.Film;
 
-  minDateFilter: Date | undefined;
-  maxDateFilter: Date | undefined;
+  minDateFilter: string | undefined;
+  maxDateFilter: string | undefined;
   genreFilter: number | undefined;
 
   /**
@@ -41,7 +42,6 @@ export class LibraryService {
    */
   filterByMediaType(type: MediaType) {
     this.mediaFilter = type;
-    //this.getFilteredList();
   }
 
   /**
@@ -50,38 +50,13 @@ export class LibraryService {
    */
   filterByYear(date: Date | undefined) {
     if (date) {
-      this.minDateFilter = new Date(date.getFullYear(), 0, 1);
-      this.maxDateFilter = new Date(date.getFullYear(), 11, 31);
+      this.minDateFilter = new Date(date.getFullYear(), 0, 1).toString();
+      this.maxDateFilter = new Date(date.getFullYear(), 11, 31).toString();
     }
 
     this.getFilteredList();
   }
 
-  /**
-   * Filters by items released in the last 2 months
-   *
-   * //TODO: take media type as parameter in filterByRecent,filterByPopular,filterByTop
-   */
-  filterByRecent() {
-    const { href } = new URL(`library/film/recent`, this.apiUrl);
-    this.http.get(href).subscribe({
-      next: (data) => {
-        console.log(data);
-      },
-      error: (err) => {
-        console.log(err);
-      }
-    });
-
-    const currentDate = new Date();
-
-    const minDate = new Date(currentDate);
-    minDate.setMonth(minDate.getMonth() - 2);
-    minDate.setDate(1); // Sets the min date to the first of the month
-    this.minDateFilter = minDate;
-    this.maxDateFilter = currentDate;
-    this.getFilteredList();
-  }
 
   /**
    * Filters by the library item's genre
@@ -107,36 +82,6 @@ export class LibraryService {
     this.ratingFilter[1] = (maxRating);
 
     this.getFilteredList();
-  }
-
-  /**
-   * Filters by recently popular items
-   */
-  filterByPopular() {
-    const { href } = new URL(`library/film/popular`, this.apiUrl);
-    this.http.get(href).subscribe({
-      next: (data) => {
-        console.log(data);
-      },
-      error: (err) => {
-        console.log(err);
-      }
-    });
-
-    this.clearAllFilters();
-    this.getFilteredList();
-  }
-
-  filterByTop() {
-    const { href } = new URL(`library/film/top`, this.apiUrl);
-    this.http.get(href).subscribe({
-      next: (data) => {
-        console.log(data);
-      },
-      error: (err) => {
-        console.log(err);
-      }
-    });
   }
 
   /**
@@ -207,6 +152,45 @@ export class LibraryService {
   }
 
   /**
+   * Fetches a list of items from the api based on the specified media type and category
+   * @param mediaType item type - film or TV
+   * @param category  recent / popular / top
+   */
+  getItemListFromApi(mediaType: MediaType, category: string) {
+    const { href } = new URL(`library/${mediaType}/${category}`, this.apiUrl);
+    let headers = new HttpHeaders().set('mediaType', mediaType);
+    headers.append('category', category);
+
+    this.http.get(href, {headers}).subscribe({
+      next: (data) => {
+        const resultsObject = data as ItemList;
+        const resultItems: LibraryItem[] = resultsObject.results;
+        this.libraryItems.set(resultItems);
+      },
+      error: (err) => {
+        console.log(err);
+      }
+    });
+  }
+
+  /**
+   * Fetches an expanded list of details of a film or TV show
+   * @param id the id of the film or TV show
+   */
+  getItemDetailsFromApi(id: number) {
+
+  }
+
+  /**
+   * Fetches the
+   * @param id the id of the film or TV show
+   * @param mediaType item type - film or TV show
+   */
+  getCreditsFromApi(id: number, mediaType: MediaType) {
+
+  }
+
+  /**
    * @returns A list of library items filtered based on the values in the filter parameters
    * (minDateFilter, maxDateFilter, genreFilter, ratingFilter, mediaFilter)
    */
@@ -214,18 +198,18 @@ export class LibraryService {
     const filteredItems: LibraryItem[] = LIBRARY_ITEMS.filter(
       (item) => {
         // The item's release date is converted to a Date object if necessary
-        const releaseDate = item.releaseDate instanceof Date ? item.releaseDate : new Date(item.releaseDate, 0, 1);
+        //const releaseDate = item.release_date instanceof Date ? item.release_date : new Date(item.release_date, 0, 1);
         return (
-          (!this.minDateFilter || releaseDate >= this.minDateFilter) &&
-          (!this.maxDateFilter || releaseDate <= this.maxDateFilter) &&
-          (!this.genreFilter || item.genres.includes(this.genreFilter)) &&
-          (!this.ratingFilter || (item.rating && item.rating >= this.ratingFilter[0] && item.rating <= this.ratingFilter[1])) &&
+          (!this.minDateFilter || item.release_date >= this.minDateFilter) &&
+          (!this.maxDateFilter || item.release_date <= this.maxDateFilter) &&
+          (!this.genreFilter || item.genre_ids.includes(this.genreFilter)) &&
+          (!this.ratingFilter || (item.vote_average && item.vote_average >= this.ratingFilter[0] && item.vote_average <= this.ratingFilter[1])) &&
           (!this.mediaFilter || item.mediaType === this.mediaFilter)
         );
       }
     );
 
-    this.libraryItems.set(filteredItems.sort((a,b) => (b.rating ?? 0) - (a.rating ?? 0)));
+    this.libraryItems.set(filteredItems.sort((a,b) => (b.vote_average ?? 0) - (a.vote_average ?? 0)));
   }
 
 }

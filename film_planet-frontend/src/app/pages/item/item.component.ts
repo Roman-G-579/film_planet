@@ -52,14 +52,14 @@ export class ItemComponent implements OnInit {
     id: 0,
     mediaType: MediaType.Film,
     title: "",
-    release_date: new Date(),
+    release_date: '',
     duration: 0,
     genre_ids:[],
     starring: []
   });
   itemGenres: WritableSignal<string[]> = signal<string[]>([]);
-  releaseYear: WritableSignal<number> = signal<number>(0);
-  endYear: WritableSignal<number | undefined> = signal<number | undefined>(undefined);
+  releaseYear: WritableSignal<string> = signal<string>('');
+  endYear: WritableSignal<string | undefined> = signal<string | undefined>(undefined);
   seasons: WritableSignal<Season[]> = signal<Season[]>([]);
   reviews: WritableSignal<Review[]> = signal<Review[]>([])
 

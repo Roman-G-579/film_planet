@@ -1,8 +1,8 @@
 import {
   ChangeDetectionStrategy,
-  Component,
+  Component, computed,
   inject,
-  OnInit,
+  OnInit, Signal,
   signal,
   WritableSignal
 } from '@angular/core';
@@ -18,6 +18,8 @@ import {ActivatedRoute, Router, RouterLink} from '@angular/router';
 import {GenreNamesPipe} from '../../core/pipes/genre-names.pipe';
 import {MediaType} from '../../core/enums/media-type.enum';
 import {DataUtils} from '../../core/utils/data.utils';
+import {API_DETAILS} from '../../core/config/api-details';
+import {API_IMG_SIZES} from '../../core/config/api-image-sizes';
 
 @Component({
   selector: 'app-library',
@@ -49,10 +51,11 @@ export class LibraryComponent implements OnInit {
 
   selectedMediaType: WritableSignal<MediaType> = signal(MediaType.Film);
   // Items appearing on the carousel at the top-titles of the page
-  carouselItems: LibraryItem[] = [];
+  carouselItems: Signal<LibraryItem[]> = computed<LibraryItem[]>(() => this.libraryItems().slice(0,5));
 
   // Items appearing on the table below the carousel
-  tableItems: LibraryItem[] = [];
+  tableItems: Signal<LibraryItem[]> = computed<LibraryItem[]>(() => this.libraryItems().slice(5,10));
+
 
   responsiveOptions: CarouselResponsiveOptions[] = [
     {
@@ -78,38 +81,39 @@ export class LibraryComponent implements OnInit {
   ];
 
   ngOnInit() {
-    this.lib.clearAllFilters();
+    //this.lib.clearAllFilters();
 
     this.route.data.subscribe((data) => {
       // Selecting media type for current page
       if (data['type'] === 'film') {
         this.selectedMediaType.set(MediaType.Film);
-        this.lib.filterByMediaType(MediaType.Film);
+        //this.lib.filterByMediaType(MediaType.Film);
         this.mediaTypeText.set("Films");
       }
       else if (data['type'] === 'tv') {
         this.selectedMediaType.set(MediaType.TV);
-        this.lib.filterByMediaType(MediaType.TV);
+        //this.lib.filterByMediaType(MediaType.TV);
         this.mediaTypeText.set("TV shows");
       }
 
 
       // Selecting category of current page
       if(data['category'] === 'recent') {
-        this.lib.filterByRecent();
+        //this.lib.filterByRecent();
         this.categoryText.set("Recent");
       }
       else if (data['category'] === 'popular') {
-        this.lib.filterByPopular();
+        //this.lib.filterByPopular();
         this.categoryText.set("Popular");
       }
       else if (data['category'] === 'genre') {
         this.getGenreItemsAndSetCategoryText();
       }
+
+      this.lib.getItemListFromApi(this.selectedMediaType(), data['category']);
+
     });
 
-    this.carouselItems = this.libraryItems().slice(0,5);
-    this.tableItems = this.libraryItems().slice(5,10);
   }
 
   /**
@@ -134,4 +138,6 @@ export class LibraryComponent implements OnInit {
     return Array(n);
   }
 
+  protected readonly API_DETAILS = API_DETAILS;
+  protected readonly API_IMG_SIZES = API_IMG_SIZES;
 }

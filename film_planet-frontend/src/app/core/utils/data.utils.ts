@@ -55,11 +55,9 @@ export class DataUtils {
    * If the date is already a number, returns it as is
    * @param date the given date object or number
    */
-  static getYearFromDate(date: Date | number) {
-    if (date instanceof Date) {
-      return date.getFullYear(); // Extracts the year if it's a Date object
-    }
-    return date; // Returns the original input if it's already a number
+  static getYearFromDate(date: string): string {
+    const dateParts = date.split('-');
+    return dateParts[0];
   }
 
   /**
@@ -68,12 +66,13 @@ export class DataUtils {
    * @returns URL based on the given data
    */
   static generateItemLink(item: LibraryItem): string[] {
-    const itemName = `${item.id}-${item.title
-      .toLowerCase() // Convert to lowercase
-      .replace(/[^a-z0-9\s-]/g, '') // Remove special characters except spaces and hyphens
-      .replace(/\s+/g, '-')}`;
-
-    return ['/', 'pages', item.mediaType.toLowerCase(), itemName];
+    // const itemName = `${item.id}-${item.title
+    //   .toLowerCase() // Convert to lowercase
+    //   .replace(/[^a-z0-9\s-]/g, '') // Remove special characters except spaces and hyphens
+    //   .replace(/\s+/g, '-')}`;
+    //
+    // return ['/', 'pages', item.mediaType.toLowerCase(), itemName];
+    return [];
   }
 
   /**
