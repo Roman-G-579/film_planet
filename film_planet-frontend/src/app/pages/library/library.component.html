@@ -13,7 +13,6 @@
           <div class="border border-surface-200 dark:border-surface-700 rounded m-2 p-4">
             <div class="mb-4">
               <div class="relative mx-auto">
-<!--                TODO: fix link generation for items-->
                 <a [routerLink]="dataUtils.generateItemLink(item)">
                   <img
                     src="{{API_DETAILS.base_url}}{{API_IMG_SIZES.poster_sizes[3]}}/{{item.poster_path}}"

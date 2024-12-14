@@ -81,7 +81,7 @@ export class LibraryComponent implements OnInit {
   ];
 
   ngOnInit() {
-    //this.lib.clearAllFilters();
+    this.lib.clearAllFilters();
 
     this.route.data.subscribe((data) => {
       // Selecting media type for current page

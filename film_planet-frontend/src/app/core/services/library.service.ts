@@ -129,7 +129,7 @@ export class LibraryService {
    */
   removeGenreFilter() {
     this.genreFilter = undefined;
-    this.getFilteredList();
+    //this.getFilteredList();
   }
 
   /**
@@ -138,7 +138,7 @@ export class LibraryService {
   removeDateFilter() {
     this.minDateFilter = undefined;
     this.maxDateFilter = undefined;
-    this.getFilteredList();
+    //this.getFilteredList();
   }
 
   /**
@@ -149,6 +149,7 @@ export class LibraryService {
     this.removeDateFilter();
     this.ratingFilter[0] = 0.0;
     this.ratingFilter[1] = 10;
+    this.libraryItems.set([]);
   }
 
   /**
@@ -164,7 +165,11 @@ export class LibraryService {
     this.http.get(href, {headers}).subscribe({
       next: (data) => {
         const resultsObject = data as ItemList;
-        const resultItems: LibraryItem[] = resultsObject.results;
+        let resultItems: LibraryItem[] = resultsObject.results;
+        if (mediaType === MediaType.TV) {
+          resultItems = this.setItemNames(resultItems);
+        }
+
         this.libraryItems.set(resultItems);
       },
       error: (err) => {
@@ -173,6 +178,19 @@ export class LibraryService {
     });
   }
 
+  /**
+   * Sets the title fields for all library items (tv shows are generated with name fields
+   * instead of title fields)
+   * @param libraryItems the item array
+   * @private
+   */
+  private setItemNames(libraryItems: LibraryItem[]) {
+    for (let item of libraryItems) {
+      item.title = item.name || '';
+      item.original_title = item.original_name;
+    }
+    return libraryItems;
+  }
   /**
    * Fetches an expanded list of details of a film or TV show
    * @param id the id of the film or TV show
@@ -199,9 +217,10 @@ export class LibraryService {
       (item) => {
         // The item's release date is converted to a Date object if necessary
         //const releaseDate = item.release_date instanceof Date ? item.release_date : new Date(item.release_date, 0, 1);
+        const releaseDate = item.release_date || item.first_air_date || '';
         return (
-          (!this.minDateFilter || item.release_date >= this.minDateFilter) &&
-          (!this.maxDateFilter || item.release_date <= this.maxDateFilter) &&
+          (!this.minDateFilter || releaseDate >= this.minDateFilter) &&
+          (!this.maxDateFilter || releaseDate <= this.maxDateFilter) &&
           (!this.genreFilter || item.genre_ids.includes(this.genreFilter)) &&
           (!this.ratingFilter || (item.vote_average && item.vote_average >= this.ratingFilter[0] && item.vote_average <= this.ratingFilter[1])) &&
           (!this.mediaFilter || item.mediaType === this.mediaFilter)

@@ -88,7 +88,7 @@ export class ItemComponent implements OnInit {
       this.item.set(retrievedItem);
       this.itemGenres.set(this.dataUtils.getGenreNamesFromIds(retrievedItem.mediaType, retrievedItem.genre_ids));
 
-      this.releaseYear.set(this.dataUtils.getYearFromDate(retrievedItem.release_date));
+      this.releaseYear.set(this.dataUtils.getYearFromDate(retrievedItem.release_date || ''));
       if (retrievedItem.endYear) {
         this.endYear.set(this.dataUtils.getYearFromDate(retrievedItem.endYear));
       }
