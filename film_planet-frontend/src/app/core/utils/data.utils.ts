@@ -66,13 +66,12 @@ export class DataUtils {
    * @returns URL based on the given data
    */
   static generateItemLink(item: LibraryItem): string[] {
-    // const itemName = `${item.id}-${item.title
-    //   .toLowerCase() // Convert to lowercase
-    //   .replace(/[^a-z0-9\s-]/g, '') // Remove special characters except spaces and hyphens
-    //   .replace(/\s+/g, '-')}`;
-    //
-    // return ['/', 'pages', item.mediaType.toLowerCase(), itemName];
-    return [];
+    const itemName = `${item.id}-${item.title
+      .toLowerCase() // Convert to lowercase
+      .replace(/[^a-z0-9\s-]/g, '') // Remove special characters except spaces and hyphens
+      .replace(/\s+/g, '-')}`;
+
+    return ['/', 'pages', item.mediaType, itemName];
   }
 
   /**
