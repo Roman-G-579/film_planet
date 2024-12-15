@@ -5,6 +5,8 @@ import {MediaType} from '../../core/enums/media-type.enum';
 import {ButtonModule} from 'primeng/button';
 import {map, Observable} from 'rxjs';
 import {AsyncPipe} from '@angular/common';
+import {FilmGenres} from '../../core/constants/film-genres.record';
+import {TvGenres} from '../../core/constants/tv-genres.record';
 
 @Component({
   selector: 'app-genres',
@@ -22,6 +24,8 @@ export class GenresComponent {
   private route = inject(ActivatedRoute);
   private readonly router = inject(Router);
   protected readonly dataUtils = DataUtils;
+  protected readonly FilmGenres = FilmGenres;
+  protected readonly TvGenres = TvGenres;
 
   selectedMediaType: WritableSignal<MediaType> = signal(MediaType.Film);
 
@@ -43,4 +47,6 @@ export class GenresComponent {
     }
     return [];
   }
+
+
 }
