@@ -159,10 +159,8 @@ export class LibraryService {
    */
   getItemListFromApi(mediaType: MediaType, category: string) {
     const { href } = new URL(`library/${mediaType}/${category}`, this.apiUrl);
-    let headers = new HttpHeaders().set('mediaType', mediaType);
-    headers.append('category', category);
 
-    this.http.get(href, {headers}).subscribe({
+    this.http.get(href).subscribe({
       next: (data) => {
         const resultsObject = data as ItemList;
         let resultItems: LibraryItem[] = resultsObject.results;
