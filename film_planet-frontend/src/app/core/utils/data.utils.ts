@@ -13,20 +13,18 @@ export class DataUtils {
    * @returns all genre names as an array of strings
    */
   static getGenreNamesFromIds(mediaType: MediaType, genres?: number[]): string[] {
-    const genreNames: string[] | string = [];
-
     // The genre object corresponds to the given media type
     const selectedObject: Record<string,number> = mediaType === MediaType.Film ? FilmGenres : TvGenres;
 
-    const genreIds = genres ? genres : Object.values(selectedObject);
-
-    for (const id of genreIds) {
-      const name = Object.keys(selectedObject).find((key) => selectedObject[key] === id);
-      if (name) {
-        genreNames.push(name);
-      }
+    // Returns all genre names if no specific genres are provided
+    if (!genres) {
+      return Object.keys(selectedObject);
     }
-    return genreNames;
+
+    // Returns genre names corresponding to the IDs in the given genres array
+    return Object.keys(selectedObject).filter(genreName =>
+      genres.includes(selectedObject[genreName])
+    );
   }
 
   /**
@@ -58,20 +56,6 @@ export class DataUtils {
   static getYearFromDate(date: string): string {
     const dateParts = date.split('-');
     return dateParts[0];
-  }
-
-  /**
-   * Takes a library item's details and creates a link based on them
-   * @param item the library items, containing the film or TV show's relevant metadata
-   * @returns URL based on the given data
-   */
-  static generateItemLink(item: LibraryItem): string[] {
-    const itemName = `${item.id}-${item.title
-      .toLowerCase() // Convert to lowercase
-      .replace(/[^a-z0-9\s-]/g, '') // Remove special characters except spaces and hyphens
-      .replace(/\s+/g, '-')}`;
-
-    return ['/', 'pages', item.mediaType, itemName];
   }
 
   /**
