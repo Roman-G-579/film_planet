@@ -20,6 +20,7 @@ import {MediaType} from '../../core/enums/media-type.enum';
 import {DataUtils} from '../../core/utils/data.utils';
 import {API_DETAILS} from '../../core/config/api-details';
 import {API_IMG_SIZES} from '../../core/config/api-image-sizes';
+import {ItemUrlPipePipe} from '../../core/pipes/item-url-pipe.pipe';
 
 @Component({
   selector: 'app-library',
@@ -33,6 +34,7 @@ import {API_IMG_SIZES} from '../../core/config/api-image-sizes';
     SkeletonModule,
     GenreNamesPipe,
     RouterLink,
+    ItemUrlPipePipe,
   ],
   templateUrl: './library.component.html',
   styleUrl: './library.component.scss',
@@ -54,7 +56,9 @@ export class LibraryComponent implements OnInit {
   carouselItems: Signal<LibraryItem[]> = computed<LibraryItem[]>(() => this.libraryItems().slice(0,5));
 
   // Items appearing on the table below the carousel
-  tableItems: Signal<LibraryItem[]> = computed<LibraryItem[]>(() => this.libraryItems().slice(5,10));
+  tableItems: Signal<LibraryItem[]> = computed<LibraryItem[]>(() => this.libraryItems().slice(5,20));
+
+  isLoading = signal<boolean>(true);
 
 
   responsiveOptions: CarouselResponsiveOptions[] = [
@@ -111,7 +115,7 @@ export class LibraryComponent implements OnInit {
       }
 
       this.lib.getItemListFromApi(this.selectedMediaType(), data['category']);
-
+      this.isLoading.set(false);
     });
 
   }

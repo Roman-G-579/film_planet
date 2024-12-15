@@ -14,6 +14,7 @@ import {ActivatedRoute, RouterLink} from '@angular/router';
 import {SliderModule} from 'primeng/slider';
 import {LibraryService} from '../../core/services/library.service';
 import {ReleaseYearPipe} from '../../core/pipes/release-year.pipe';
+import {ItemUrlPipePipe} from '../../core/pipes/item-url-pipe.pipe';
 
 @Component({
   selector: 'app-top-titles',
@@ -29,7 +30,8 @@ import {ReleaseYearPipe} from '../../core/pipes/release-year.pipe';
     GenreNamesPipe,
     SliderModule,
     ReleaseYearPipe,
-    RouterLink
+    RouterLink,
+    ItemUrlPipePipe
   ],
   templateUrl: './top-titles.component.html',
   styleUrl: './top-titles.component.scss',

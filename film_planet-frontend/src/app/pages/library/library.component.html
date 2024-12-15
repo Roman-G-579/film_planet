@@ -1,4 +1,5 @@
 <main>
+<!--  Top 5 items carousel-->
   <section class="carousel-wrapper flex flex-col items-center p-6">
     <div class=" flex justify-items-start items-start content-start">
       <h1>{{categoryText()}} {{mediaTypeText()}}</h1>
@@ -13,7 +14,7 @@
           <div class="border border-surface-200 dark:border-surface-700 rounded m-2 p-4">
             <div class="mb-4">
               <div class="relative mx-auto">
-                <a [routerLink]="dataUtils.generateItemLink(item)">
+                <a [routerLink]="item | itemUrl">
                   <img
                     src="{{API_DETAILS.base_url}}{{API_IMG_SIZES.poster_sizes[3]}}/{{item.poster_path}}"
                     [alt]="item.title"
@@ -28,7 +29,7 @@
               </div>
               <div class="mt-0 font-semibold text-xl">
                 <i class="pi pi-star-fill text-yellow-500"></i>
-                {{ item.rating }}
+                {{ item.vote_average | number:'1.0-1'}}
               </div>
             </div>
           </div>
@@ -38,93 +39,93 @@
   </section>
 
   <section class="table-wrapper  flex justify-center">
-    <div class="card w-3/5">
-      <p-dataView [value]="tableItems()">
-        <ng-template pTemplate="list" let-tableItems>
-          <div class="grid grid-cols-12 gap-4 grid-nogutter">
-            <div class="col-span-12" *ngFor="let item of tableItems; let first = first">
-              <div
-                class="flex flex-col sm:flex-row sm:items-center p-6 gap-4"
-                [ngClass]="{ 'border-t border-surface-200 dark:border-surface-700': !first }"
-              >
-                <div class="md:w-40 relative">
-                  <a [routerLink]="dataUtils.generateItemLink(item)">
-                    <img
-                      class="block xl:block mx-auto rounded-border w-full"
-                      src="{{API_DETAILS.base_url}}{{API_IMG_SIZES.poster_sizes[1]}}/{{item.poster_path}}"
-                      [alt]="item.title"
-                    />
-                  </a>
+  <!--        skeleton components     -->
+  @if(isLoading()) {
+<!--    <ng-template pTemplate="list" let-tableItems>-->
+      <div class="flex flex-col">
+        <div *ngFor="let i of counterArray(6); let first = first">
+          <div
+            class="flex flex-col xl:flex-row xl:items-start p-6 gap-6"
+            [ngClass]="{ 'border-t border-surface-200 dark:border-surface-700': !first }"
+          >
+            <p-skeleton styleClass="!w-9/12 sm:!w-64 xl:!w-40 !h-24 mx-auto" />
+            <div
+              class="flex flex-col sm:flex-row justify-between items-center xl:items-start flex-1 gap-6"
+            >
+              <div class="flex flex-col items-center sm:items-start gap-4">
+                <p-skeleton width="8rem" height="2rem" />
+                <p-skeleton width="6rem" height="1rem" />
+
+                <div class="flex items-center gap-4">
+                  <p-skeleton width="6rem" height="1rem" />
+                  <p-skeleton width="3rem" height="1rem" />
                 </div>
-                <div class="flex flex-col md:flex-row justify-between md:items-center flex-1 gap-6">
-                  <div class="flex flex-row md:flex-col justify-between items-start gap-2">
-                    <div>
-                      <a class="no-underline" [routerLink]="dataUtils.generateItemLink(item)">
-                        <div class="text-lg font-medium text-surface-900 dark:text-surface-0 mt-2 hover:text-primary "> {{ item.title }} </div>
-                      </a>
-                      <span class="font-medium text-secondary text-sm">{{ item.directors ? item.directors : item.creators }}</span>
-                    </div>
-                    <div class="bg-surface-100 dark:bg-surface-700 p-1" style="border-radius: 30px">
-                      <div
-                        class="bg-surface-0 dark:bg-surface-900 flex items-center gap-2 justify-center py-1 px-2"
-                        style="border-radius: 30px; box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.04), 0 1px 2px 0 rgba(0, 0, 0, 0.06)"
-                      >
-                                        <span class="text-surface-900 dark:text-surface-0 font-medium text-sm">{{
-                                            item.rating
-                                          }}</span>
-                        <i class="pi pi-star-fill text-yellow-500"></i>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="flex flex-col md:items-end gap-8">
-                                <span class="text-xl font-semibold text-surface-900 dark:text-surface-0">{{
-                                    item.genre_ids | genreNames
-                                  }}</span>
-                    <div class="flex flex-row-reverse md:flex-row gap-2">
-                      <p-button icon="pi pi-heart" [outlined]="true" />
-                    </div>
-                  </div>
-                </div>
+              </div>
+              <div class="flex sm:flex-col items-center sm:items-end gap-4 sm:gap-2">
+                <p-skeleton width="4rem" height="2rem" />
+                <p-skeleton size="3rem" shape="circle" />
               </div>
             </div>
           </div>
-        </ng-template>
-
-<!--        skeleton components     -->
-        @if(!tableItems) {
+        </div>
+      </div>
+<!--    </ng-template>-->
+  }
+  @else {
+    <!--  Table for remaining items -->
+      <div class="card w-3/5">
+        <p-dataView [value]="tableItems()">
           <ng-template pTemplate="list" let-tableItems>
-            <div class="flex flex-col">
-              <div *ngFor="let i of counterArray(6); let first = first">
+            <div class="grid grid-cols-12 gap-4 grid-nogutter">
+              <div class="col-span-12" *ngFor="let item of tableItems; let first = first">
                 <div
-                  class="flex flex-col xl:flex-row xl:items-start p-6 gap-6"
+                  class="flex flex-col sm:flex-row sm:items-center p-6 gap-4"
                   [ngClass]="{ 'border-t border-surface-200 dark:border-surface-700': !first }"
                 >
-                  <p-skeleton styleClass="!w-9/12 sm:!w-64 xl:!w-40 !h-24 mx-auto" />
-                  <div
-                    class="flex flex-col sm:flex-row justify-between items-center xl:items-start flex-1 gap-6"
-                  >
-                    <div class="flex flex-col items-center sm:items-start gap-4">
-                      <p-skeleton width="8rem" height="2rem" />
-                      <p-skeleton width="6rem" height="1rem" />
-
-                      <div class="flex items-center gap-4">
-                        <p-skeleton width="6rem" height="1rem" />
-                        <p-skeleton width="3rem" height="1rem" />
+                  <div class="md:w-40 relative">
+                    <a [routerLink]="item | itemUrl">
+                      <img
+                        class="block xl:block mx-auto rounded-border w-full"
+                        src="{{API_DETAILS.base_url}}{{API_IMG_SIZES.poster_sizes[1]}}/{{item.poster_path}}"
+                        [alt]="item.title"
+                      />
+                    </a>
+                  </div>
+                  <div class="flex flex-col md:flex-row justify-between md:items-center flex-1 gap-6">
+                    <div class="flex flex-row md:flex-col justify-between items-start gap-2">
+                      <div>
+                        <a class="no-underline" [routerLink]="item | itemUrl">
+                          <div class="text-lg font-medium text-surface-900 dark:text-surface-0 mt-2 hover:text-primary "> {{ item.title }} </div>
+                        </a>
+                        <span class="font-medium text-secondary text-sm">{{ item.overview }}</span>
+                      </div>
+                      <div class="bg-surface-100 dark:bg-surface-700 p-1" style="border-radius: 30px">
+                        <div
+                          class="bg-surface-0 dark:bg-surface-900 flex items-center gap-2 justify-center py-1 px-2"
+                          style="border-radius: 30px; box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.04), 0 1px 2px 0 rgba(0, 0, 0, 0.06)"
+                        >
+                          <span class="text-surface-900 dark:text-surface-0 font-medium text-sm">{{item.vote_average | number:'1.0-1'}}</span>
+                          <i class="pi pi-star-fill text-yellow-500"></i>
+                        </div>
                       </div>
                     </div>
-                    <div class="flex sm:flex-col items-center sm:items-end gap-4 sm:gap-2">
-                      <p-skeleton width="4rem" height="2rem" />
-                      <p-skeleton size="3rem" shape="circle" />
+                    <div class="flex flex-col md:items-end gap-8">
+                                <span class=" font-semibold text-surface-900 dark:text-surface-0">{{
+                                    item.genre_ids | genreNames
+                                  }}</span>
+                      <div class="flex flex-row-reverse md:flex-row gap-2">
+                        <p-button icon="pi pi-heart" [outlined]="true" />
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
           </ng-template>
-        }
-
-      </p-dataView>
-    </div>
+        </p-dataView>
+      </div>
+  }
   </section>
+
 </main>
 
