@@ -13,7 +13,6 @@ import {DataUtils} from '../../core/utils/data.utils';
 import {ActivatedRoute, RouterLink} from '@angular/router';
 import {SliderModule} from 'primeng/slider';
 import {LibraryService} from '../../core/services/library.service';
-import {ReleaseYearPipe} from '../../core/pipes/release-year.pipe';
 import {ItemUrlPipePipe} from '../../core/pipes/item-url-pipe.pipe';
 import {API_DETAILS} from '../../core/config/api-details';
 import {API_IMG_SIZES} from '../../core/config/api-image-sizes';
@@ -32,7 +31,6 @@ import {DatePipe, DecimalPipe} from '@angular/common';
     DatePickerModule,
     GenreNamesPipe,
     SliderModule,
-    ReleaseYearPipe,
     RouterLink,
     ItemUrlPipePipe,
     DatePipe,
