@@ -47,7 +47,6 @@
 
   <div class="top-table-wrapper flex content-center justify-center mt-64">
 
-    <!--suppress TypeScriptValidateTypes -->
     <p-table [value]="libraryItems()" [tableStyle]="{ 'min-width': '60rem' }">
       <ng-template pTemplate="caption">
         <span class="text-xl font-bold">Top 100 {{titleText()}}</span>
@@ -58,6 +57,7 @@
           <th>Title</th>
           <th> </th>
           <th>Year</th>
+<!--          TODO: change direcrods/creators column to something else-->
           <th>{{selectedMediaType() === MediaType.Film ? 'Directors' : 'Creators'}}</th>
           <th>Genres</th>
           <th>Rating</th>
@@ -68,19 +68,19 @@
           <td><a [routerLink]="item | itemUrl"><p-button [label]="item.title" [link]="true "/></a></td>
           <td>
             <img
-              [src]="item.image"
+              src="{{API_DETAILS.base_url}}{{API_IMG_SIZES.poster_sizes[3]}}/{{item.poster_path}}"
               [alt]="item.title"
               class="w-24 rounded"
             />
           </td>
-          <td>{{ item.releaseDate | releaseYear}}</td>
+          <td>{{ item.release_date | date: 'longDate' }}</td>
           <td>
             @for (person of item.directors || item.creators; track person) {
               <p-button [label]="person" [link]="true" [routerLink]="['/pages/library/film/popular']"/>
             }
           </td>
-          <td>{{ item.genres | genreNames }}</td>
-          <td>{{ item.rating }}</td>
+          <td>{{ item.genre_ids | genreNames }}</td>
+          <td>{{ item.vote_average | number:'1.0-1' }}</td>
         </tr>
       </ng-template>
     </p-table>

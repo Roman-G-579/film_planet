@@ -15,6 +15,9 @@ import {SliderModule} from 'primeng/slider';
 import {LibraryService} from '../../core/services/library.service';
 import {ReleaseYearPipe} from '../../core/pipes/release-year.pipe';
 import {ItemUrlPipePipe} from '../../core/pipes/item-url-pipe.pipe';
+import {API_DETAILS} from '../../core/config/api-details';
+import {API_IMG_SIZES} from '../../core/config/api-image-sizes';
+import {DatePipe, DecimalPipe} from '@angular/common';
 
 @Component({
   selector: 'app-top-titles',
@@ -31,7 +34,9 @@ import {ItemUrlPipePipe} from '../../core/pipes/item-url-pipe.pipe';
     SliderModule,
     ReleaseYearPipe,
     RouterLink,
-    ItemUrlPipePipe
+    ItemUrlPipePipe,
+    DatePipe,
+    DecimalPipe
   ],
   templateUrl: './top-titles.component.html',
   styleUrl: './top-titles.component.scss',
@@ -70,10 +75,14 @@ export class TopTitlesComponent implements OnInit {
         this.titleText.set("TV shows");
       }
 
-      this.lib.filterByMediaType(this.selectedMediaType());
-      this.lib.getFilteredList();
+      //this.lib.filterByMediaType(this.selectedMediaType());
+      //this.lib.getFilteredList();
+      this.lib.getItemListFromApi(this.selectedMediaType(),'top');
 
       this.genres = this.dataUtils.getGenreNamesFromIds(this.selectedMediaType());
     });
   }
+
+  protected readonly API_DETAILS = API_DETAILS;
+  protected readonly API_IMG_SIZES = API_IMG_SIZES;
 }

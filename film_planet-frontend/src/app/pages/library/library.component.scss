@@ -3,3 +3,9 @@
   height: 22.5rem;
   object-fit: cover;
 }
+
+::ng-deep .p-dataview-content {
+  & a {
+    color: var(--p-dataview-content-color);
+  }
+}
