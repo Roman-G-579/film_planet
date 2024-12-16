@@ -174,6 +174,11 @@ export class LibraryService {
         console.log(err);
       }
     });
+
+    // GET MOCK DATA
+    // this.libraryItems.set(LIBRARY_ITEMS.filter( (item) => {
+    //   return item.mediaType === mediaType;
+    // }));
   }
 
   /**
