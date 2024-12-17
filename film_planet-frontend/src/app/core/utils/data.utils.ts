@@ -1,7 +1,6 @@
 import {FilmGenres} from '../constants/film-genres.record';
 import {MediaType} from '../enums/media-type.enum';
 import {TvGenres} from '../constants/tv-genres.record';
-import {LibraryItem} from '../interfaces/library-item.interface';
 
 export class DataUtils {
 
@@ -58,21 +57,9 @@ export class DataUtils {
     return dateParts[0];
   }
 
-  /**
-   * Converts a JSON object of a library item to a LibraryItem object
-   * @param data the JSON object (cast to LibraryItem)
-   * @returns the item in LibraryItem form
-   */
-  static convertToLibraryItem(data: LibraryItem): LibraryItem {
-    const item: LibraryItem = {
-      id: data.id,
-      title: data.title,
-      mediaType: data.mediaType,
-      release_date: data.release_date,
-      genre_ids: data.genre_ids
-    }
-
-    return item;
+  static getYearList() {
+    const currentYear = new Date().getFullYear();
+    return Array.from({length: currentYear - 1880 + 1}, (_, i) => currentYear - i);
   }
 
 }
