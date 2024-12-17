@@ -103,18 +103,17 @@ export class LibraryComponent implements OnInit {
 
       // Selecting category of current page
       if(data['category'] === 'recent') {
-        //this.lib.filterByRecent();
+        this.lib.getItemListFromApi(this.selectedMediaType(), 'recent');
         this.categoryText.set("Recent");
       }
       else if (data['category'] === 'popular') {
-        //this.lib.filterByPopular();
+        this.lib.getItemListFromApi(this.selectedMediaType(), 'popular');
         this.categoryText.set("Popular");
       }
       else if (data['category'] === 'genre') {
         this.getGenreItemsAndSetCategoryText();
       }
 
-      this.lib.getItemListFromApi(this.selectedMediaType(), data['category']);
       this.isLoading.set(false);
     });
 
@@ -130,7 +129,7 @@ export class LibraryComponent implements OnInit {
       const genre = params.get('genre') || '';
 
       // Filters the library items based on the given genre
-      this.lib.filterByGenre(genre);
+      this.lib.getItemListFromApi(this.selectedMediaType(), 'genre', genre);
 
       // Sets the page text based on the given genre
       const genreName = this.dataUtils.getGenreNameFromId(Number(genre), this.selectedMediaType());
