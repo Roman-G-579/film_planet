@@ -1,29 +1,20 @@
 <main>
-  <div class="filter-wrapper grid grid-cols-12 m-auto w-5/6 max-w-screen-xl gap-4 bg-neutral-100 dark:bg-neutral-900 p-4 rounded-lg mt-6  justify-center">
+  <div class="filter-wrapper grid grid-cols-12 m-auto max-w-screen-xl gap-4 bg-neutral-100 dark:bg-neutral-900 p-4 rounded-lg mt-6 mb-6 justify-center">
     <div  class="col-span-1">
       <p>Filters:</p>
     </div>
 
     <div class="year-filter-wrapper col-span-3">
       <p-iftalabel class="w-full md:w-56">
-        <p-datePicker
-          [(ngModel)]="selectedYear"
-          view="year"
-          [minDate]="minYear"
-          [maxDate]="maxYear"
-          [showClear]="true"
-          dateFormat="yy"
-          (onSelect)="lib.filterByYear(selectedYear)"
-          (onClear)="lib.removeDateFilter()"
-        />
-        <label for="dd-year">Year</label>
+        <p-select [(ngModel)]="selectedYear" inputId="dd-mediaType" [options]="years" [showClear]="true" styleClass="w-full" (onChange)="lib.filterByYear(selectedYear)" (onClear)="lib.removeDateFilter()" />
+        <label>Year</label>
       </p-iftalabel>
     </div>
 
     <div class="genre-filter-wrapper col-span-3 m-auto">
       <p-iftalabel class="w-full md:w-56">
         <p-select [(ngModel)]="selectedGenre" inputId="dd-mediaType" [options]="genres" [showClear]="true" styleClass="w-full" (onChange)="lib.filterByGenre(selectedGenre)" (onClear)="lib.removeGenreFilter()" />
-        <label for="dd-mediaType">Genre</label>
+        <label>Genre</label>
       </p-iftalabel>
     </div>
 
@@ -45,9 +36,9 @@
     </div>
   </div>
 
-  <div class="top-table-wrapper flex content-center justify-center mt-64">
+  <div class="top-table-wrapper lg:max-w-[90%] xl:max-w-[80%] lg:m-auto">
 
-    <p-table [value]="libraryItems()" [tableStyle]="{ 'min-width': '60rem' }">
+    <p-table [value]="libraryItems()"  [tableStyle]="{ 'min-width': '60rem' }" responsiveLayout="stack" scrollable="true" scrollHeight="85vh">
       <ng-template pTemplate="caption">
         <span class="text-xl font-bold">Top 100 {{titleText()}}</span>
 
@@ -57,32 +48,38 @@
           <th>Title</th>
           <th> </th>
           <th>Year</th>
-<!--          TODO: change direcrods/creators column to something else-->
-          <th>{{selectedMediaType() === MediaType.Film ? 'Directors' : 'Creators'}}</th>
           <th>Genres</th>
           <th>Rating</th>
+          <th>Number of Votes</th>
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-item>
         <tr>
-          <td><a [routerLink]="item | itemUrl"><p-button [label]="item.title" [link]="true "/></a></td>
+          <td><a [routerLink]="item | itemUrl"><p-button styleClass="text-left" [label]="item.title" [link]="true "/></a></td>
           <td>
             <img
               src="{{API_DETAILS.base_url}}{{API_IMG_SIZES.poster_sizes[3]}}/{{item.poster_path}}"
               [alt]="item.title"
-              class="w-24 rounded"
+              class="w-48 lg:w-24 rounded"
             />
           </td>
-          <td>{{ item.release_date | date: 'longDate' }}</td>
-          <td>
-            @for (person of item.directors || item.creators; track person) {
-              <p-button [label]="person" [link]="true" [routerLink]="['/pages/library/film/popular']"/>
-            }
-          </td>
+          <td>{{ item.release_date || item.first_air_date | date: 'yyyy' }}</td>
           <td>{{ item.genre_ids | genreNames }}</td>
-          <td>{{ item.vote_average | number:'1.0-1' }}</td>
+          <td class="text-xl">
+            <div class="text-center">
+              <b>{{ item.vote_average | number:'1.0-1' }}</b>
+            </div>
+          </td>
+          <td>
+            <div class="text-center">
+              <span class="inline lg:hidden">(</span>
+              {{ item.vote_count }}
+              <span class="inline lg:hidden">ratings)</span>
+            </div>
+          </td>
         </tr>
       </ng-template>
     </p-table>
   </div>
+
 </main>

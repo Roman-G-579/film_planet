@@ -54,9 +54,10 @@ export class TopTitlesComponent implements OnInit {
   genres: string[] = [];
   selectedGenre: string | undefined;
 
+  years: number[] = this.dataUtils.getYearList();
   minYear: Date | undefined = new Date(new Date().setFullYear(1900));
   maxYear: Date | undefined = new Date();
-  selectedYear: Date | undefined;
+  selectedYear: number | undefined;
 
   rangeValues: number[] = [0.0, 10.0];
 
@@ -73,8 +74,6 @@ export class TopTitlesComponent implements OnInit {
         this.titleText.set("TV shows");
       }
 
-      //this.lib.filterByMediaType(this.selectedMediaType());
-      //this.lib.getFilteredList();
       this.lib.getItemListFromApi(this.selectedMediaType(),'top');
 
       this.genres = this.dataUtils.getGenreNamesFromIds(this.selectedMediaType());
