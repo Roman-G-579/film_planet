@@ -24,6 +24,9 @@ export class LibraryService {
 
   libraryItems: WritableSignal<LibraryItem[]> = signal<LibraryItem[]>([]);
 
+  // Backup copy of original items list
+  unfilteredItems: WritableSignal<LibraryItem[]> = signal<LibraryItem[]>([]);
+
   mediaFilter: MediaType = MediaType.Film;
 
   minDateFilter: string | undefined;
@@ -46,12 +49,12 @@ export class LibraryService {
 
   /**
    * Filters by the library item's year of release
-   * @param date the item's release date
+   * @param year the item's release year
    */
-  filterByYear(date: Date | undefined) {
-    if (date) {
-      this.minDateFilter = new Date(date.getFullYear(), 0, 1).toString();
-      this.maxDateFilter = new Date(date.getFullYear(), 11, 31).toString();
+  filterByYear(year: number | undefined) {
+    if (year) {
+      this.minDateFilter = `${year}-01-01`;
+      this.maxDateFilter = `${year}-12-31`;
     }
 
     this.getFilteredList();
@@ -129,7 +132,7 @@ export class LibraryService {
    */
   removeGenreFilter() {
     this.genreFilter = undefined;
-    //this.getFilteredList();
+    this.getFilteredList();
   }
 
   /**
@@ -138,7 +141,7 @@ export class LibraryService {
   removeDateFilter() {
     this.minDateFilter = undefined;
     this.maxDateFilter = undefined;
-    //this.getFilteredList();
+    this.getFilteredList();
   }
 
   /**
@@ -156,11 +159,21 @@ export class LibraryService {
    * Fetches a list of items from the api based on the specified media type and category
    * @param mediaType item type - film or TV
    * @param category  recent / popular / top
+   * @param genre (optional) the item's genre
    */
-  getItemListFromApi(mediaType: MediaType, category: string) {
-    const { href } = new URL(`library/${mediaType}/${category}`, this.apiUrl);
+  getItemListFromApi(mediaType: MediaType, category: string, genre?: string) {
+    let pageUrl;
+    if (genre) {
+      pageUrl = `library/${mediaType}/genre/${genre}`;
+    }
+    else {
+      pageUrl = `library/${mediaType}/${category}`;
+    }
+    console.log(pageUrl)
+    const { href } = new URL(pageUrl, this.apiUrl);
+    const headers = genre ? new HttpHeaders().set('genre', genre) : undefined;
 
-    this.http.get(href).subscribe({
+    this.http.get(href, {headers}).subscribe({
       next: (data) => {
         const resultsObject = data as ItemList;
         let resultItems: LibraryItem[] = resultsObject.results;
@@ -169,6 +182,7 @@ export class LibraryService {
         }
 
         this.libraryItems.set(resultItems);
+        this.unfilteredItems.set(resultItems);
       },
       error: (err) => {
         console.log(err);
@@ -179,6 +193,7 @@ export class LibraryService {
     // this.libraryItems.set(LIBRARY_ITEMS.filter( (item) => {
     //   return item.mediaType === mediaType;
     // }));
+    // this.unfilteredItems.set(this.libraryItems());
   }
 
   /**
@@ -216,7 +231,7 @@ export class LibraryService {
    * (minDateFilter, maxDateFilter, genreFilter, ratingFilter, mediaFilter)
    */
   getFilteredList() {
-    const filteredItems: LibraryItem[] = LIBRARY_ITEMS.filter(
+    const filteredItems: LibraryItem[] = this.unfilteredItems().filter(
       (item) => {
         // The item's release date is converted to a Date object if necessary
         //const releaseDate = item.release_date instanceof Date ? item.release_date : new Date(item.release_date, 0, 1);
@@ -225,8 +240,7 @@ export class LibraryService {
           (!this.minDateFilter || releaseDate >= this.minDateFilter) &&
           (!this.maxDateFilter || releaseDate <= this.maxDateFilter) &&
           (!this.genreFilter || item.genre_ids.includes(this.genreFilter)) &&
-          (!this.ratingFilter || (item.vote_average && item.vote_average >= this.ratingFilter[0] && item.vote_average <= this.ratingFilter[1])) &&
-          (!this.mediaFilter || item.mediaType === this.mediaFilter)
+          (!this.ratingFilter || (item.vote_average && item.vote_average >= this.ratingFilter[0] && item.vote_average <= this.ratingFilter[1]))
         );
       }
     );
