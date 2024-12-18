@@ -1,9 +1,15 @@
-import {ChangeDetectionStrategy, Component, inject, OnInit, signal, WritableSignal} from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  OnInit,
+  signal,
+  WritableSignal
+} from '@angular/core';
 import {TableModule} from 'primeng/table';
 import {ButtonModule} from 'primeng/button';
 import {LibraryItem} from '../../core/interfaces/library-item.interface';
 import {IftaLabelModule} from 'primeng/iftalabel';
-import {Select} from 'primeng/select';
 import {FormsModule} from '@angular/forms';
 import {MediaType} from '../../core/enums/media-type.enum';
 import {CalendarModule} from 'primeng/calendar';
@@ -17,6 +23,8 @@ import {ItemUrlPipePipe} from '../../core/pipes/item-url-pipe.pipe';
 import {API_DETAILS} from '../../core/config/api-details';
 import {API_IMG_SIZES} from '../../core/config/api-image-sizes';
 import {DatePipe, DecimalPipe} from '@angular/common';
+import {Drawer} from 'primeng/drawer';
+import {TitlesFilterComponent} from './titles-filter/titles-filter.component';
 
 @Component({
   selector: 'app-top-titles',
@@ -25,7 +33,6 @@ import {DatePipe, DecimalPipe} from '@angular/common';
     TableModule,
     ButtonModule,
     IftaLabelModule,
-    Select,
     FormsModule,
     CalendarModule,
     DatePickerModule,
@@ -34,7 +41,9 @@ import {DatePipe, DecimalPipe} from '@angular/common';
     RouterLink,
     ItemUrlPipePipe,
     DatePipe,
-    DecimalPipe
+    DecimalPipe,
+    Drawer,
+    TitlesFilterComponent
   ],
   templateUrl: './top-titles.component.html',
   styleUrl: './top-titles.component.scss',
@@ -44,22 +53,17 @@ export class TopTitlesComponent implements OnInit {
   protected readonly lib = inject(LibraryService);
   private route = inject(ActivatedRoute);
   protected readonly dataUtils = DataUtils;
-  protected readonly MediaType = MediaType;
+  protected readonly API_DETAILS = API_DETAILS;
+  protected readonly API_IMG_SIZES = API_IMG_SIZES;
+
+  topDrawerVisible: boolean = false;
 
   libraryItems: WritableSignal<LibraryItem[]> = this.lib.libraryItems;
   titleText: WritableSignal<string> = signal("");
 
   selectedMediaType: WritableSignal<MediaType> = signal(MediaType.Film);
 
-  genres: string[] = [];
-  selectedGenre: string | undefined;
-
-  years: number[] = this.dataUtils.getYearList();
-  minYear: Date | undefined = new Date(new Date().setFullYear(1900));
-  maxYear: Date | undefined = new Date();
-  selectedYear: number | undefined;
-
-  rangeValues: number[] = [0.0, 10.0];
+  genres: WritableSignal<string[]> = signal([]);
 
   ngOnInit() {
     this.lib.clearAllFilters();
@@ -76,10 +80,8 @@ export class TopTitlesComponent implements OnInit {
 
       this.lib.getItemListFromApi(this.selectedMediaType(),'top');
 
-      this.genres = this.dataUtils.getGenreNamesFromIds(this.selectedMediaType());
+      this.genres.set(this.dataUtils.getGenreNamesFromIds(this.selectedMediaType()));
     });
   }
 
-  protected readonly API_DETAILS = API_DETAILS;
-  protected readonly API_IMG_SIZES = API_IMG_SIZES;
 }

@@ -1,39 +1,11 @@
 <main>
-  <div class="filter-wrapper grid grid-cols-12 m-auto max-w-screen-xl gap-4 bg-neutral-100 dark:bg-neutral-900 p-4 rounded-lg mt-6 mb-6 justify-center">
-    <div  class="col-span-1">
-      <p>Filters:</p>
-    </div>
+  <app-titles-filter class="hidden lg:block" [genres]="genres()"></app-titles-filter>
 
-    <div class="year-filter-wrapper col-span-3">
-      <p-iftalabel class="w-full md:w-56">
-        <p-select [(ngModel)]="selectedYear" inputId="dd-mediaType" [options]="years" [showClear]="true" styleClass="w-full" (onChange)="lib.filterByYear(selectedYear)" (onClear)="lib.removeDateFilter()" />
-        <label>Year</label>
-      </p-iftalabel>
-    </div>
-
-    <div class="genre-filter-wrapper col-span-3 m-auto">
-      <p-iftalabel class="w-full md:w-56">
-        <p-select [(ngModel)]="selectedGenre" inputId="dd-mediaType" [options]="genres" [showClear]="true" styleClass="w-full" (onChange)="lib.filterByGenre(selectedGenre)" (onClear)="lib.removeGenreFilter()" />
-        <label>Genre</label>
-      </p-iftalabel>
-    </div>
-
-    <div class="rating-filter-wrapper col-span-3 grid grid-rows-2 grid-flow-col m-auto p-1">
-      <div class="slider-top-wrapper col-span-2 flex ">
-        <!--suppress CssUnresolvedCustomProperty -->
-        <label class="w-[13rem] ml-1" style="color: var(--p-form-field-float-label-color);">Rating Range: <b>{{rangeValues[0].toPrecision(2)}}</b> - <b>{{rangeValues[1].toPrecision(2)}}</b></label>
-      </div>
-      <div class="col-span-2 flex">
-        <p-slider [(ngModel)]="rangeValues" [range]="true" [min]="0.0" [max]="10.0" step="0.1" styleClass="w-[8.5vw] mt-2 ml-3" />
-      </div>
-      <div class="row-span-2 self-center mr-1">
-        <p-button icon="pi pi-filter" title="Update List" size="small" raised (onClick)="lib.filterByRating(rangeValues[0],rangeValues[1])"></p-button>
-      </div>
-    </div>
-
-    <div class="clear-btn-wrapper col-span-2 m-auto">
-      <p-button icon="pi pi-times" title="Clear Filters" (click)="lib.clearAllFilters()" rounded raised />
-    </div>
+  <p-drawer styleClass="!h-auto" header="Filters" [(visible)]="topDrawerVisible" position="top">
+    <app-titles-filter [genres]="genres()" (closeDrawer)="topDrawerVisible = false"></app-titles-filter>
+  </p-drawer>
+  <div class="flex ml-4 mt-2 mb-2">
+    <p-button class="lg:hidden" type="button" label="Filters" (click)="topDrawerVisible = true" icon="pi pi-sliders-h" />
   </div>
 
   <div class="top-table-wrapper lg:max-w-[90%] xl:max-w-[80%] lg:m-auto">
