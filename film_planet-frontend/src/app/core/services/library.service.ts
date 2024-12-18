@@ -87,6 +87,28 @@ export class LibraryService {
     this.getFilteredList();
   }
 
+  applyFilters(year: number | undefined, genre: string | number | undefined, minRating: number, maxRating: number) {
+    // Date Filters
+    if (year) {
+      this.minDateFilter = `${year}-01-01`;
+      this.maxDateFilter = `${year}-12-31`;
+    }
+
+    // Genre Filters
+    if (Number(genre)) {
+      this.genreFilter = Number(genre);
+    }
+    else if (genre) {
+      this.genreFilter = this.dataUtils.getGenreIdFromName(<string>genre);
+    }
+
+    // Rating Filters
+    this.ratingFilter[0] = (minRating);
+    this.ratingFilter[1] = (maxRating);
+
+    // Updates the items list
+    this.getFilteredList();
+  }
   /**
    * Retrieves an item from the library matching the given name
    * @param id the TMDB id of the film or tv show
@@ -152,7 +174,8 @@ export class LibraryService {
     this.removeDateFilter();
     this.ratingFilter[0] = 0.0;
     this.ratingFilter[1] = 10;
-    this.libraryItems.set([]);
+    this.getFilteredList();
+    //this.libraryItems.set([]);
   }
 
   /**
