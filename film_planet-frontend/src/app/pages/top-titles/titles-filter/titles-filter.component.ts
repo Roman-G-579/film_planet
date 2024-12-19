@@ -42,6 +42,16 @@ export class TitlesFilterComponent {
     this.lib.clearAllFilters();
   }
 
+  clearDateFilter() {
+    this.selectedYear = undefined;
+    this.lib.removeDateFilter();
+  }
+
+  clearGenreFilter() {
+    this.selectedGenre = undefined;
+    this.lib.removeGenreFilter();
+  }
+
   onCloseDrawer() {
     this.closeDrawer.emit();
   }

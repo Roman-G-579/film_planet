@@ -6,14 +6,14 @@
 
     <div class="year-filter-wrapper col-span-2 xl:col-span-3">
       <p-iftalabel class="w-full ">
-        <p-select [(ngModel)]="selectedYear" inputId="dd-mediaType" [options]="years" [showClear]="true" styleClass="w-full" (onClear)="lib.removeDateFilter()" />
+        <p-select [(ngModel)]="selectedYear" inputId="dd-mediaType" [options]="years" [showClear]="true" styleClass="w-full" (onClear)="clearDateFilter()" />
         <label>Year</label>
       </p-iftalabel>
     </div>
 
     <div class="genre-filter-wrapper col-span-2 xl:col-span-3 ">
       <p-iftalabel class="w-full ">
-        <p-select [(ngModel)]="selectedGenre" inputId="dd-mediaType" [options]="genres()" [showClear]="true" styleClass="w-full" (onClear)="lib.removeGenreFilter()" />
+        <p-select [(ngModel)]="selectedGenre" inputId="dd-mediaType" [options]="genres()" [showClear]="true" styleClass="w-full" (onClear)="clearGenreFilter()" />
         <label>Genre</label>
       </p-iftalabel>
     </div>
@@ -26,9 +26,6 @@
       <div class="col-span-2 flex">
         <p-slider class="w-11/12" [(ngModel)]="ratingRangeValues" [range]="true" [min]="0.0" [max]="10.0" step="0.1" styleClass="mt-2 ml-3" />
       </div>
-<!--      <div class="row-span-2 self-center mr-1">-->
-<!--        <p-button icon="pi pi-filter" title="Update List" size="small" raised (onClick)="lib.filterByRating(rangeValues[0],rangeValues[1])"></p-button>-->
-<!--      </div>-->
     </div>
 
     <div class="clear-btn-wrapper m-auto  col-span-1 ">
