@@ -9,7 +9,7 @@ import {LibraryItem} from '../library-item.interface';
  *
  * TV: On The Air, Popular, Top Rated
  */
-export interface ItemList {
+export interface ItemListResponse {
   dates?: {
     maximum: string;
     minimum: string;
