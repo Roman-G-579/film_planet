@@ -48,15 +48,7 @@ export class ItemComponent implements OnInit {
   private route = inject(ActivatedRoute);
   protected readonly MediaType = MediaType;
 
-  item: WritableSignal<LibraryItem> = signal<LibraryItem>({
-    id: 0,
-    mediaType: MediaType.Film,
-    title: "",
-    release_date: '',
-    duration: 0,
-    genre_ids:[],
-    starring: []
-  });
+  item: WritableSignal<LibraryItem> = this.lib.item;
   itemGenres: WritableSignal<string[]> = signal<string[]>([]);
   releaseYear: WritableSignal<string> = signal<string>('');
   endYear: WritableSignal<string | undefined> = signal<string | undefined>(undefined);
@@ -82,20 +74,11 @@ export class ItemComponent implements OnInit {
    * @param id the id of the item
    */
   setParams(id: number) {
-    const retrievedItem = this.lib.getItemById(id);
-
-    if (retrievedItem) {
-      this.item.set(retrievedItem);
-      this.itemGenres.set(this.dataUtils.getGenreNamesFromIds(retrievedItem.mediaType, retrievedItem.genre_ids));
-
-      this.releaseYear.set(this.dataUtils.getYearFromDate(retrievedItem.release_date || ''));
-      if (retrievedItem.endYear) {
-        this.endYear.set(this.dataUtils.getYearFromDate(retrievedItem.endYear));
-      }
+    this.lib.getItemFromApi(MediaType.Film, id);
 
       this.reviews.set(this.lib.getReviewsByItemId(id));
 
-      if (retrievedItem.mediaType === MediaType.TV) {
+      if (this.item().mediaType === MediaType.TV) {
         this.seasons.set(this.lib.getShowSeasons(id));
 
         for (const idx in this.seasons()) {
@@ -103,7 +86,7 @@ export class ItemComponent implements OnInit {
           season.episodes = this.lib.getSeasonEpisodes(season.id);
         }
       }
-    }
   }
+
 
 }

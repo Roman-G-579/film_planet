@@ -8,7 +8,8 @@ import {REVIEWS} from '../mock-data/reviews';
 import {DataUtils} from '../utils/data.utils';
 import {environment} from '../../../environments/environment';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {ItemList} from '../interfaces/api-responses/item-list-response.interface';
+import {ItemListResponse} from '../interfaces/api-responses/item-list-response.interface';
+import {log} from '@angular-devkit/build-angular/src/builders/ssr-dev-server';
 
 @Injectable({
   providedIn: 'root',
@@ -26,6 +27,11 @@ export class LibraryService {
 
   // Backup copy of original items list
   unfilteredItems: WritableSignal<LibraryItem[]> = signal<LibraryItem[]>([]);
+
+  item: WritableSignal<LibraryItem> = signal<LibraryItem>({
+    id: 0,
+    mediaType: MediaType.Film
+  });
 
   mediaFilter: MediaType = MediaType.Film;
 
@@ -154,7 +160,6 @@ export class LibraryService {
    */
   removeGenreFilter() {
     this.genreFilter = undefined;
-    this.getFilteredList();
   }
 
   /**
@@ -163,7 +168,6 @@ export class LibraryService {
   removeDateFilter() {
     this.minDateFilter = undefined;
     this.maxDateFilter = undefined;
-    this.getFilteredList();
   }
 
   /**
@@ -175,7 +179,6 @@ export class LibraryService {
     this.ratingFilter[0] = 0.0;
     this.ratingFilter[1] = 10;
     this.getFilteredList();
-    //this.libraryItems.set([]);
   }
 
   /**
@@ -192,16 +195,17 @@ export class LibraryService {
     else {
       pageUrl = `library/${mediaType}/${category}`;
     }
-    console.log(pageUrl)
     const { href } = new URL(pageUrl, this.apiUrl);
     const headers = genre ? new HttpHeaders().set('genre', genre) : undefined;
 
     this.http.get(href, {headers}).subscribe({
       next: (data) => {
-        const resultsObject = data as ItemList;
+        const resultsObject = data as ItemListResponse;
         let resultItems: LibraryItem[] = resultsObject.results;
         if (mediaType === MediaType.TV) {
-          resultItems = this.setItemNames(resultItems);
+          for (let item of resultItems) {
+            item = this.setItemName(item);
+          }
         }
 
         this.libraryItems.set(resultItems);
@@ -219,18 +223,44 @@ export class LibraryService {
     // this.unfilteredItems.set(this.libraryItems());
   }
 
+
   /**
-   * Sets the title fields for all library items (tv shows are generated with name fields
+   * Fetches an item from the api based on the specified id
+   * @param mediaType item type - film or TV (used for url generation)
+   * @param id the item's TMDB id
+   */
+  getItemFromApi(mediaType: MediaType, id: number) {
+    const pageUrl = `${mediaType}/${id}`;
+    const { href } = new URL(pageUrl, this.apiUrl);
+    let resultItem: LibraryItem;
+
+    this.http.get(href).subscribe({
+      next: (data) => {
+        resultItem = data as LibraryItem;
+        if (mediaType === MediaType.TV) {
+          resultItem = this.setItemName(resultItem);
+        }
+        this.item.set(resultItem);
+      },
+      error: (err) => {
+        console.log(err);
+      }
+    });
+
+  }
+
+  /**
+   * Sets the title fields for a library item (tv shows are generated with name fields
    * instead of title fields)
-   * @param libraryItems the item array
+   * @param libraryItem the item
    * @private
    */
-  private setItemNames(libraryItems: LibraryItem[]) {
-    for (let item of libraryItems) {
-      item.title = item.name || '';
-      item.original_title = item.original_name;
-    }
-    return libraryItems;
+  private setItemName(libraryItem: LibraryItem) {
+    //for (let item of libraryItems) {
+    libraryItem.title = libraryItem.name || '';
+    libraryItem.original_title = libraryItem.original_name;
+    // }
+    return libraryItem;
   }
   /**
    * Fetches an expanded list of details of a film or TV show
@@ -262,7 +292,7 @@ export class LibraryService {
         return (
           (!this.minDateFilter || releaseDate >= this.minDateFilter) &&
           (!this.maxDateFilter || releaseDate <= this.maxDateFilter) &&
-          (!this.genreFilter || item.genre_ids.includes(this.genreFilter)) &&
+          (!this.genreFilter || item.genre_ids?.includes(this.genreFilter)) &&
           (!this.ratingFilter || (item.vote_average && item.vote_average >= this.ratingFilter[0] && item.vote_average <= this.ratingFilter[1]))
         );
       }

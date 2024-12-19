@@ -10,7 +10,7 @@
           <span class="text-surface-400"> ({{releaseYear()}})</span></h1>
       </div>
       <div class="genres-wrapper col-span-2 flex items-center">
-        <div class="genres-wrapper col-span-2">{{itemGenres().join(", ")}}</div>
+        <div class="genres-wrapper col-span-2">{{item().genre_ids.join(", ")}}</div>
       </div>
       <div class="overview-wrapper col-span-2"><b>Overview: </b> {{item().overview}}</div>
       <div class="starring-wrapper col-span-2 flex items-center">
@@ -22,9 +22,9 @@
       </div>
       <div class="directors-creators-wrapper col-span-2 flex items-center">
         <p><b>{{item().mediaType === MediaType.Film ? 'Directed by: ' : 'Created by: '}}</b>
-        @for (person of item().directors || item().creators; track person) {
-          <p-button [label]="person" [link]="true" [routerLink]="['/pages/library/film/popular']" />
-        }
+<!--        @for (person of item().directors || item().creators; track person) {-->
+<!--          <p-button [label]="person" [link]="true" [routerLink]="['/pages/library/film/popular']" />-->
+<!--        }-->
       </div>
       <div class="media-buttons-wrapper flex justify-end col-span-3">
         <div class="media-buttons flex gap-4">
