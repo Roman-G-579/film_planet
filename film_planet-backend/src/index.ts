@@ -7,6 +7,7 @@ import {errorHandler} from "./middlewares/error.middleware";
 import {connectToDb} from "./config/db";
 import {Config} from "./config/config";
 import libraryRouter from "./routes/library.router";
+import detailsRouter from "./routes/details.router";
 
 const app = express();
 const httpServer = createServer(app);
@@ -30,6 +31,7 @@ app.get('/api/ping', (req, res) => {
 });
 
 app.use('/api/library', libraryRouter);
+app.use('/api/details', detailsRouter)
 
 // error handler
 app.use(errorHandler);
