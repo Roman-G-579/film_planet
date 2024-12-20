@@ -14,6 +14,9 @@ import {Tab, TabList, TabPanel, TabPanels, Tabs} from 'primeng/tabs';
 import {PanelModule} from 'primeng/panel';
 import {Review} from '../../core/interfaces/review.interface';
 import {MinutesToHoursPipe} from '../../core/pipes/minutes-to-hours.pipe';
+import {API_DETAILS} from '../../core/config/api-details';
+import {API_IMG_SIZES} from '../../core/config/api-image-sizes';
+import {Credits} from '../../core/interfaces/credits.interface';
 
 @Component({
   selector: 'app-item',
@@ -49,6 +52,9 @@ export class ItemComponent implements OnInit {
   protected readonly MediaType = MediaType;
 
   item: WritableSignal<LibraryItem> = this.lib.item;
+
+  //TODO: display credits on item's page
+  credits: WritableSignal<Credits | undefined> = this.lib.credits;
   itemGenres: WritableSignal<string[]> = signal<string[]>([]);
   releaseYear: WritableSignal<string> = signal<string>('');
   endYear: WritableSignal<string | undefined> = signal<string | undefined>(undefined);
@@ -76,17 +82,21 @@ export class ItemComponent implements OnInit {
   setParams(id: number) {
     this.lib.getItemFromApi(MediaType.Film, id);
 
-      this.reviews.set(this.lib.getReviewsByItemId(id));
+    this.itemGenres.set(this.dataUtils.getGenreNamesFromIds(this.item().mediaType, this.item().genre_ids));
 
-      if (this.item().mediaType === MediaType.TV) {
-        this.seasons.set(this.lib.getShowSeasons(id));
+    this.reviews.set(this.lib.getReviewsByItemId(id));
 
-        for (const idx in this.seasons()) {
-          const season = this.seasons()[idx];
-          season.episodes = this.lib.getSeasonEpisodes(season.id);
-        }
+    if (this.item().mediaType === MediaType.TV) {
+      this.seasons.set(this.lib.getShowSeasons(id));
+
+      for (const idx in this.seasons()) {
+        const season = this.seasons()[idx];
+        season.episodes = this.lib.getSeasonEpisodes(season.id);
       }
+    }
   }
 
 
+  protected readonly API_DETAILS = API_DETAILS;
+  protected readonly API_IMG_SIZES = API_IMG_SIZES;
 }

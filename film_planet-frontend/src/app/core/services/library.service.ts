@@ -9,7 +9,7 @@ import {DataUtils} from '../utils/data.utils';
 import {environment} from '../../../environments/environment';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {ItemListResponse} from '../interfaces/api-responses/item-list-response.interface';
-import {log} from '@angular-devkit/build-angular/src/builders/ssr-dev-server';
+import {Credits} from '../interfaces/credits.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -28,9 +28,16 @@ export class LibraryService {
   // Backup copy of original items list
   unfilteredItems: WritableSignal<LibraryItem[]> = signal<LibraryItem[]>([]);
 
+  // Details of specific item
   item: WritableSignal<LibraryItem> = signal<LibraryItem>({
     id: 0,
-    mediaType: MediaType.Film
+    mediaType: MediaType.Film,
+  });
+
+  credits: WritableSignal<Credits | undefined> = signal<Credits | undefined>({
+    id: 0,
+    cast: [],
+    crew: []
   });
 
   mediaFilter: MediaType = MediaType.Film;
@@ -230,16 +237,22 @@ export class LibraryService {
    * @param id the item's TMDB id
    */
   getItemFromApi(mediaType: MediaType, id: number) {
-    const pageUrl = `${mediaType}/${id}`;
+    const pageUrl = `details/${mediaType}/${id}`;
     const { href } = new URL(pageUrl, this.apiUrl);
+    const mediaTypeHeader = mediaType === MediaType.Film ? 'movie' : 'tv';
+    let headers = new HttpHeaders().set('media-type', mediaTypeHeader);
+    headers = headers.set('id',id.toString());
+
     let resultItem: LibraryItem;
 
-    this.http.get(href).subscribe({
+    this.http.get(href, {headers}).subscribe({
       next: (data) => {
         resultItem = data as LibraryItem;
         if (mediaType === MediaType.TV) {
           resultItem = this.setItemName(resultItem);
         }
+        this.credits.set(resultItem.credits);
+        console.log(this.credits())
         this.item.set(resultItem);
       },
       error: (err) => {
