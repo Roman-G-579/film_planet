@@ -1,5 +1,5 @@
 import {MediaType} from '../enums/media-type.enum';
-import {CastCrewMember} from './cast-crew-member.interface';
+import {Credits} from './credits.interface';
 
 /**
  * Interface for an individual film or tv show
@@ -30,5 +30,5 @@ export interface LibraryItem {
   backdrop_path?: string;
   vote_average?: number;
   vote_count?: number;
-  credits?: CastCrewMember[];
+  credits?: Credits;
 }
