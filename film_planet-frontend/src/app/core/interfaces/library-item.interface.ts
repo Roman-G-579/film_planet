@@ -1,5 +1,6 @@
 import {MediaType} from '../enums/media-type.enum';
 import {Credits} from './credits.interface';
+import {Genre} from './genre.interface';
 
 /**
  * Interface for an individual film or tv show
@@ -15,7 +16,7 @@ export interface LibraryItem {
   endYear?: string; // for tv shows
   runtime?: number; // in minutes
   overview?: string;
-  genre_ids?: number[];
+  genres: Genre[];
   starring?: string[];
   directors?: string[];
   created_by?: string[];
