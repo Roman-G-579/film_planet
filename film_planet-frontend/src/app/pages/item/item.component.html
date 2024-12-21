@@ -10,22 +10,26 @@
           <span class="text-surface-400"> ({{item().release_date | date: 'yyyy'}})</span></h1>
       </div>
       <div class="genres-wrapper col-span-2 flex items-center">
-        <div class="genres-wrapper col-span-2">{{itemGenres().join(", ")}}</div>
+        <div class="genres-wrapper col-span-3">
+          @for (genre of itemGenres(); track genre; let last = $last) {
+            {{genre.name}}<span *ngIf="!last">,</span>
+          }
+        </div>
       </div>
       <div class="overview-wrapper col-span-2"><b>Overview: </b> {{item().overview}}</div>
-      <div class="starring-wrapper col-span-2 flex items-center">
+      <div class="starring-wrapper col-span-3 flex items-center">
         <p>
           <b>Starring:</b>
-          @for (actor of item().starring; track actor) {
-            <p-button [label]="actor" [link]="true" [routerLink]="['/pages/library/film/popular']" />
+          @for (actor of mainCast(); track actor) {
+            <p-button [label]="actor.name" [link]="true" [routerLink]="['/pages/library/film/popular']" />
           }
         </p>
       </div>
-      <div class="directors-creators-wrapper col-span-2 flex items-center">
+      <div class="directors-creators-wrapper col-span-3 flex items-center">
         <p><b>{{item().mediaType === MediaType.Film ? 'Directed by: ' : 'Created by: '}}</b>
-<!--        @for (person of item().directors || item().creators; track person) {-->
-<!--          <p-button [label]="person" [link]="true" [routerLink]="['/pages/library/film/popular']" />-->
-<!--        }-->
+        @for (person of directorsAndCreators(); track person) {
+          <p-button [label]="person.name" [link]="true" [routerLink]="['/pages/library/film/popular']" />
+        }
         </p>
       </div>
       <div class="media-buttons-wrapper flex justify-end col-span-3">
@@ -41,9 +45,9 @@
       <div class="rating-wrapper flex flex-col items-end justify-center mt-7  ">
         <div class="rating-num flex gap-2 text-5xl -mb-4">
           <i class="pi pi-star-fill" style="font-size: 2.5rem; color: gold"></i>
-          <span><b>{{item().vote_average}}</b></span>
+          <span><b>{{item().vote_average | number:'1.0-1'}}</b></span>
         </div>
-        <p>5000 Ratings</p>
+        <p>{{item().vote_count}} Ratings</p>
       </div>
     </section>
 

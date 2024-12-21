@@ -6,7 +6,7 @@ import {ActivatedRoute, RouterLink} from '@angular/router';
 import {CardModule} from 'primeng/card';
 import {DataUtils} from '../../core/utils/data.utils';
 import {ButtonModule} from 'primeng/button';
-import {DatePipe, NgClass, NgIf} from '@angular/common';
+import {DatePipe, DecimalPipe, NgClass, NgIf} from '@angular/common';
 import {Season} from '../../core/interfaces/season.interface';
 import {Accordion, AccordionContent, AccordionHeader, AccordionPanel} from 'primeng/accordion';
 import {FieldsetModule} from 'primeng/fieldset';
@@ -17,6 +17,8 @@ import {MinutesToHoursPipe} from '../../core/pipes/minutes-to-hours.pipe';
 import {API_DETAILS} from '../../core/config/api-details';
 import {API_IMG_SIZES} from '../../core/config/api-image-sizes';
 import {Credits} from '../../core/interfaces/credits.interface';
+import {CastCrewMember} from '../../core/interfaces/cast-crew-member.interface';
+import {Genre} from '../../core/interfaces/genre.interface';
 
 @Component({
   selector: 'app-item',
@@ -39,7 +41,8 @@ import {Credits} from '../../core/interfaces/credits.interface';
     NgClass,
     PanelModule,
     DatePipe,
-    MinutesToHoursPipe
+    MinutesToHoursPipe,
+    DecimalPipe,
   ],
   templateUrl: './item.component.html',
   styleUrl: './item.component.scss',
@@ -53,9 +56,11 @@ export class ItemComponent implements OnInit {
 
   item: WritableSignal<LibraryItem> = this.lib.item;
 
-  //TODO: display credits on item's page
-  credits: WritableSignal<Credits | undefined> = this.lib.credits;
-  itemGenres: WritableSignal<string[]> = signal<string[]>([]);
+  credits: WritableSignal<Credits> = this.lib.credits;
+  mainCast: WritableSignal<CastCrewMember[]> = this.lib.mainCast;
+  directorsAndCreators: WritableSignal<CastCrewMember[]> = this.lib.directorsAndCreators;
+
+  itemGenres: WritableSignal<Genre[]> = signal<Genre[]>([]);
   releaseYear: WritableSignal<string> = signal<string>('');
   endYear: WritableSignal<string | undefined> = signal<string | undefined>(undefined);
   seasons: WritableSignal<Season[]> = signal<Season[]>([]);
@@ -68,21 +73,23 @@ export class ItemComponent implements OnInit {
     this.route.paramMap.subscribe(params => {
       // Extracts the full item name from the url (id + title)
       const itemName = params.get('item') || '';
+      const mediaType: MediaType = (params.get('media-type') === 'film' ? MediaType.Film : MediaType.TV);
 
       // Extracts the id part of the full name, before the first hyphen
       const id = +itemName.split('-')[0];
-      this.setParams(id);
+      this.setParams(mediaType, id);
     });
   }
 
   /**
    * Sets relevant parameters using the item's metadata
    * @param id the id of the item
+   * @param mediaType film or TV show
    */
-  setParams(id: number) {
-    this.lib.getItemFromApi(MediaType.Film, id);
+  setParams(mediaType: MediaType, id: number) {
+    this.lib.getItemFromApi(mediaType, id);
 
-    this.itemGenres.set(this.dataUtils.getGenreNamesFromIds(this.item().mediaType, this.item().genre_ids));
+    this.itemGenres.set(this.item().genres);
 
     this.reviews.set(this.lib.getReviewsByItemId(id));
 

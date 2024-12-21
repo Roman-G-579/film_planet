@@ -10,6 +10,8 @@ import {environment} from '../../../environments/environment';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {ItemListResponse} from '../interfaces/api-responses/item-list-response.interface';
 import {Credits} from '../interfaces/credits.interface';
+import {CastCrewMember} from '../interfaces/cast-crew-member.interface';
+import {Genre} from '../interfaces/genre.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -32,19 +34,23 @@ export class LibraryService {
   item: WritableSignal<LibraryItem> = signal<LibraryItem>({
     id: 0,
     mediaType: MediaType.Film,
+    genres: []
   });
 
-  credits: WritableSignal<Credits | undefined> = signal<Credits | undefined>({
+  credits: WritableSignal<Credits> = signal<Credits>({
     id: 0,
     cast: [],
     crew: []
   });
 
+  mainCast: WritableSignal<CastCrewMember[]> = signal<CastCrewMember[]>([]);
+  directorsAndCreators: WritableSignal<CastCrewMember[]> = signal<CastCrewMember[]>([]);
+
   mediaFilter: MediaType = MediaType.Film;
 
   minDateFilter: string | undefined;
   maxDateFilter: string | undefined;
-  genreFilter: number | undefined;
+  genreFilter: Genre | undefined;
 
   /**
    * ratingFilter[0] = minRating,
@@ -74,19 +80,21 @@ export class LibraryService {
   }
 
 
-  /**
-   * Filters by the library item's genre
-   * @param genre the chosen genre - either its id, or its name
-   */
-  filterByGenre(genre: string | number | undefined) {
-    if (Number(genre)) {
-      this.genreFilter = Number(genre);
-    }
-    else {
-      this.genreFilter = this.dataUtils.getGenreIdFromName(<string>genre);
-    }
-    this.getFilteredList();
-  }
+  //TODO: update genre filter to use Genre object type
+
+  // /**
+  //  * Filters by the library item's genre
+  //  * @param genre the chosen genre - either its id, or its name
+  //  */
+  // filterByGenre(genre: Genre | number | undefined) {
+  //   if (Number(genre)) {
+  //     this.genreFilter = Number(genre);
+  //   }
+  //   else {
+  //     this.genreFilter = this.dataUtils.getGenreIdFromName(<string>genre);
+  //   }
+  //   this.getFilteredList();
+  // }
 
   /**
    * Filters by the library item's user rating
@@ -107,13 +115,15 @@ export class LibraryService {
       this.maxDateFilter = `${year}-12-31`;
     }
 
-    // Genre Filters
-    if (Number(genre)) {
-      this.genreFilter = Number(genre);
-    }
-    else if (genre) {
-      this.genreFilter = this.dataUtils.getGenreIdFromName(<string>genre);
-    }
+    //TODO: update genre filter to use Genre object type
+
+    // // Genre Filters
+    // if (Number(genre)) {
+    //   this.genreFilter = Number(genre);
+    // }
+    // else if (genre) {
+    //   this.genreFilter = this.dataUtils.getGenreIdFromName(<string>genre);
+    // }
 
     // Rating Filters
     this.ratingFilter[0] = (minRating);
@@ -240,6 +250,7 @@ export class LibraryService {
     const pageUrl = `details/${mediaType}/${id}`;
     const { href } = new URL(pageUrl, this.apiUrl);
     const mediaTypeHeader = mediaType === MediaType.Film ? 'movie' : 'tv';
+    console.log(mediaTypeHeader);
     let headers = new HttpHeaders().set('media-type', mediaTypeHeader);
     headers = headers.set('id',id.toString());
 
@@ -248,12 +259,19 @@ export class LibraryService {
     this.http.get(href, {headers}).subscribe({
       next: (data) => {
         resultItem = data as LibraryItem;
+        resultItem.mediaType = mediaType;
+
         if (mediaType === MediaType.TV) {
           resultItem = this.setItemName(resultItem);
         }
-        this.credits.set(resultItem.credits);
-        console.log(this.credits())
+
         this.item.set(resultItem);
+
+        if (resultItem.credits) {
+          this.credits.set(resultItem.credits);
+        }
+
+        this.setMainCredits(this.credits());
       },
       error: (err) => {
         console.log(err);
@@ -263,16 +281,29 @@ export class LibraryService {
   }
 
   /**
+   * Sets the values of the item's main actors and directors/creators
+   * @param credits the film or TV shows full credits list
+   */
+  setMainCredits(credits: Credits) {
+    this.mainCast.set(credits.cast.slice(0,3));
+
+    //TODO: extract names of TV show creators
+    const crew: CastCrewMember[] = credits.crew;
+    this.directorsAndCreators.set(crew.filter((person) => {
+      return person.job?.toLowerCase() === 'director';
+    }));
+  }
+
+  /**
    * Sets the title fields for a library item (tv shows are generated with name fields
    * instead of title fields)
    * @param libraryItem the item
    * @private
    */
   private setItemName(libraryItem: LibraryItem) {
-    //for (let item of libraryItems) {
     libraryItem.title = libraryItem.name || '';
     libraryItem.original_title = libraryItem.original_name;
-    // }
+
     return libraryItem;
   }
   /**
@@ -305,7 +336,7 @@ export class LibraryService {
         return (
           (!this.minDateFilter || releaseDate >= this.minDateFilter) &&
           (!this.maxDateFilter || releaseDate <= this.maxDateFilter) &&
-          (!this.genreFilter || item.genre_ids?.includes(this.genreFilter)) &&
+          (!this.genreFilter || item.genres?.includes(this.genreFilter)) &&
           (!this.ratingFilter || (item.vote_average && item.vote_average >= this.ratingFilter[0] && item.vote_average <= this.ratingFilter[1]))
         );
       }
