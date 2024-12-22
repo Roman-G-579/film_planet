@@ -4,7 +4,7 @@ import httpStatus from "http-status";
 import {formatDate} from "../utils/data-utils";
 
 /**
- * Contains function related to the retrieval of tmdb items (films, tv shows, actors etc.)
+ * Contains function related to the retrieval of  tmdb items collections (films, tv shows, actors etc.)
  */
 
 const options = {

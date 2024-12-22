@@ -28,7 +28,6 @@ export async function getItemMiddleware(req: Request, res: Response, next: NextF
 
         const response = await fetch(`https://api.themoviedb.org/3/${mediaType}/${id}?append_to_response=credits&language=en-US`, options);
         const data = await response.json();
-        console.log(data)
 
         return res.status(httpStatus.OK).send(data);
     } catch (err) {
