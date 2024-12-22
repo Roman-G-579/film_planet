@@ -14,13 +14,13 @@ import {SharedModule} from "primeng/api";
 import {SkeletonModule} from "primeng/skeleton";
 import {LibraryItem} from '../../core/interfaces/library-item.interface';
 import {LibraryService} from '../../core/services/library.service';
-import {ActivatedRoute, Router, RouterLink} from '@angular/router';
+import {ActivatedRoute, RouterLink} from '@angular/router';
 import {GenreNamesPipe} from '../../core/pipes/genre-names.pipe';
 import {MediaType} from '../../core/enums/media-type.enum';
 import {DataUtils} from '../../core/utils/data.utils';
-import {API_DETAILS} from '../../core/config/api-details';
-import {API_IMG_SIZES} from '../../core/config/api-image-sizes';
+
 import {ItemUrlPipePipe} from '../../core/pipes/item-url-pipe.pipe';
+import {PosterUrlPipePipe} from '../../core/pipes/poster-url-pipe.pipe';
 
 @Component({
   selector: 'app-library',
@@ -35,6 +35,7 @@ import {ItemUrlPipePipe} from '../../core/pipes/item-url-pipe.pipe';
     GenreNamesPipe,
     RouterLink,
     ItemUrlPipePipe,
+    PosterUrlPipePipe,
   ],
   templateUrl: './library.component.html',
   styleUrl: './library.component.scss',
@@ -44,7 +45,6 @@ export class LibraryComponent implements OnInit {
   protected readonly lib = inject(LibraryService);
   protected readonly dataUtils = DataUtils;
   private route = inject(ActivatedRoute);
-  private readonly router = inject(Router);
 
   libraryItems: WritableSignal<LibraryItem[]> = this.lib.libraryItems;
 
@@ -58,7 +58,7 @@ export class LibraryComponent implements OnInit {
   // Items appearing on the table below the carousel
   tableItems: Signal<LibraryItem[]> = computed<LibraryItem[]>(() => this.libraryItems().slice(5,20));
 
-  isLoading = signal<boolean>(true);
+  isLoading = this.lib.isLoading;
 
 
   responsiveOptions: CarouselResponsiveOptions[] = [
@@ -91,12 +91,10 @@ export class LibraryComponent implements OnInit {
       // Selecting media type for current page
       if (data['type'] === 'film') {
         this.selectedMediaType.set(MediaType.Film);
-        //this.lib.filterByMediaType(MediaType.Film);
         this.mediaTypeText.set("Films");
       }
       else if (data['type'] === 'tv') {
         this.selectedMediaType.set(MediaType.TV);
-        //this.lib.filterByMediaType(MediaType.TV);
         this.mediaTypeText.set("TV shows");
       }
 
@@ -114,7 +112,6 @@ export class LibraryComponent implements OnInit {
         this.getGenreItemsAndSetCategoryText();
       }
 
-      this.isLoading.set(false);
     });
 
   }
@@ -140,7 +137,4 @@ export class LibraryComponent implements OnInit {
   counterArray(n: number): any[] {
     return Array(n);
   }
-
-  protected readonly API_DETAILS = API_DETAILS;
-  protected readonly API_IMG_SIZES = API_IMG_SIZES;
 }

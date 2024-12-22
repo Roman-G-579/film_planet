@@ -1,13 +1,16 @@
 <main>
-  <div class="item-wrapper flex flex-col w-10/12 m-auto mt-6">
+  <div *ngIf="item().id" class="item-wrapper flex flex-col w-10/12 m-auto mt-6">
     <section class="main-details-wrapper grid grid-flow-col gap-x-4">
       <div class="poster-wrapper row-span-6">
-        <img alt="Poster" class="w-full"  src="{{API_DETAILS.base_url}}{{API_IMG_SIZES.poster_sizes[4]}}/{{item().poster_path}}" />
+        <img alt="{{item().title || item().name}} Poster" class="w-full"  src="{{item().poster_path | posterUrl: 4}}" />
       </div>
       <div class="title-wrapper col-span-2  flex  items-center">
         <h1 class="text-5xl">
-          <b>{{item().title}}</b>
-          <span class="text-surface-400"> ({{item().release_date | date: 'yyyy'}})</span></h1>
+          <b>{{item().title || item().name}}</b>
+          <span class="text-surface-400">
+            ({{item().release_date || item().first_air_date | date: 'yyyy'}}
+            <span *ngIf="item().last_air_date"> - {{item().last_air_date | date: 'yyyy'}}</span>)
+          </span></h1>
       </div>
       <div class="genres-wrapper col-span-2 flex items-center">
         <div class="genres-wrapper col-span-3">
@@ -18,7 +21,7 @@
       </div>
       <div class="overview-wrapper col-span-2"><b>Overview: </b> {{item().overview}}</div>
       <div class="starring-wrapper col-span-3 flex items-center">
-        <p>
+        <p *ngIf="mainCast().length">
           <b>Starring:</b>
           @for (actor of mainCast(); track actor) {
             <p-button [label]="actor.name" [link]="true" [routerLink]="['/pages/library/film/popular']" />
@@ -26,11 +29,12 @@
         </p>
       </div>
       <div class="directors-creators-wrapper col-span-3 flex items-center">
-        <p><b>{{item().mediaType === MediaType.Film ? 'Directed by: ' : 'Created by: '}}</b>
-        @for (person of directorsAndCreators(); track person) {
-          <p-button [label]="person.name" [link]="true" [routerLink]="['/pages/library/film/popular']" />
-        }
-        </p>
+        <p>
+          <b>{{item().mediaType === MediaType.Film ? 'Directed by: ' : 'Created by: '}}</b>
+          @for (person of directorsAndCreators(); track person) {
+            <p-button [label]="person.name" [link]="true" [routerLink]="['/pages/library/film/popular']" />
+          }
+          </p>
       </div>
       <div class="media-buttons-wrapper flex justify-end col-span-3">
         <div class="media-buttons flex gap-4">

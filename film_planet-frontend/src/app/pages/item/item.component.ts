@@ -14,11 +14,10 @@ import {Tab, TabList, TabPanel, TabPanels, Tabs} from 'primeng/tabs';
 import {PanelModule} from 'primeng/panel';
 import {Review} from '../../core/interfaces/review.interface';
 import {MinutesToHoursPipe} from '../../core/pipes/minutes-to-hours.pipe';
-import {API_DETAILS} from '../../core/config/api-details';
-import {API_IMG_SIZES} from '../../core/config/api-image-sizes';
 import {Credits} from '../../core/interfaces/credits.interface';
 import {CastCrewMember} from '../../core/interfaces/cast-crew-member.interface';
 import {Genre} from '../../core/interfaces/genre.interface';
+import {PosterUrlPipePipe} from '../../core/pipes/poster-url-pipe.pipe';
 
 @Component({
   selector: 'app-item',
@@ -43,6 +42,7 @@ import {Genre} from '../../core/interfaces/genre.interface';
     DatePipe,
     MinutesToHoursPipe,
     DecimalPipe,
+    PosterUrlPipePipe,
   ],
   templateUrl: './item.component.html',
   styleUrl: './item.component.scss',
@@ -50,7 +50,6 @@ import {Genre} from '../../core/interfaces/genre.interface';
 })
 export class ItemComponent implements OnInit {
   protected readonly lib = inject(LibraryService);
-  protected readonly dataUtils = DataUtils;
   private route = inject(ActivatedRoute);
   protected readonly MediaType = MediaType;
 
@@ -61,7 +60,6 @@ export class ItemComponent implements OnInit {
   directorsAndCreators: WritableSignal<CastCrewMember[]> = this.lib.directorsAndCreators;
 
   itemGenres: WritableSignal<Genre[]> = signal<Genre[]>([]);
-  releaseYear: WritableSignal<string> = signal<string>('');
   endYear: WritableSignal<string | undefined> = signal<string | undefined>(undefined);
   seasons: WritableSignal<Season[]> = signal<Season[]>([]);
   reviews: WritableSignal<Review[]> = signal<Review[]>([])
@@ -102,8 +100,4 @@ export class ItemComponent implements OnInit {
       }
     }
   }
-
-
-  protected readonly API_DETAILS = API_DETAILS;
-  protected readonly API_IMG_SIZES = API_IMG_SIZES;
 }

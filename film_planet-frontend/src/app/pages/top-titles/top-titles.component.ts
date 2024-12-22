@@ -20,11 +20,10 @@ import {ActivatedRoute, RouterLink} from '@angular/router';
 import {SliderModule} from 'primeng/slider';
 import {LibraryService} from '../../core/services/library.service';
 import {ItemUrlPipePipe} from '../../core/pipes/item-url-pipe.pipe';
-import {API_DETAILS} from '../../core/config/api-details';
-import {API_IMG_SIZES} from '../../core/config/api-image-sizes';
-import {DatePipe, DecimalPipe} from '@angular/common';
+import {DatePipe, DecimalPipe, NgIf} from '@angular/common';
 import {Drawer} from 'primeng/drawer';
 import {TitlesFilterComponent} from './titles-filter/titles-filter.component';
+import {PosterUrlPipePipe} from '../../core/pipes/poster-url-pipe.pipe';
 
 @Component({
   selector: 'app-top-titles',
@@ -43,7 +42,9 @@ import {TitlesFilterComponent} from './titles-filter/titles-filter.component';
     DatePipe,
     DecimalPipe,
     Drawer,
-    TitlesFilterComponent
+    TitlesFilterComponent,
+    PosterUrlPipePipe,
+    NgIf
   ],
   templateUrl: './top-titles.component.html',
   styleUrl: './top-titles.component.scss',
@@ -53,8 +54,6 @@ export class TopTitlesComponent implements OnInit {
   protected readonly lib = inject(LibraryService);
   private route = inject(ActivatedRoute);
   protected readonly dataUtils = DataUtils;
-  protected readonly API_DETAILS = API_DETAILS;
-  protected readonly API_IMG_SIZES = API_IMG_SIZES;
 
   topDrawerVisible: boolean = false;
 
