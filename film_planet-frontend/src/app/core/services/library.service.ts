@@ -25,6 +25,8 @@ export class LibraryService {
   private readonly http = inject(HttpClient);
   private readonly apiUrl = `${environment.apiUrl}`;
 
+  isLoading = signal<boolean>(true);
+
   libraryItems: WritableSignal<LibraryItem[]> = signal<LibraryItem[]>([]);
 
   // Backup copy of original items list
@@ -219,14 +221,14 @@ export class LibraryService {
       next: (data) => {
         const resultsObject = data as ItemListResponse;
         let resultItems: LibraryItem[] = resultsObject.results;
-        if (mediaType === MediaType.TV) {
-          for (let item of resultItems) {
-            item = this.setItemName(item);
-          }
+
+        for (let item of resultItems) {
+          item.mediaType = mediaType;
         }
 
         this.libraryItems.set(resultItems);
         this.unfilteredItems.set(resultItems);
+        this.isLoading.set(!this.isLoading());
       },
       error: (err) => {
         console.log(err);
@@ -250,7 +252,7 @@ export class LibraryService {
     const pageUrl = `details/${mediaType}/${id}`;
     const { href } = new URL(pageUrl, this.apiUrl);
     const mediaTypeHeader = mediaType === MediaType.Film ? 'movie' : 'tv';
-    console.log(mediaTypeHeader);
+
     let headers = new HttpHeaders().set('media-type', mediaTypeHeader);
     headers = headers.set('id',id.toString());
 
@@ -260,10 +262,6 @@ export class LibraryService {
       next: (data) => {
         resultItem = data as LibraryItem;
         resultItem.mediaType = mediaType;
-
-        if (mediaType === MediaType.TV) {
-          resultItem = this.setItemName(resultItem);
-        }
 
         this.item.set(resultItem);
 
@@ -282,30 +280,18 @@ export class LibraryService {
 
   /**
    * Sets the values of the item's main actors and directors/creators
-   * @param credits the film or TV shows full credits list
+   * @param credits the film or TV show's full credits list
    */
   setMainCredits(credits: Credits) {
     this.mainCast.set(credits.cast.slice(0,3));
 
-    //TODO: extract names of TV show creators
-    const crew: CastCrewMember[] = credits.crew;
-    this.directorsAndCreators.set(crew.filter((person) => {
+    const directors: CastCrewMember[] = credits.crew.filter((person) => {
       return person.job?.toLowerCase() === 'director';
-    }));
+    });
+
+    this.directorsAndCreators.set(this.item().created_by || directors);
   }
 
-  /**
-   * Sets the title fields for a library item (tv shows are generated with name fields
-   * instead of title fields)
-   * @param libraryItem the item
-   * @private
-   */
-  private setItemName(libraryItem: LibraryItem) {
-    libraryItem.title = libraryItem.name || '';
-    libraryItem.original_title = libraryItem.original_name;
-
-    return libraryItem;
-  }
   /**
    * Fetches an expanded list of details of a film or TV show
    * @param id the id of the film or TV show
