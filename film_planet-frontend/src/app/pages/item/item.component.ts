@@ -4,7 +4,6 @@ import {MediaType} from '../../core/enums/media-type.enum';
 import {LibraryService} from '../../core/services/library.service';
 import {ActivatedRoute, RouterLink} from '@angular/router';
 import {CardModule} from 'primeng/card';
-import {DataUtils} from '../../core/utils/data.utils';
 import {ButtonModule} from 'primeng/button';
 import {DatePipe, DecimalPipe, NgClass, NgIf} from '@angular/common';
 import {Season} from '../../core/interfaces/season.interface';
