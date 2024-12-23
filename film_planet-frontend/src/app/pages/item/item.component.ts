@@ -5,7 +5,7 @@ import {LibraryService} from '../../core/services/library.service';
 import {ActivatedRoute, RouterLink} from '@angular/router';
 import {CardModule} from 'primeng/card';
 import {ButtonModule} from 'primeng/button';
-import {DatePipe, DecimalPipe, NgClass, NgForOf, NgIf} from '@angular/common';
+import {DatePipe, DecimalPipe, NgClass, NgIf} from '@angular/common';
 import {Season} from '../../core/interfaces/season.interface';
 import {Accordion, AccordionContent, AccordionHeader, AccordionPanel} from 'primeng/accordion';
 import {FieldsetModule} from 'primeng/fieldset';
@@ -44,7 +44,6 @@ import {ItemSkeletonComponent} from './item-skeleton/item-skeleton.component';
     MinutesToHoursPipe,
     DecimalPipe,
     PosterUrlPipePipe,
-    NgForOf,
     SkeletonModule,
     ItemSkeletonComponent,
   ],
