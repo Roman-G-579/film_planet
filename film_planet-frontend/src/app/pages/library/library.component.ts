@@ -21,6 +21,8 @@ import {DataUtils} from '../../core/utils/data.utils';
 
 import {ItemUrlPipePipe} from '../../core/pipes/item-url-pipe.pipe';
 import {PosterUrlPipePipe} from '../../core/pipes/poster-url-pipe.pipe';
+import {LibraryTableSkeletonComponent} from './library-table-skeleton/library-table-skeleton.component';
+import {LibraryCarouselSkeletonComponent} from './library-carousel-skeleton/library-carousel-skeleton.component';
 
 @Component({
   selector: 'app-library',
@@ -36,6 +38,8 @@ import {PosterUrlPipePipe} from '../../core/pipes/poster-url-pipe.pipe';
     RouterLink,
     ItemUrlPipePipe,
     PosterUrlPipePipe,
+    LibraryTableSkeletonComponent,
+    LibraryCarouselSkeletonComponent,
   ],
   templateUrl: './library.component.html',
   styleUrl: './library.component.scss',
@@ -86,7 +90,7 @@ export class LibraryComponent implements OnInit {
 
   ngOnInit() {
     this.lib.clearAllFilters();
-
+    this.isLoading.set(true);
     this.route.data.subscribe((data) => {
       // Selecting media type for current page
       if (data['type'] === 'film') {
@@ -134,7 +138,5 @@ export class LibraryComponent implements OnInit {
     })
   }
 
-  counterArray(n: number): any[] {
-    return Array(n);
-  }
+
 }

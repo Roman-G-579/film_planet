@@ -1,127 +1,133 @@
 <main>
-  <div *ngIf="item().id" class="item-wrapper flex flex-col w-10/12 m-auto mt-6">
-    <section class="main-details-wrapper grid grid-flow-col gap-x-4">
-      <div class="poster-wrapper row-span-6">
-        <img alt="{{item().title || item().name}} Poster" class="w-full"  src="{{item().poster_path | posterUrl: 4}}" />
-      </div>
-      <div class="title-wrapper col-span-2  flex  items-center">
-        <h1 class="text-5xl">
-          <b>{{item().title || item().name}}</b>
-          <span class="text-surface-400">
-            ({{item().release_date || item().first_air_date | date: 'yyyy'}}
-            <span *ngIf="item().last_air_date"> - {{item().last_air_date | date: 'yyyy'}}</span>)
-          </span></h1>
-      </div>
-      <div class="genres-wrapper col-span-2 flex items-center">
-        <div class="genres-wrapper col-span-3">
-          @for (genre of itemGenres(); track genre; let last = $last) {
-            {{genre.name}}<span *ngIf="!last">,</span>
-          }
+  @if(isLoading()) {
+    <app-item-skeleton></app-item-skeleton>
+  }
+  @else {
+    <div *ngIf="item().id" class="item-wrapper flex flex-col w-10/12 m-auto mt-6">
+      <section class="main-details-wrapper grid grid-flow-col gap-x-4">
+        <div class="poster-wrapper row-span-6">
+          <img alt="{{item().title || item().name}} Poster" class="w-full"  src="{{item().poster_path | posterUrl: 4}}" />
         </div>
-      </div>
-      <div class="overview-wrapper col-span-2"><b>Overview: </b> {{item().overview}}</div>
-      <div class="starring-wrapper col-span-3 flex items-center">
-        <p *ngIf="mainCast().length">
-          <b>Starring:</b>
-          @for (actor of mainCast(); track actor) {
-            <p-button [label]="actor.name" [link]="true" [routerLink]="['/pages/library/film/popular']" />
-          }
-        </p>
-      </div>
-      <div class="directors-creators-wrapper col-span-3 flex items-center">
-        <p>
-          <b>{{item().mediaType === MediaType.Film ? 'Directed by: ' : 'Created by: '}}</b>
-          @for (person of directorsAndCreators(); track person) {
-            <p-button [label]="person.name" [link]="true" [routerLink]="['/pages/library/film/popular']" />
-          }
+        <div class="title-wrapper col-span-2  flex  items-center">
+          <h1 class="text-5xl">
+            <b>{{item().title || item().name}}</b>
+            <span class="text-surface-400">
+              ({{item().release_date || item().first_air_date | date: 'yyyy'}}
+              <span *ngIf="item().last_air_date"> - {{item().last_air_date | date: 'yyyy'}}</span>)
+            </span></h1>
+        </div>
+        <div class="genres-wrapper col-span-2 flex items-center">
+          <div class="genres-wrapper col-span-3">
+            @for (genre of itemGenres(); track genre; let last = $last) {
+              {{genre.name}}<span *ngIf="!last">,</span>
+            }
+          </div>
+        </div>
+        <div class="overview-wrapper col-span-2"><b>Overview: </b> {{item().overview}}</div>
+        <div class="starring-wrapper col-span-3 flex items-center">
+          <p *ngIf="mainCast().length">
+            <b>Starring:</b>
+            @for (actor of mainCast(); track actor) {
+              <p-button [label]="actor.name" [link]="true" [routerLink]="['/pages/library/film/popular']" />
+            }
           </p>
-      </div>
-      <div class="media-buttons-wrapper flex justify-end col-span-3">
-        <div class="media-buttons flex gap-4">
-          <p-button class="flex" styleClass="w-52" label="Videos" iconPos="top">
-            <span class="pi pi-youtube" style="font-size: 2.5rem;"></span>
-          </p-button>
-          <p-button class="flex" styleClass="w-52" label="Images" iconPos="top">
-            <span class="pi pi-image" style="font-size: 2.5rem;"></span>
-          </p-button>
         </div>
-      </div>
-      <div class="rating-wrapper flex flex-col items-end justify-center mt-7  ">
-        <div class="rating-num flex gap-2 text-5xl -mb-4">
-          <i class="pi pi-star-fill" style="font-size: 2.5rem; color: gold"></i>
-          <span><b>{{item().vote_average | number:'1.0-1'}}</b></span>
+        <div class="directors-creators-wrapper col-span-3 flex items-center">
+          <p>
+            <b>{{item().mediaType === MediaType.Film ? 'Directed by: ' : 'Created by: '}}</b>
+            @for (person of directorsAndCreators(); track person) {
+              <p-button [label]="person.name" [link]="true" [routerLink]="['/pages/library/film/popular']" />
+            }
+            </p>
         </div>
-        <p>{{item().vote_count}} Ratings</p>
-      </div>
-    </section>
 
-    <section class="reviews-wrapper">
-      <div class="reviews-header"><h1>Reviews:</h1></div>
-      <p *ngIf="reviews()">There are no reviews for this title yet.</p>
+        <div class="media-buttons-wrapper flex justify-end col-span-3">
+          <div class="media-buttons flex gap-4">
+            <p-button class="flex" styleClass="w-52" label="Videos" iconPos="top">
+              <span class="pi pi-youtube" style="font-size: 2.5rem;"></span>
+            </p-button>
+            <p-button class="flex" styleClass="w-52" label="Images" iconPos="top">
+              <span class="pi pi-image" style="font-size: 2.5rem;"></span>
+            </p-button>
+          </div>
+        </div>
+        <div class="rating-wrapper flex flex-col items-end justify-center mt-7  ">
+          <div class="rating-num flex gap-2 text-5xl -mb-4">
+            <i class="pi pi-star-fill" style="font-size: 2.5rem; color: gold"></i>
+            <span><b>{{item().vote_average | number:'1.0-1'}}</b></span>
+          </div>
+          <p>{{item().vote_count}} Ratings</p>
+        </div>
+      </section>
 
-      @for (review of reviews(); track review) {
-        <p-panel [toggleable]="true" toggler="header" collapsed>
-          <ng-template pTemplate="header">
-            <div class="flex items-center gap-2 cursor-pointer">
-              <span class="flex font-bold">A Review by {{review.author}}</span>
-            </div>
-          </ng-template>
-          <ng-template pTemplate="footer">
-            <div class="flex flex-wrap items-center justify-between gap-4">
-              <div class="flex items-center gap-2">
-                <p-button rounded text><i class="pi pi-user"></i> {{review.author}}</p-button>
-                <i class="pi pi-star-fill"></i>{{review.rating}}
+      <section class="reviews-wrapper">
+        <div class="reviews-header"><h1>Reviews:</h1></div>
+        <p *ngIf="reviews()">There are no reviews for this title yet.</p>
+
+        @for (review of reviews(); track review) {
+          <p-panel [toggleable]="true" toggler="header" collapsed>
+            <ng-template pTemplate="header">
+              <div class="flex items-center gap-2 cursor-pointer">
+                <span class="flex font-bold">A Review by {{review.author}}</span>
               </div>
-              <span class="text-surface-500 dark:text-surface-400">Written on {{review.created_at | date: 'MMMM d, y'}}</span>
-            </div>
-          </ng-template>
-          <p class="m-0">
-            {{review.content}}
-          </p>
-        </p-panel>
-      }
-    </section>
+            </ng-template>
+            <ng-template pTemplate="footer">
+              <div class="flex flex-wrap items-center justify-between gap-4">
+                <div class="flex items-center gap-2">
+                  <p-button rounded text><i class="pi pi-user"></i> {{review.author}}</p-button>
+                  <i class="pi pi-star-fill"></i>{{review.rating}}
+                </div>
+                <span class="text-surface-500 dark:text-surface-400">Written on {{review.created_at | date: 'MMMM d, y'}}</span>
+              </div>
+            </ng-template>
+            <p class="m-0">
+              {{review.content}}
+            </p>
+          </p-panel>
+        }
+      </section>
 
-    <section class="seasons-wrapper min-h-[500px] mb-8" *ngIf="item().mediaType === MediaType.TV">
-      <h1>Seasons:</h1>
-        <p-tabs [(value)]="activeSeason" scrollable lazy>
-          <p-tablist>
-            @for(season of seasons(); track season){
-              <p-tab [value]="season.id">
-                <i class="pi" [ngClass]="activeSeason === season.id ? 'pi-circle-on' : 'pi-circle-off'"></i>
-                {{ season.name || ('Season ' + season.number)}}
-              </p-tab>
-            }
-          </p-tablist>
-          <p-tabpanels>
-            @for(season of seasons(); track season){
-              <p-tabpanel [value]="season.id">
-                <p-accordion [value]="season.id" [multiple]="true">
-                  @for (episode of season.episodes; track episode) {
-                    <p-accordion-panel [value]="episode.id">
-                      <p-accordion-header>{{episode.number}} &nbsp;&nbsp; {{ episode.name }}</p-accordion-header>
-                      <p-accordion-content>
-                        <p class="m-0 mb-2">{{ episode.description }}</p>
-                        <div class="ep-info-wrapper text-sm text-surface-500 dark:text-surface-400">
-                          <div class="additional-episode-info flex flex-col ">
-                            <span>Directed by {{ episode.directors }}</span>
-                            <span>Written by {{ episode.writers }}</span>
-                            <span>Released {{ episode.releaseDate | date: 'MMMM d, y' }}</span>
+      <section class="seasons-wrapper min-h-[500px] mb-8" *ngIf="item().mediaType === MediaType.TV">
+        <h1>Seasons:</h1>
+          <p-tabs [(value)]="activeSeason" scrollable lazy>
+            <p-tablist>
+              @for(season of seasons(); track season){
+                <p-tab [value]="season.id">
+                  <i class="pi" [ngClass]="activeSeason === season.id ? 'pi-circle-on' : 'pi-circle-off'"></i>
+                  {{ season.name || ('Season ' + season.number)}}
+                </p-tab>
+              }
+            </p-tablist>
+            <p-tabpanels>
+              @for(season of seasons(); track season){
+                <p-tabpanel [value]="season.id">
+                  <p-accordion [value]="season.id" [multiple]="true">
+                    @for (episode of season.episodes; track episode) {
+                      <p-accordion-panel [value]="episode.id">
+                        <p-accordion-header>{{episode.number}} &nbsp;&nbsp; {{ episode.name }}</p-accordion-header>
+                        <p-accordion-content>
+                          <p class="m-0 mb-2">{{ episode.description }}</p>
+                          <div class="ep-info-wrapper text-sm text-surface-500 dark:text-surface-400">
+                            <div class="additional-episode-info flex flex-col ">
+                              <span>Directed by {{ episode.directors }}</span>
+                              <span>Written by {{ episode.writers }}</span>
+                              <span>Released {{ episode.releaseDate | date: 'MMMM d, y' }}</span>
+                            </div>
+                            <div class="ep-duration-wrapper flex justify-end">
+                              <span>Running time: {{episode.duration || 0 | minutesToHours}}</span>
+                            </div>
                           </div>
-                          <div class="ep-duration-wrapper flex justify-end">
-                            <span>Running time: {{episode.duration || 0 | minutesToHours}}</span>
-                          </div>
-                        </div>
 
 
-                      </p-accordion-content>
-                    </p-accordion-panel>
-                  }
-                </p-accordion>
-              </p-tabpanel>
-            }
-          </p-tabpanels>
-        </p-tabs>
-    </section>
-  </div>
+                        </p-accordion-content>
+                      </p-accordion-panel>
+                    }
+                  </p-accordion>
+                </p-tabpanel>
+              }
+            </p-tabpanels>
+          </p-tabs>
+      </section>
+    </div>
+  }
 </main>
