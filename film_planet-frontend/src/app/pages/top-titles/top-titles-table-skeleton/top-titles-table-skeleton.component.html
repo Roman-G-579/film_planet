@@ -1,0 +1,30 @@
+<div class="hidden lg:block lg:w-[90%] xl:w-[80%] m-auto" *ngFor="let i of counterArray(6);">
+  <div class="card">
+    <div class="rounded border border-surface-200 dark:border-surface-700 p-6 bg-surface-0 dark:bg-surface-900">
+      <div class="flex justify-center items-center">
+        <p-skeleton width="15vw" height="2rem" styleClass="mr-12"></p-skeleton>
+        <p-skeleton width="7rem" height="10.5rem" styleClass="mr-4"></p-skeleton>
+        <p-skeleton width="10vw" height="2rem" styleClass="mr-4"></p-skeleton>
+        <p-skeleton width="15vw" height="2rem" styleClass="mr-12"></p-skeleton>
+        <p-skeleton width="5rem" height="2rem" styleClass="mr-8"></p-skeleton>
+        <p-skeleton width="10vw" height="2rem" styleClass="mr-4"></p-skeleton>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="block lg:hidden" *ngFor="let i of counterArray(3);">
+  <div class="card">
+    <div class="rounded border border-surface-200 dark:border-surface-700 p-6 bg-surface-0 dark:bg-surface-900">
+      <div class="flex items-center">
+        <div>
+          <p-skeleton width="12rem" height="2rem" styleClass="mb-4" />
+          <p-skeleton width="14rem" height="21rem" styleClass="mb-4" />
+          <p-skeleton width="9rem" height="2rem" styleClass="mb-4" />
+          <p-skeleton width="13rem" height="2rem" styleClass="mb-4" />
+          <p-skeleton width="4rem" height="2rem" styleClass="mb-4" />
+          <p-skeleton width="8rem" height="2rem" styleClass="mb-6" />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
