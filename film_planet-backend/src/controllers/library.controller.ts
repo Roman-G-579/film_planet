@@ -58,7 +58,8 @@ export async function getPopularFilmsMiddleware(req: Request, res: Response, nex
 
 export async function getTopFilmsMiddleware(req: Request, res: Response, next: NextFunction) {
     try {
-        const response = await fetch('https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=1', options);
+        const pageNum = req.headers['page-num'];
+        const response = await fetch(`https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=${pageNum}`, options);
         const data = await response.json();
 
         return res.status(httpStatus.OK).send(data);
@@ -123,7 +124,8 @@ export async function getPopularTVMiddleware(req: Request, res: Response, next: 
 
 export async function getTopTVMiddleware(req: Request, res: Response, next: NextFunction) {
     try {
-        const response = await fetch('https://api.themoviedb.org/3/tv/top_rated?language=en-US&page=1', options);
+        const pageNum = req.headers['page-num'];
+        const response = await fetch(`https://api.themoviedb.org/3/tv/top_rated?language=en-US&page=${pageNum}`, options);
         const data = await response.json();
 
         return res.status(httpStatus.OK).send(data);
