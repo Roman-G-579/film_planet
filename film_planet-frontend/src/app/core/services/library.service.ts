@@ -25,7 +25,7 @@ export class LibraryService {
   private readonly http = inject(HttpClient);
   private readonly apiUrl = `${environment.apiUrl}`;
 
-  isLoading = signal<boolean>(true);
+  isLoading = signal<boolean>(false);
 
   libraryItems: WritableSignal<LibraryItem[]> = signal<LibraryItem[]>([]);
 
@@ -205,8 +205,9 @@ export class LibraryService {
    * @param mediaType item type - film or TV
    * @param category  recent / popular / top
    * @param genre (optional) the item's genre
+   * @param pageNum the number of page in the list of the relevant items
    */
-  getItemListFromApi(mediaType: MediaType, category: string, genre?: string) {
+  getItemListFromApi(mediaType: MediaType, category: string, genre?: string, pageNum?: number) {
     let pageUrl;
     if (genre) {
       pageUrl = `library/${mediaType}/genre/${genre}`;
@@ -215,7 +216,12 @@ export class LibraryService {
       pageUrl = `library/${mediaType}/${category}`;
     }
     const { href } = new URL(pageUrl, this.apiUrl);
-    const headers = genre ? new HttpHeaders().set('genre', genre) : undefined;
+
+    const pageNumStr = pageNum?.toString() || '1';
+    let headers = new HttpHeaders().set('page-num',pageNumStr);
+    if (genre) {
+      headers = headers.set('genre', genre);
+    }
 
     this.http.get(href, {headers}).subscribe({
       next: (data) => {
@@ -228,7 +234,9 @@ export class LibraryService {
 
         this.libraryItems.set(resultItems);
         this.unfilteredItems.set(resultItems);
-        this.isLoading.set(!this.isLoading());
+        //TODO: make loading state compatible with infinite scroll
+
+        // this.isLoading.set(!this.isLoading());
       },
       error: (err) => {
         console.log(err);

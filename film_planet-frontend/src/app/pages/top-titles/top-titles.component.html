@@ -8,52 +8,66 @@
     <p-button class="lg:hidden" type="button" label="Filters" (click)="topDrawerVisible = true" icon="pi pi-sliders-h" />
   </div>
 
-  <div class="top-table-wrapper lg:max-w-[90%] xl:max-w-[80%] lg:m-auto">
+  @if (isLoading()) {
+    <app-top-titles-table-skeleton></app-top-titles-table-skeleton>
+  } @else {
+    <div class="top-table-wrapper lg:max-w-[90%] xl:max-w-[80%] lg:m-auto">
 
-    <p-table [value]="libraryItems()"  [tableStyle]="{ 'min-width': '60rem' }" responsiveLayout="stack" scrollable="true" scrollHeight="85vh">
-      <ng-template pTemplate="caption">
-        <span class="text-xl font-bold">Top 100 {{titleText()}}</span>
+      <p-table
+        [value]="libraryItems()"
+        [tableStyle]="{ 'min-width': '60rem' }"
+        responsiveLayout="stack"
+        scrollable="true"
+        scrollHeight="85vh"
+        [rows]="20"
+        [virtualScroll]="true"
+        [virtualScrollItemSize]="175"
+        [lazy]="true"
+        (onLazyLoad)="loadItemsLazy($event)"
+      >
+        <ng-template pTemplate="caption">
+          <span class="text-xl font-bold">Top 100 {{titleText()}}</span>
 
-      </ng-template>
-      <ng-template pTemplate="header">
-        <tr>
-          <th>Title</th>
-          <th> </th>
-          <th>Year</th>
-          <th>Genres</th>
-          <th>Rating</th>
-          <th>Number of Votes</th>
-        </tr>
-      </ng-template>
-      <ng-template pTemplate="body" let-item>
-        <tr>
-          <td><a [routerLink]="item | itemUrl"><p-button styleClass="text-left" [label]="item.title || item.name" [link]="true "/></a></td>
-          <td>
-            <img
-              src="{{item.poster_path | posterUrl: 0}}"
-              [alt]="item.title"
-              class="w-48 lg:w-24 rounded"
-            />
-          </td>
-          <td>
-            {{ item.release_date || item.first_air_date | date: 'yyyy' }}
-          </td>
-          <td>{{ item.genre_ids | genreNames }}</td>
-          <td class="text-xl">
-            <div class="text-center">
-              <b>{{ item.vote_average | number:'1.0-1' }}</b>
-            </div>
-          </td>
-          <td>
-            <div class="text-center">
-              <span class="inline lg:hidden">(</span>
-              {{ item.vote_count }}
-              <span class="inline lg:hidden">ratings)</span>
-            </div>
-          </td>
-        </tr>
-      </ng-template>
-    </p-table>
-  </div>
-
+        </ng-template>
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Title</th>
+            <th> </th>
+            <th>Year</th>
+            <th>Genres</th>
+            <th>Rating</th>
+            <th>Number of Votes</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-item let-i="rowIndex">
+          <tr>
+            <td><a [routerLink]="item | itemUrl"><p-button styleClass="text-left" [label]="(i + 1) + '. ' + (item.title || item.name)" [link]="true "/></a></td>
+            <td>
+              <img
+                src="{{item.poster_path | posterUrl: 0}}"
+                [alt]="item.title"
+                class="w-48 lg:w-24 rounded"
+              />
+            </td>
+            <td>
+              {{ item.release_date || item.first_air_date | date: 'yyyy' }}
+            </td>
+            <td>{{ item.genre_ids | genreNames }}</td>
+            <td class="text-xl">
+              <div class="text-center">
+                <b>{{ item.vote_average | number:'1.0-1' }}</b>
+              </div>
+            </td>
+            <td>
+              <div class="text-center">
+                <span class="inline lg:hidden">(</span>
+                {{ item.vote_count }}
+                <span class="inline lg:hidden">ratings)</span>
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  }
 </main>

@@ -6,7 +6,7 @@ import {
   signal,
   WritableSignal
 } from '@angular/core';
-import {TableModule} from 'primeng/table';
+import {TableLazyLoadEvent, TableModule} from 'primeng/table';
 import {ButtonModule} from 'primeng/button';
 import {LibraryItem} from '../../core/interfaces/library-item.interface';
 import {IftaLabelModule} from 'primeng/iftalabel';
@@ -20,10 +20,12 @@ import {ActivatedRoute, RouterLink} from '@angular/router';
 import {SliderModule} from 'primeng/slider';
 import {LibraryService} from '../../core/services/library.service';
 import {ItemUrlPipePipe} from '../../core/pipes/item-url-pipe.pipe';
-import {DatePipe, DecimalPipe} from '@angular/common';
+import {DatePipe, DecimalPipe, NgForOf} from '@angular/common';
 import {Drawer} from 'primeng/drawer';
 import {TitlesFilterComponent} from './titles-filter/titles-filter.component';
 import {PosterUrlPipePipe} from '../../core/pipes/poster-url-pipe.pipe';
+import {SkeletonModule} from 'primeng/skeleton';
+import {TopTitlesTableSkeletonComponent} from './top-titles-table-skeleton/top-titles-table-skeleton.component';
 
 @Component({
   selector: 'app-top-titles',
@@ -44,6 +46,9 @@ import {PosterUrlPipePipe} from '../../core/pipes/poster-url-pipe.pipe';
     Drawer,
     TitlesFilterComponent,
     PosterUrlPipePipe,
+    NgForOf,
+    SkeletonModule,
+    TopTitlesTableSkeletonComponent,
   ],
   templateUrl: './top-titles.component.html',
   styleUrl: './top-titles.component.scss',
@@ -63,8 +68,15 @@ export class TopTitlesComponent implements OnInit {
 
   genres: WritableSignal<string[]> = signal([]);
 
+  isLoading = this.lib.isLoading;
+
+  // The Page of the items list, used by the API
+  currentPage: number = 1;
+
   ngOnInit() {
     this.lib.clearAllFilters();
+    this.currentPage = 1;
+    //this.isLoading.set(true);
 
     this.route.data.subscribe((data) => {
       if (data['type'] === 'film') {
@@ -82,4 +94,11 @@ export class TopTitlesComponent implements OnInit {
     });
   }
 
+  loadItemsLazy($event: TableLazyLoadEvent) {
+    // let pageNum = $event.rows;
+    // console.log(pageNum);
+    this.currentPage += 1;
+    console.log(this.currentPage);
+    this.lib.getItemListFromApi(this.selectedMediaType(),'top',undefined,this.currentPage);
+  }
 }
