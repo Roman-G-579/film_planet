@@ -20,7 +20,7 @@ import {ActivatedRoute, RouterLink} from '@angular/router';
 import {SliderModule} from 'primeng/slider';
 import {LibraryService} from '../../core/services/library.service';
 import {ItemUrlPipePipe} from '../../core/pipes/item-url-pipe.pipe';
-import {DatePipe, DecimalPipe, NgForOf} from '@angular/common';
+import {DatePipe, DecimalPipe} from '@angular/common';
 import {Drawer} from 'primeng/drawer';
 import {TitlesFilterComponent} from './titles-filter/titles-filter.component';
 import {PosterUrlPipePipe} from '../../core/pipes/poster-url-pipe.pipe';
@@ -46,7 +46,6 @@ import {TopTitlesTableSkeletonComponent} from './top-titles-table-skeleton/top-t
     Drawer,
     TitlesFilterComponent,
     PosterUrlPipePipe,
-    NgForOf,
     SkeletonModule,
     TopTitlesTableSkeletonComponent,
   ],
