@@ -1,11 +1,14 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import {SkeletonModule} from "primeng/skeleton";
+import {NgClass, NgForOf} from '@angular/common';
 
 @Component({
   selector: 'app-library-carousel-skeleton',
   standalone: true,
   imports: [
     SkeletonModule,
+    NgClass,
+    NgForOf,
   ],
   templateUrl: './library-carousel-skeleton.component.html',
   styleUrl: './library-carousel-skeleton.component.scss',
@@ -13,7 +16,7 @@ import {SkeletonModule} from "primeng/skeleton";
 })
 export class LibraryCarouselSkeletonComponent {
 
-  counterArray(n: number): any[] {
-    return Array(n);
+  skeletonArray(): number[] {
+    return Array.from({ length: 6 }, (_, i) => i);
   }
 }
