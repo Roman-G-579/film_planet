@@ -6,3 +6,23 @@
     transition: 0.2s;
   }
 }
+
+::ng-deep .top-table-wrapper .p-scroller.p-scroller-inline {
+  max-height: 85vh; // p-table scrollHeight value
+}
+
+.top-table-row-wrapper {
+  height: 175px;
+}
+
+
+
+@media (max-width: 1024px) {
+  .top-table-row-wrapper {
+    height: 600px;
+  }
+
+  ::ng-deep .title-link button {
+    font-size: 24px;
+  }
+}

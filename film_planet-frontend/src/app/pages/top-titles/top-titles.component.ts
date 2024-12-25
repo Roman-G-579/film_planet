@@ -1,6 +1,6 @@
 import {
   ChangeDetectionStrategy,
-  Component,
+  Component, computed,
   inject,
   OnInit,
   signal,
@@ -20,12 +20,13 @@ import {ActivatedRoute, RouterLink} from '@angular/router';
 import {SliderModule} from 'primeng/slider';
 import {LibraryService} from '../../core/services/library.service';
 import {ItemUrlPipePipe} from '../../core/pipes/item-url-pipe.pipe';
-import {DatePipe, DecimalPipe} from '@angular/common';
+import {DatePipe, DecimalPipe, NgIf} from '@angular/common';
 import {Drawer} from 'primeng/drawer';
 import {TitlesFilterComponent} from './titles-filter/titles-filter.component';
 import {PosterUrlPipePipe} from '../../core/pipes/poster-url-pipe.pipe';
 import {SkeletonModule} from 'primeng/skeleton';
 import {TopTitlesTableSkeletonComponent} from './top-titles-table-skeleton/top-titles-table-skeleton.component';
+import {MiscUtils} from '../../core/utils/misc.utils';
 
 @Component({
   selector: 'app-top-titles',
@@ -48,6 +49,7 @@ import {TopTitlesTableSkeletonComponent} from './top-titles-table-skeleton/top-t
     PosterUrlPipePipe,
     SkeletonModule,
     TopTitlesTableSkeletonComponent,
+    NgIf,
   ],
   templateUrl: './top-titles.component.html',
   styleUrl: './top-titles.component.scss',
@@ -57,6 +59,7 @@ export class TopTitlesComponent implements OnInit {
   protected readonly lib = inject(LibraryService);
   private route = inject(ActivatedRoute);
   protected readonly dataUtils = DataUtils;
+  protected readonly miscUtils = MiscUtils;
 
   topDrawerVisible: boolean = false;
 
@@ -69,12 +72,18 @@ export class TopTitlesComponent implements OnInit {
 
   isLoading = this.lib.isLoading;
 
+  // The height of a row in the table (used for the virtualScroll functionality)
+  scrollItemSize = computed(() => {
+    const screenWidth = this.miscUtils.getScreenWidth();
+    return (screenWidth >= 1024) ? 175 : 600;
+  })
+
   // The Page of the items list, used by the API
-  currentPage: number = 1;
+  private loadedPages = new Set<number>();
 
   ngOnInit() {
     this.lib.clearAllFilters();
-    this.currentPage = 1;
+    this.lib.libraryItems.set([]);
     //this.isLoading.set(true);
 
     this.route.data.subscribe((data) => {
@@ -94,10 +103,23 @@ export class TopTitlesComponent implements OnInit {
   }
 
   loadItemsLazy($event: TableLazyLoadEvent) {
-    // let pageNum = $event.rows;
-    // console.log(pageNum);
-    this.currentPage += 1;
-    console.log(this.currentPage);
-    this.lib.getItemListFromApi(this.selectedMediaType(),'top',undefined,this.currentPage);
+    const pageSize = $event.rows || 20; // Number of items to load
+    const pageIndex = (($event.first || 0) / pageSize) + 1; // Calculate the page index
+
+    //console.log('Lazy load event triggered:', $event);
+    //console.log('Loaded pages:', Array.from(this.loadedPages));
+    if (this.libraryItems().length >= 100) {
+      //console.log('100 items loaded');
+      return;
+    }
+    if (this.loadedPages.has(pageIndex)) {
+      //console.log(`Page ${pageIndex} already loaded`);
+      return;
+    }
+    //console.log($event);
+    this.loadedPages.add(pageIndex);
+    //this.isLoading.set(true);
+    this.lib.getItemListFromApi(this.selectedMediaType(),'top',undefined,pageIndex + 1);
   }
+
 }

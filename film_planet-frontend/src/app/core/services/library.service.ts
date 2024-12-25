@@ -25,7 +25,8 @@ export class LibraryService {
   private readonly http = inject(HttpClient);
   private readonly apiUrl = `${environment.apiUrl}`;
 
-  isLoading = signal<boolean>(false);
+  //TODO: move loading skeletons to inside of table in top0titles.component
+  isLoading = signal<boolean>(true);
 
   libraryItems: WritableSignal<LibraryItem[]> = signal<LibraryItem[]>([]);
 
@@ -59,6 +60,8 @@ export class LibraryService {
    * ratingFilter[1] = maxRating
    */
   ratingFilter: number[] = [0.0,10];
+
+  scrollPosition: number = 0;
 
   /**
    * Filters by the library item's type of media (film, tv etc.)
@@ -218,6 +221,7 @@ export class LibraryService {
     const { href } = new URL(pageUrl, this.apiUrl);
 
     const pageNumStr = pageNum?.toString() || '1';
+
     let headers = new HttpHeaders().set('page-num',pageNumStr);
     if (genre) {
       headers = headers.set('genre', genre);
@@ -226,7 +230,7 @@ export class LibraryService {
     this.http.get(href, {headers}).subscribe({
       next: (data) => {
         const resultsObject = data as ItemListResponse;
-        let resultItems: LibraryItem[] = resultsObject.results;
+        let resultItems: LibraryItem[] = [...this.libraryItems(), ...resultsObject.results];
 
         for (let item of resultItems) {
           item.mediaType = mediaType;
@@ -234,9 +238,8 @@ export class LibraryService {
 
         this.libraryItems.set(resultItems);
         this.unfilteredItems.set(resultItems);
-        //TODO: make loading state compatible with infinite scroll
 
-        // this.isLoading.set(!this.isLoading());
+        this.isLoading.set(false);
       },
       error: (err) => {
         console.log(err);
