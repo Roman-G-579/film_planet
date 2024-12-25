@@ -61,8 +61,6 @@ export class LibraryService {
    */
   ratingFilter: number[] = [0.0,10];
 
-  scrollPosition: number = 0;
-
   /**
    * Filters by the library item's type of media (film, tv etc.)
    * @param type the chosen media type
