@@ -61,6 +61,7 @@ export class TopTitlesComponent implements OnInit {
   protected readonly dataUtils = DataUtils;
   protected readonly miscUtils = MiscUtils;
 
+  // Specified whether the filter drawer is open or closed
   topDrawerVisible: boolean = false;
 
   libraryItems: WritableSignal<LibraryItem[]> = this.lib.libraryItems;
@@ -78,13 +79,13 @@ export class TopTitlesComponent implements OnInit {
     return (screenWidth >= 1024) ? 175 : 600;
   })
 
-  // The Page of the items list, used by the API
+  // All pages that have been loaded thus far
   private loadedPages = new Set<number>();
 
   ngOnInit() {
     this.lib.clearAllFilters();
     this.lib.libraryItems.set([]);
-    //this.isLoading.set(true);
+    this.isLoading.set(true);
 
     this.route.data.subscribe((data) => {
       if (data['type'] === 'film') {
@@ -104,21 +105,24 @@ export class TopTitlesComponent implements OnInit {
 
   loadItemsLazy($event: TableLazyLoadEvent) {
     const pageSize = $event.rows || 20; // Number of items to load
-    const pageIndex = (($event.first || 0) / pageSize) + 1; // Calculate the page index
 
-    //console.log('Lazy load event triggered:', $event);
-    //console.log('Loaded pages:', Array.from(this.loadedPages));
+    // Page index starts from 1 (second page), since the first page is loaded by default
+    const pageIndex = (($event.first || 0) / pageSize) + 1;
+
+    // Stops loading elements beyond the first 100
     if (this.libraryItems().length >= 100) {
-      //console.log('100 items loaded');
       return;
     }
+
+    // Prevents loading page indices that were already loaded
     if (this.loadedPages.has(pageIndex)) {
-      //console.log(`Page ${pageIndex} already loaded`);
       return;
     }
-    //console.log($event);
+
+    // Adds the new page to the loaded pages list
     this.loadedPages.add(pageIndex);
-    //this.isLoading.set(true);
+
+    // Loads the items from the API found on the page specified by pageIndex
     this.lib.getItemListFromApi(this.selectedMediaType(),'top',undefined,pageIndex + 1);
   }
 
