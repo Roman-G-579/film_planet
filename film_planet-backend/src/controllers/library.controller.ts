@@ -17,6 +17,8 @@ const options = {
 
 export async function getRecentFilmsMiddleware(req: Request, res: Response, next: NextFunction) {
     try {
+        const pageNum = req.headers['page-num'];
+
         const currentDate = new Date();
 
         // Minimum date - two weeks ago
@@ -27,7 +29,7 @@ export async function getRecentFilmsMiddleware(req: Request, res: Response, next
         const maxDate = new Date(currentDate);
         maxDate.setDate(maxDate.getDate() + 7);
 
-        const response = await fetch(`https://api.themoviedb.org/3/discover/movie?language=en-US&page=1&primary_release_date.gte.gte=${formatDate(minDate)}&primary_release_date.lte=${formatDate(maxDate)}&sort_by=popularity.desc&vote_count.gte=50`, options);
+        const response = await fetch(`https://api.themoviedb.org/3/discover/movie?language=en-US&page=${pageNum}&primary_release_date.gte.gte=${formatDate(minDate)}&primary_release_date.lte=${formatDate(maxDate)}&sort_by=popularity.desc&vote_count.gte=50`, options);
         const data = await response.json();
 
         return res.status(httpStatus.OK).send(data);
@@ -39,6 +41,8 @@ export async function getRecentFilmsMiddleware(req: Request, res: Response, next
 
 export async function getPopularFilmsMiddleware(req: Request, res: Response, next: NextFunction) {
     try {
+        const pageNum = req.headers['page-num'];
+
         const currentDate = new Date();
         const minDate = new Date(currentDate);
 
@@ -47,7 +51,7 @@ export async function getPopularFilmsMiddleware(req: Request, res: Response, nex
         minDate.setDate(1);
         const minDateStr = formatDate(minDate);
 
-        const response = await fetch(`https://api.themoviedb.org/3/discover/movie?language=en-US&page=1&primary_release_date.gte=${minDateStr}&sort_by=vote_count.desc`, options);
+        const response = await fetch(`https://api.themoviedb.org/3/discover/movie?language=en-US&page=${pageNum}&primary_release_date.gte=${minDateStr}&sort_by=vote_count.desc`, options);
         const data = await response.json();
 
         return res.status(httpStatus.OK).send(data);
@@ -59,6 +63,7 @@ export async function getPopularFilmsMiddleware(req: Request, res: Response, nex
 export async function getTopFilmsMiddleware(req: Request, res: Response, next: NextFunction) {
     try {
         const pageNum = req.headers['page-num'];
+
         const response = await fetch(`https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=${pageNum}`, options);
         const data = await response.json();
 
@@ -70,8 +75,10 @@ export async function getTopFilmsMiddleware(req: Request, res: Response, next: N
 
 export async function getFilmsByGenre(req: Request, res: Response, next: NextFunction) {
     try {
+        const pageNum = req.headers['page-num'];
         const genre = req.headers['genre'];
-        const response = await fetch(`https://api.themoviedb.org/3/discover/movie?language=en-US&page=1&sort_by=popularity.desc&with_genres=${genre}&with_original_language=en`, options);
+
+        const response = await fetch(`https://api.themoviedb.org/3/discover/movie?language=en-US&page=${pageNum}&sort_by=popularity.desc&with_genres=${genre}&with_original_language=en`, options);
         const data = await response.json();
 
         return res.status(httpStatus.OK).send(data);
@@ -82,6 +89,7 @@ export async function getFilmsByGenre(req: Request, res: Response, next: NextFun
 
 export async function getRecentTVMiddleware(req: Request, res: Response, next: NextFunction) {
     try {
+        const pageNum = req.headers['page-num'];
         const currentDate = new Date();
 
         // Minimum date - a week ago
@@ -92,7 +100,7 @@ export async function getRecentTVMiddleware(req: Request, res: Response, next: N
         const maxDate = new Date(currentDate);
         maxDate.setDate(maxDate.getDate() + 7);
 
-        const response = await fetch(`https://api.themoviedb.org/3/discover/tv?air_date.gte=${formatDate(minDate)}&air_date.lte=${formatDate(maxDate)}language=en-US&page=1&sort_by=popularity.desc&vote_count.gte=50&with_original_language=en`, options);
+        const response = await fetch(`https://api.themoviedb.org/3/discover/tv?air_date.gte=${formatDate(minDate)}&air_date.lte=${formatDate(maxDate)}language=en-US&page=${pageNum}&sort_by=popularity.desc&vote_count.gte=50&with_original_language=en`, options);
         const data = await response.json();
 
         return res.status(httpStatus.OK).send(data);
@@ -104,6 +112,8 @@ export async function getRecentTVMiddleware(req: Request, res: Response, next: N
 
 export async function getPopularTVMiddleware(req: Request, res: Response, next: NextFunction) {
     try {
+        const pageNum = req.headers['page-num'];
+
         const currentDate = new Date();
         const minDate = new Date(currentDate);
 
@@ -112,7 +122,7 @@ export async function getPopularTVMiddleware(req: Request, res: Response, next: 
         minDate.setDate(1);
         const minDateStr = formatDate(minDate);
 
-        const response = await fetch(`https://api.themoviedb.org/3/discover/tv?first_air_date.gte=${minDateStr}&language=en-US&page=1&sort_by=vote_count.desc&with_original_language=en`, options);
+        const response = await fetch(`https://api.themoviedb.org/3/discover/tv?first_air_date.gte=${minDateStr}&language=en-US&page=${pageNum}&sort_by=vote_count.desc&with_original_language=en`, options);
         const data = await response.json();
 
         return res.status(httpStatus.OK).send(data);
@@ -125,6 +135,7 @@ export async function getPopularTVMiddleware(req: Request, res: Response, next: 
 export async function getTopTVMiddleware(req: Request, res: Response, next: NextFunction) {
     try {
         const pageNum = req.headers['page-num'];
+
         const response = await fetch(`https://api.themoviedb.org/3/tv/top_rated?language=en-US&page=${pageNum}`, options);
         const data = await response.json();
 
@@ -136,8 +147,10 @@ export async function getTopTVMiddleware(req: Request, res: Response, next: Next
 
 export async function getTvByGenre(req: Request, res: Response, next: NextFunction) {
     try {
+        const pageNum = req.headers['page-num'];
         const genre = req.headers['genre'];
-        const response = await fetch(`https://api.themoviedb.org/3/discover/tv?language=en-US&page=1&sort_by=popularity.desc&with_genres=${genre}&with_original_language=en`, options);
+
+        const response = await fetch(`https://api.themoviedb.org/3/discover/tv?language=en-US&page=${pageNum}&sort_by=popularity.desc&with_genres=${genre}&with_original_language=en`, options);
         const data = await response.json();
 
         return res.status(httpStatus.OK).send(data);

@@ -23,6 +23,7 @@ import {ItemUrlPipePipe} from '../../core/pipes/item-url-pipe.pipe';
 import {PosterUrlPipePipe} from '../../core/pipes/poster-url-pipe.pipe';
 import {LibraryTableSkeletonComponent} from './library-table-skeleton/library-table-skeleton.component';
 import {LibraryCarouselSkeletonComponent} from './library-carousel-skeleton/library-carousel-skeleton.component';
+import {InfiniteScrollDirective} from 'ngx-infinite-scroll';
 
 @Component({
   selector: 'app-library',
@@ -40,6 +41,7 @@ import {LibraryCarouselSkeletonComponent} from './library-carousel-skeleton/libr
     PosterUrlPipePipe,
     LibraryTableSkeletonComponent,
     LibraryCarouselSkeletonComponent,
+    InfiniteScrollDirective,
   ],
   templateUrl: './library.component.html',
   styleUrl: './library.component.scss',
@@ -60,9 +62,12 @@ export class LibraryComponent implements OnInit {
   carouselItems: Signal<LibraryItem[]> = computed<LibraryItem[]>(() => this.libraryItems().slice(0,5));
 
   // Items appearing on the table below the carousel
-  tableItems: Signal<LibraryItem[]> = computed<LibraryItem[]>(() => this.libraryItems().slice(5,20));
+  tableItems: Signal<LibraryItem[]> = computed<LibraryItem[]>(() => this.libraryItems().slice(5));
 
   isLoading = this.lib.isLoading;
+
+  // The number of the next page of TMDB items that will be retrieved
+  nextPage: number = 2;
 
 
   responsiveOptions: CarouselResponsiveOptions[] = [
@@ -90,7 +95,9 @@ export class LibraryComponent implements OnInit {
 
   ngOnInit() {
     this.lib.clearAllFilters();
+    this.libraryItems.set([]);
     this.isLoading.set(true);
+
     this.route.data.subscribe((data) => {
       // Selecting media type for current page
       if (data['type'] === 'film') {
@@ -138,5 +145,9 @@ export class LibraryComponent implements OnInit {
     })
   }
 
+  onScroll() {
+    //TODO: adjust logic to support genre-specific item retrieval
+    this.lib.getItemListFromApi(this.selectedMediaType(), this.categoryText().toLowerCase(), undefined, this.nextPage);
+  }
 
 }

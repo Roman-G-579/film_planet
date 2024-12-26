@@ -57,7 +57,13 @@
   @else {
     <!--  Table for remaining items -->
     <section class="table-wrapper  flex justify-center">
-      <div class="card w-3/5">
+      <div
+        class="card w-3/5"
+        infiniteScroll
+        [infiniteScrollDistance]="2"
+        [infiniteScrollThrottle]="50"
+        (scrolled)="onScroll()"
+      >
         <p-dataView [value]="tableItems()">
           <ng-template pTemplate="list" let-tableItems>
             <div class="grid grid-cols-12 gap-4 grid-nogutter">

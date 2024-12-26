@@ -279,7 +279,7 @@ export class LibraryService {
         }
 
         this.setMainCredits(this.credits());
-        this.isLoading.set(!this.isLoading());
+        this.isLoading.set(false);
       },
       error: (err) => {
         console.log(err);
