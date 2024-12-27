@@ -53,7 +53,7 @@ export class LibraryService {
 
   minDateFilter: string | undefined;
   maxDateFilter: string | undefined;
-  genreFilter: Genre | undefined;
+  genreIdFilter: number = 0;
 
   /**
    * ratingFilter[0] = minRating,
@@ -111,22 +111,16 @@ export class LibraryService {
     this.getFilteredList();
   }
 
-  applyFilters(year: number | undefined, genre: string | number | undefined, minRating: number, maxRating: number) {
+  applyFilters(year: number | undefined, genre: string | undefined, minRating: number, maxRating: number) {
     // Date Filters
     if (year) {
       this.minDateFilter = `${year}-01-01`;
       this.maxDateFilter = `${year}-12-31`;
     }
 
-    //TODO: update genre filter to use Genre object type
-
-    // // Genre Filters
-    // if (Number(genre)) {
-    //   this.genreFilter = Number(genre);
-    // }
-    // else if (genre) {
-    //   this.genreFilter = this.dataUtils.getGenreIdFromName(<string>genre);
-    // }
+    if (genre) {
+      this.genreIdFilter = this.dataUtils.getGenreIdFromName(<string>genre);
+    }
 
     // Rating Filters
     this.ratingFilter[0] = (minRating);
@@ -179,7 +173,7 @@ export class LibraryService {
    * Clears the genre filter
    */
   removeGenreFilter() {
-    this.genreFilter = undefined;
+    this.genreIdFilter = 0;
   }
 
   /**
@@ -205,24 +199,25 @@ export class LibraryService {
    * Fetches a list of items from the api based on the specified media type and category
    * @param mediaType item type - film or TV
    * @param category  recent / popular / top
-   * @param genre (optional) the item's genre
+   * @param genreId (optional) the item's genre TMDB ID
    * @param pageNum the number of page in the list of the relevant items
    */
-  getItemListFromApi(mediaType: MediaType, category: string, genre?: string, pageNum?: number) {
+  getItemListFromApi(mediaType: MediaType, category: string, genreId?: string, pageNum?: number) {
     let pageUrl;
-    if (genre) {
-      pageUrl = `library/${mediaType}/genre/${genre}`;
+    if (genreId) {
+      pageUrl = `library/${mediaType}/genre/${genreId}`;
     }
     else {
       pageUrl = `library/${mediaType}/${category}`;
     }
+
     const { href } = new URL(pageUrl, this.apiUrl);
 
     const pageNumStr = pageNum?.toString() || '1';
 
     let headers = new HttpHeaders().set('page-num',pageNumStr);
-    if (genre) {
-      headers = headers.set('genre', genre);
+    if (genreId) {
+      headers = headers.set('genre', genreId);
     }
 
     this.http.get(href, {headers}).subscribe({
@@ -236,7 +231,7 @@ export class LibraryService {
 
         this.libraryItems.set(resultItems);
         this.unfilteredItems.set(resultItems);
-
+        console.log(this.unfilteredItems());
         this.isLoading.set(false);
       },
       error: (err) => {
@@ -311,15 +306,6 @@ export class LibraryService {
   }
 
   /**
-   * Fetches the
-   * @param id the id of the film or TV show
-   * @param mediaType item type - film or TV show
-   */
-  getCreditsFromApi(id: number, mediaType: MediaType) {
-
-  }
-
-  /**
    * @returns A list of library items filtered based on the values in the filter parameters
    * (minDateFilter, maxDateFilter, genreFilter, ratingFilter, mediaFilter)
    */
@@ -332,7 +318,7 @@ export class LibraryService {
         return (
           (!this.minDateFilter || releaseDate >= this.minDateFilter) &&
           (!this.maxDateFilter || releaseDate <= this.maxDateFilter) &&
-          (!this.genreFilter || item.genres?.includes(this.genreFilter)) &&
+          (!this.genreIdFilter || item.genre_ids?.includes(this.genreIdFilter)) &&
           (!this.ratingFilter || (item.vote_average && item.vote_average >= this.ratingFilter[0] && item.vote_average <= this.ratingFilter[1]))
         );
       }

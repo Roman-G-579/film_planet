@@ -18,6 +18,7 @@ export interface LibraryItem {
   runtime?: number; // in minutes
   overview?: string;
   genres: Genre[];
+  genre_ids?: number[];
   starring?: string[];
   directors?: string[];
   created_by?: CastCrewMember[];

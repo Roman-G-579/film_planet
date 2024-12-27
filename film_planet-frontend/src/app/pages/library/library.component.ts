@@ -24,6 +24,7 @@ import {PosterUrlPipePipe} from '../../core/pipes/poster-url-pipe.pipe';
 import {LibraryTableSkeletonComponent} from './library-table-skeleton/library-table-skeleton.component';
 import {LibraryCarouselSkeletonComponent} from './library-carousel-skeleton/library-carousel-skeleton.component';
 import {InfiniteScrollDirective} from 'ngx-infinite-scroll';
+import {Genre} from '../../core/interfaces/genre.interface';
 
 @Component({
   selector: 'app-library',
@@ -56,6 +57,9 @@ export class LibraryComponent implements OnInit {
 
   categoryText: WritableSignal<string> = signal("");
   mediaTypeText: WritableSignal<string> = signal("");
+
+  // Stores a genre's name and TMDB id if the page has been accessed by selecting a specific genre
+  genre: WritableSignal<Genre> = signal({id: '', name: ''});
 
   selectedMediaType: WritableSignal<MediaType> = signal(MediaType.Film);
   // Items appearing on the carousel at the top-titles of the page
@@ -120,7 +124,8 @@ export class LibraryComponent implements OnInit {
         this.categoryText.set("Popular");
       }
       else if (data['category'] === 'genre') {
-        this.getGenreItemsAndSetCategoryText();
+        this.setGenreParams();
+        this.getGenreItems();
       }
 
     });
@@ -128,26 +133,30 @@ export class LibraryComponent implements OnInit {
   }
 
   /**
-   * Returns a list of library items matching the specified genre,
-   * and sets a matching value for the title string
+   * Saves the parameters of the selected genre for later use
    */
-  getGenreItemsAndSetCategoryText() {
+  setGenreParams() {
     this.route.paramMap.subscribe((params) => {
+      const genreId = params.get('genre') || '';
+      const genreName = this.dataUtils.getGenreNameFromId(Number(genreId), this.selectedMediaType());
 
-      const genre = params.get('genre') || '';
+      this.genre.set({id: genreId, name: genreName});
+    });
+  }
+
+  /**
+   * Returns a list of library items matching the specified genre
+   */
+  getGenreItems() {
+      // Sets the page text based on the given genre
+      this.categoryText.set(this.genre().name);
 
       // Filters the library items based on the given genre
-      this.lib.getItemListFromApi(this.selectedMediaType(), 'genre', genre);
-
-      // Sets the page text based on the given genre
-      const genreName = this.dataUtils.getGenreNameFromId(Number(genre), this.selectedMediaType());
-      this.categoryText.set(genreName);
-    })
+      this.lib.getItemListFromApi(this.selectedMediaType(), 'genre', this.genre().id);
   }
 
   onScroll() {
-    //TODO: adjust logic to support genre-specific item retrieval
-    this.lib.getItemListFromApi(this.selectedMediaType(), this.categoryText().toLowerCase(), undefined, this.nextPage);
+      this.lib.getItemListFromApi(this.selectedMediaType(), this.categoryText().toLowerCase(), this.genre().id, this.nextPage);
   }
 
 }
