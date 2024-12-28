@@ -6,7 +6,7 @@ import {
   signal,
   WritableSignal
 } from '@angular/core';
-import {TableLazyLoadEvent, TableModule} from 'primeng/table';
+import {TableModule} from 'primeng/table';
 import {ButtonModule} from 'primeng/button';
 import {LibraryItem} from '../../core/interfaces/library-item.interface';
 import {IftaLabelModule} from 'primeng/iftalabel';
@@ -79,9 +79,6 @@ export class TopTitlesComponent implements OnInit {
     return (screenWidth >= 1024) ? 175 : 600;
   })
 
-  // All pages that have been loaded thus far
-  private loadedPages = new Set<number>();
-
   ngOnInit() {
     this.lib.clearAllFilters();
     this.lib.libraryItems.set([]);
@@ -101,29 +98,6 @@ export class TopTitlesComponent implements OnInit {
 
       this.genres.set(this.dataUtils.getGenreNamesFromIds(this.selectedMediaType()));
     });
-  }
-
-  loadItemsLazy($event: TableLazyLoadEvent) {
-    const pageSize = $event.rows || 20; // Number of items to load
-
-    // Page index starts from 1 (second page), since the first page is loaded by default
-    const pageIndex = (($event.first || 0) / pageSize) + 1;
-
-    // Stops loading elements beyond the first 100
-    if (this.libraryItems().length >= 100) {
-      return;
-    }
-
-    // Prevents loading page indices that were already loaded
-    if (this.loadedPages.has(pageIndex)) {
-      return;
-    }
-
-    // Adds the new page to the loaded pages list
-    this.loadedPages.add(pageIndex);
-
-    // Loads the items from the API found on the page specified by pageIndex
-    this.lib.getItemListFromApi(this.selectedMediaType(),'top',undefined,pageIndex + 1);
   }
 
 }

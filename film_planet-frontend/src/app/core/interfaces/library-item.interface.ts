@@ -34,4 +34,5 @@ export interface LibraryItem {
   vote_average?: number;
   vote_count?: number;
   credits?: Credits;
+  ranking?: number; // Used for top-items component
 }

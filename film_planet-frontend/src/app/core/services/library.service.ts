@@ -222,8 +222,16 @@ export class LibraryService {
 
     this.http.get(href, {headers}).subscribe({
       next: (data) => {
-        const resultsObject = data as ItemListResponse;
-        let resultItems: LibraryItem[] = [...this.libraryItems(), ...resultsObject.results];
+        let resultItems: LibraryItem[];
+
+        if (category === 'top') {
+          const resultsObject = data as LibraryItem[];
+          resultItems = [...this.libraryItems(), ...resultsObject];
+        }
+        else {
+          const resultsObject = data as ItemListResponse;
+          resultItems = [...this.libraryItems(), ...resultsObject.results];
+        }
 
         for (let item of resultItems) {
           item.mediaType = mediaType;
@@ -231,7 +239,7 @@ export class LibraryService {
 
         this.libraryItems.set(resultItems);
         this.unfilteredItems.set(resultItems);
-        console.log(this.unfilteredItems());
+
         this.isLoading.set(false);
       },
       error: (err) => {
@@ -312,8 +320,7 @@ export class LibraryService {
   getFilteredList() {
     const filteredItems: LibraryItem[] = this.unfilteredItems().filter(
       (item) => {
-        // The item's release date is converted to a Date object if necessary
-        //const releaseDate = item.release_date instanceof Date ? item.release_date : new Date(item.release_date, 0, 1);
+
         const releaseDate = item.release_date || item.first_air_date || '';
         return (
           (!this.minDateFilter || releaseDate >= this.minDateFilter) &&
