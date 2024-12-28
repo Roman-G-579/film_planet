@@ -62,12 +62,10 @@ export async function getPopularFilmsMiddleware(req: Request, res: Response, nex
 
 export async function getTopFilmsMiddleware(req: Request, res: Response, next: NextFunction) {
     try {
-        const pageNum = req.headers['page-num'];
+        const baseUrl = `https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=`
+        const results = await fetchMultiplePages(baseUrl, 10);
 
-        const response = await fetch(`https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=${pageNum}`, options);
-        const data = await response.json();
-
-        return res.status(httpStatus.OK).send(data);
+        return res.status(httpStatus.OK).send(results);
     } catch (err) {
         next(err);
     }
@@ -134,12 +132,10 @@ export async function getPopularTVMiddleware(req: Request, res: Response, next: 
 
 export async function getTopTVMiddleware(req: Request, res: Response, next: NextFunction) {
     try {
-        const pageNum = req.headers['page-num'];
+        const baseUrl = `https://api.themoviedb.org/3/tv/top_rated?language=en-US&page=`
+        const results = await fetchMultiplePages(baseUrl, 10);
 
-        const response = await fetch(`https://api.themoviedb.org/3/tv/top_rated?language=en-US&page=${pageNum}`, options);
-        const data = await response.json();
-
-        return res.status(httpStatus.OK).send(data);
+        return res.status(httpStatus.OK).send(results);
     } catch (err) {
         next(err);
     }
@@ -157,4 +153,26 @@ export async function getTvByGenre(req: Request, res: Response, next: NextFuncti
     } catch (err) {
         next(err);
     }
+}
+
+/**
+ * Fetches multiple pages of data from the TMDB API at once
+ * @param baseUrl the url of the API request
+ * @param numOfPages the number of pages to be fetched
+ */
+async function fetchMultiplePages(baseUrl: string, numOfPages: number) {
+    const results = [];
+
+    for (let page = 1; page <= numOfPages; page++) {
+        const response = await fetch(`${baseUrl}${page}`, options);
+        const data = await response.json();
+
+        // Saves each item's ranking
+        const pageResults = data.results.map((item: any, index: number) => ({
+            ...item,
+            ranking: (page - 1) * data.results.length + index + 1,
+        }));
+        results.push(...pageResults);
+    }
+    return results;
 }
