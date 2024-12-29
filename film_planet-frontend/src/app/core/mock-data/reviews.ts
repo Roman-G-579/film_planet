@@ -25,4 +25,12 @@ export const REVIEWS: Review[] = [
     rating: 9.5,
     created_at: new Date(2019,4,2),
   },
+  {
+    id: 4,
+    item_id: 278,
+    author: 'Tim',
+    content: `Great movie, a true classic`,
+    rating: 10,
+    created_at: new Date(2024,11,2),
+  }
 ];
