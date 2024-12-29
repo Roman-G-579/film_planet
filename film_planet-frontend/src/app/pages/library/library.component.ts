@@ -125,7 +125,9 @@ export class LibraryComponent implements OnInit {
       }
       else if (data['category'] === 'genre') {
         this.setGenreParams();
-        this.getGenreItems();
+
+        // Filters the library items based on the given genre
+        this.lib.getItemListFromApi(this.selectedMediaType(), 'genre', this.genre().id);
       }
 
     });
@@ -140,23 +142,16 @@ export class LibraryComponent implements OnInit {
       const genreId = params.get('genre') || '';
       const genreName = this.dataUtils.getGenreNameFromId(Number(genreId), this.selectedMediaType());
 
+      // Sets the page text based on the given genre
+      this.categoryText.set(`Popular ${genreName}`);
+
       this.genre.set({id: genreId, name: genreName});
     });
   }
 
-  /**
-   * Returns a list of library items matching the specified genre
-   */
-  getGenreItems() {
-      // Sets the page text based on the given genre
-      this.categoryText.set(this.genre().name);
-
-      // Filters the library items based on the given genre
-      this.lib.getItemListFromApi(this.selectedMediaType(), 'genre', this.genre().id);
-  }
-
   onScroll() {
       this.lib.getItemListFromApi(this.selectedMediaType(), this.categoryText().toLowerCase(), this.genre().id, this.nextPage);
+      this.nextPage++;
   }
 
 }
