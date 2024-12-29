@@ -14,5 +14,5 @@ export interface CastCrewMember {
   credit_id?: string;
   order?: number;
   department?: string;
-  job?: string;
+  job: string;
 }

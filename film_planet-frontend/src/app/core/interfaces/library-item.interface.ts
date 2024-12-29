@@ -2,6 +2,8 @@ import {MediaType} from '../enums/media-type.enum';
 import {Credits} from './credits.interface';
 import {Genre} from './genre.interface';
 import {CastCrewMember} from './cast-crew-member.interface';
+import {ItemStatus} from '../enums/item-status.enum';
+import {Season} from './season.interface';
 
 /**
  * Interface for an individual film or tv show
@@ -35,4 +37,6 @@ export interface LibraryItem {
   vote_count?: number;
   credits?: Credits;
   ranking?: number; // Used for top-items component
+  status?: ItemStatus;
+  seasons?: Season[];
 }
