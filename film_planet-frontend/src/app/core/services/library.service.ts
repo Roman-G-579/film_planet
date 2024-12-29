@@ -12,6 +12,7 @@ import {ItemListResponse} from '../interfaces/api-responses/item-list-response.i
 import {Credits} from '../interfaces/credits.interface';
 import {CastCrewMember} from '../interfaces/cast-crew-member.interface';
 import {Genre} from '../interfaces/genre.interface';
+import {Season} from '../interfaces/season.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -48,6 +49,7 @@ export class LibraryService {
 
   mainCast: WritableSignal<CastCrewMember[]> = signal<CastCrewMember[]>([]);
   directorsAndCreators: WritableSignal<CastCrewMember[]> = signal<CastCrewMember[]>([]);
+  originalWriters: WritableSignal<CastCrewMember[]> = signal<CastCrewMember[]>([]);
 
   mediaFilter: MediaType = MediaType.Film;
 
@@ -140,21 +142,20 @@ export class LibraryService {
   }
 
   /**
-   * Returns every season with a series id matching the given id
-   * @param id the id that each season's series_id value is compared with
+   * Returns the details of the season matching the given id
+   * @param id the season's TMDB od
    */
-  getShowSeasons(id: number) {
+  getSeasonDetails(id: number) {
     return SEASONS.filter( (season) => {
-      return season.series_id === id;
+      return season.show_id === id;
     });
   }
 
   /**
-   * //TODO: place episode objects directly inside season objects to avoid searching through the entire database
-   * Returns every episode with a season id matching the given id
-   * @param id the id that each episode's season_id value is compared with
+   * Returns the details of the episode matching the given id
+   * @param id the TMDB id of the episode
    */
-  getSeasonEpisodes(id: number) {
+  getEpisodeDetails(id: number) {
     return EPISODES.filter( (episode) => {
       return episode.season_id === id;
     });
@@ -298,11 +299,18 @@ export class LibraryService {
   setMainCredits(credits: Credits) {
     this.mainCast.set(credits.cast.slice(0,3));
 
+    // Finds every credited director for the film (if the credits list is of a film)
     const directors: CastCrewMember[] = credits.crew.filter((person) => {
       return person.job?.toLowerCase() === 'director';
     });
 
+    // Finds every original writer for the item (if it is based on a novel or a short story)
+    const originalWriters: CastCrewMember[] = credits.crew.filter((person) => {
+      const job: string | undefined = person.job?.toLowerCase();
+      return job?.includes('novel') || job?.includes('short story');
+    })
     this.directorsAndCreators.set(this.item().created_by || directors);
+    this.originalWriters.set(originalWriters);
   }
 
   /**

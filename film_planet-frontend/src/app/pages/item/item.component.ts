@@ -19,6 +19,7 @@ import {Genre} from '../../core/interfaces/genre.interface';
 import {PosterUrlPipePipe} from '../../core/pipes/poster-url-pipe.pipe';
 import {SkeletonModule} from 'primeng/skeleton';
 import {ItemSkeletonComponent} from './item-skeleton/item-skeleton.component';
+import {ItemStatus} from '../../core/enums/item-status.enum';
 
 @Component({
   selector: 'app-item',
@@ -55,16 +56,15 @@ export class ItemComponent implements OnInit {
   protected readonly lib = inject(LibraryService);
   private route = inject(ActivatedRoute);
   protected readonly MediaType = MediaType;
+  protected readonly ItemStatus = ItemStatus;
 
   item: WritableSignal<LibraryItem> = this.lib.item;
 
   credits: WritableSignal<Credits> = this.lib.credits;
   mainCast: WritableSignal<CastCrewMember[]> = this.lib.mainCast;
   directorsAndCreators: WritableSignal<CastCrewMember[]> = this.lib.directorsAndCreators;
+  originalWriters: WritableSignal<CastCrewMember[]> = this.lib.originalWriters;
 
-  itemGenres: WritableSignal<Genre[]> = signal<Genre[]>([]);
-  endYear: WritableSignal<string | undefined> = signal<string | undefined>(undefined);
-  seasons: WritableSignal<Season[]> = signal<Season[]>([]);
   reviews: WritableSignal<Review[]> = signal<Review[]>([])
 
   isLoading = this.lib.isLoading;
@@ -92,17 +92,8 @@ export class ItemComponent implements OnInit {
   setParams(mediaType: MediaType, id: number) {
     this.lib.getItemFromApi(mediaType, id);
 
-    this.itemGenres.set(this.item().genres);
-
     this.reviews.set(this.lib.getReviewsByItemId(id));
 
-    if (this.item().mediaType === MediaType.TV) {
-      this.seasons.set(this.lib.getShowSeasons(id));
-
-      for (const idx in this.seasons()) {
-        const season = this.seasons()[idx];
-        season.episodes = this.lib.getSeasonEpisodes(season.id);
-      }
-    }
   }
+
 }
