@@ -34,3 +34,17 @@ export async function getItemMiddleware(req: Request, res: Response, next: NextF
         next(err);
     }
 }
+
+export async function getSeasonDetailsMiddleware(req: Request, res: Response, next: NextFunction) {
+    try {
+        const series_id = req.headers['series-id'];
+        const season_number = req.headers['season-number'];
+
+        const response = await fetch(`https://api.themoviedb.org/3/tv/${series_id}/season/${season_number}?language=en-US`, options);
+        const data = await response.json();
+
+        return res.status(httpStatus.OK).send(data);
+    } catch (err) {
+        next(err);
+    }
+}
