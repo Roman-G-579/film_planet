@@ -13,6 +13,7 @@ import {Credits} from '../interfaces/credits.interface';
 import {CastCrewMember} from '../interfaces/cast-crew-member.interface';
 import {Genre} from '../interfaces/genre.interface';
 import {Season} from '../interfaces/season.interface';
+import {Episode} from '../interfaces/episode.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -28,6 +29,7 @@ export class LibraryService {
 
   //TODO: move loading skeletons to inside of table in top0titles.component
   isLoading = signal<boolean>(true);
+  loadingSeasonDetails = signal<boolean>(false);
 
   libraryItems: WritableSignal<LibraryItem[]> = signal<LibraryItem[]>([]);
 
@@ -63,56 +65,6 @@ export class LibraryService {
    */
   ratingFilter: number[] = [0.0,10];
 
-  /**
-   * Filters by the library item's type of media (film, tv etc.)
-   * @param type the chosen media type
-   */
-  filterByMediaType(type: MediaType) {
-    this.mediaFilter = type;
-  }
-
-  /**
-   * Filters by the library item's year of release
-   * @param year the item's release year
-   */
-  filterByYear(year: number | undefined) {
-    if (year) {
-      this.minDateFilter = `${year}-01-01`;
-      this.maxDateFilter = `${year}-12-31`;
-    }
-
-    this.getFilteredList();
-  }
-
-
-  //TODO: update genre filter to use Genre object type
-
-  // /**
-  //  * Filters by the library item's genre
-  //  * @param genre the chosen genre - either its id, or its name
-  //  */
-  // filterByGenre(genre: Genre | number | undefined) {
-  //   if (Number(genre)) {
-  //     this.genreFilter = Number(genre);
-  //   }
-  //   else {
-  //     this.genreFilter = this.dataUtils.getGenreIdFromName(<string>genre);
-  //   }
-  //   this.getFilteredList();
-  // }
-
-  /**
-   * Filters by the library item's user rating
-   * @param minRating minimum user rating
-   * @param maxRating maximum user rating
-   */
-  filterByRating(minRating: number, maxRating: number) {
-    this.ratingFilter[0] = (minRating);
-    this.ratingFilter[1] = (maxRating);
-
-    this.getFilteredList();
-  }
-
   applyFilters(year: number | undefined, genre: string | undefined, minRating: number, maxRating: number) {
     // Date Filters
     if (year) {
@@ -141,25 +93,7 @@ export class LibraryService {
     });
   }
 
-  /**
-   * Returns the details of the season matching the given id
-   * @param id the season's TMDB od
-   */
-  getSeasonDetails(id: number) {
-    return SEASONS.filter( (season) => {
-      return season.show_id === id;
-    });
-  }
 
-  /**
-   * Returns the details of the episode matching the given id
-   * @param id the TMDB id of the episode
-   */
-  getEpisodeDetails(id: number) {
-    return EPISODES.filter( (episode) => {
-      return episode.season_id === id;
-    });
-  }
 
   /**
    * Returns every review written for the item with the given id
@@ -293,6 +227,57 @@ export class LibraryService {
   }
 
   /**
+   * Returns the details of the season matching the given show id combined with the season number
+   * @param series_id the show's TMDB id
+   * @param season_number the number of the season
+   */
+  getSeasonDetails(series_id: number, season_number: number) {
+    const pageUrl = `details/tv/${series_id}/season/${season_number}`;
+    const { href } = new URL(pageUrl, this.apiUrl);
+
+    let headers = new HttpHeaders().set('series-id',series_id.toString());
+    headers = headers.set('season-number',season_number.toString());
+
+    let resultItem: Season;
+
+    const itemData = this.item();
+
+      this.http.get(href, {headers}).subscribe({
+        next: (data) => {
+          resultItem = data as Season;
+
+          if (itemData.seasons) {
+            // Finds the index of the relevant season in the item's seasons array
+            const seasonIdx = itemData.seasons.findIndex((season) => season.id === resultItem.id);
+            // Updates the relevant season object with the retrieved season data
+            if (seasonIdx !== -1) {
+              itemData.seasons[seasonIdx] = resultItem;
+
+              // Extracts extra details for each episode of the season
+              if (itemData.seasons[seasonIdx].episodes) {
+                let seasonEpisodes: Episode[] = itemData.seasons[seasonIdx].episodes;
+
+                for (let episode of seasonEpisodes) {
+                  episode = this.getEpisodeDirectorsAndWriters(episode);
+                }
+              }
+
+              this.item.set(itemData);
+            }
+            this.loadingSeasonDetails.set(false);
+          }
+          else {
+            console.error("Seasons array is undefined")
+          }
+        },
+        error: (err) => {
+          console.log(err);
+        }
+      });
+
+  }
+
+  /**
    * Sets the values of the item's main actors and directors/creators
    * @param credits the film or TV show's full credits list
    */
@@ -314,11 +299,31 @@ export class LibraryService {
   }
 
   /**
+   * Extracts extra data from the episode object
+   * @param episode the episode object
+   */
+  getEpisodeDirectorsAndWriters(episode: Episode) {
+    if (episode && episode.crew) {
+      const directors: string[] = episode.crew
+        .filter((person) => person.job?.toLowerCase() === 'director')
+        .map((person) => person.name);
+
+      const writers: string[] = episode.crew
+        .filter((person) => person.job?.toLowerCase() === 'writer')
+        .map((person) => person.name);
+
+      episode.directors = directors;
+      episode.writers = writers;
+    }
+
+    return episode;
+  }
+
+  /**
    * Fetches an expanded list of details of a film or TV show
    * @param id the id of the film or TV show
    */
   getItemDetailsFromApi(id: number) {
-
   }
 
   /**

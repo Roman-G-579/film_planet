@@ -1,0 +1,21 @@
+<main>
+  @for (episode of season().episodes; track episode) {
+    <p-accordion-panel [value]="episode.id">
+      <p-accordion-header>{{episode.episode_number}} &nbsp;&nbsp; {{ episode.name }}</p-accordion-header>
+      <p-accordion-content>
+        <img alt="Episode {{episode.episode_number}} Poster" class="w-[342px]"  src="{{episode.still_path | posterUrl: 0}}" />
+        <p class="m-0 mb-2" [innerHTML]="(episode.overview || '') | lineBreak"></p>
+        <div class="ep-info-wrapper text-sm text-surface-500 dark:text-surface-400">
+          <div class="additional-episode-info flex flex-col ">
+            <span>Directed by {{episode.directors}}</span>
+            <span>Written by {{episode.writers}}</span>
+            <span>Released {{ episode.air_date | date: 'longDate' }}</span>
+          </div>
+          <div class="ep-duration-wrapper flex justify-end">
+            <span>Running time: {{episode.runtime || 0 | minutesToHours}}</span>
+          </div>
+        </div>
+      </p-accordion-content>
+    </p-accordion-panel>
+  }
+</main>

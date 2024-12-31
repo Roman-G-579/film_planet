@@ -15,5 +15,7 @@ export interface Episode {
   vote_average?: number;
   vote_count?: number;
   crew?: CastCrewMember[];
+  directors?: string[];
+  writers?: string[];
   guest_stars?: CastCrewMember[];
 }

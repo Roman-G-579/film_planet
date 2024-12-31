@@ -63,7 +63,7 @@
         <div class="rating-wrapper flex flex-col items-end justify-center mt-7  ">
           <div class="rating-num flex gap-2 text-5xl -mb-4">
             <i class="pi pi-star-fill" style="font-size: 2.5rem; color: gold"></i>
-            <span><b>{{item().vote_average | number:'1.0-1'}}</b></span>
+            <span><b>{{item().vote_average | number:'1.1-1'}}</b></span>
           </div>
           <p>{{item().vote_count}} Ratings</p>
         </div>
@@ -96,47 +96,8 @@
         }
       </section>
 
-<!--      TODO: change season component to better match API data-->
       <section class="seasons-wrapper min-h-[500px] mb-8" *ngIf="item().mediaType === MediaType.TV">
-        <h1>Seasons:</h1>
-          <p-tabs [(value)]="activeSeason" scrollable lazy>
-            <p-tablist>
-              @for(season of item().seasons; track season){
-                <p-tab [value]="season.id">
-                  <i class="pi" [ngClass]="activeSeason === season.id ? 'pi-circle-on' : 'pi-circle-off'"></i>
-                  {{ season.name || ('Season ' + season.number)}}
-                </p-tab>
-              }
-            </p-tablist>
-            <p-tabpanels>
-              @for(season of item().seasons; track season){
-                <p-tabpanel [value]="season.id">
-                  <p-accordion [value]="season.id" [multiple]="true">
-                    @for (episode of season.episodes; track episode) {
-                      <p-accordion-panel [value]="episode.id">
-                        <p-accordion-header>{{episode.episode_number}} &nbsp;&nbsp; {{ episode.name }}</p-accordion-header>
-                        <p-accordion-content>
-                          <p class="m-0 mb-2">{{ episode.overview }}</p>
-                          <div class="ep-info-wrapper text-sm text-surface-500 dark:text-surface-400">
-                            <div class="additional-episode-info flex flex-col ">
-                              <span>Directed by PLACEHOLDER</span>
-                              <span>Written by PLACEHOLDER</span>
-                              <span>Released {{ episode.air_date | date: 'longDate' }}</span>
-                            </div>
-                            <div class="ep-duration-wrapper flex justify-end">
-                              <span>Running time: {{episode.runtime || 0 | minutesToHours}}</span>
-                            </div>
-                          </div>
-
-
-                        </p-accordion-content>
-                      </p-accordion-panel>
-                    }
-                  </p-accordion>
-                </p-tabpanel>
-              }
-            </p-tabpanels>
-          </p-tabs>
+        <app-seasons-panel [item]="item()"></app-seasons-panel>
       </section>
     </div>
   }

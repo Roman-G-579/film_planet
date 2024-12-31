@@ -5,21 +5,17 @@ import {LibraryService} from '../../core/services/library.service';
 import {ActivatedRoute, RouterLink} from '@angular/router';
 import {CardModule} from 'primeng/card';
 import {ButtonModule} from 'primeng/button';
-import {DatePipe, DecimalPipe, NgClass, NgIf} from '@angular/common';
-import {Season} from '../../core/interfaces/season.interface';
-import {Accordion, AccordionContent, AccordionHeader, AccordionPanel} from 'primeng/accordion';
+import {DatePipe, DecimalPipe, NgIf} from '@angular/common';
 import {FieldsetModule} from 'primeng/fieldset';
-import {Tab, TabList, TabPanel, TabPanels, Tabs} from 'primeng/tabs';
 import {PanelModule} from 'primeng/panel';
 import {Review} from '../../core/interfaces/review.interface';
-import {MinutesToHoursPipe} from '../../core/pipes/minutes-to-hours.pipe';
 import {Credits} from '../../core/interfaces/credits.interface';
 import {CastCrewMember} from '../../core/interfaces/cast-crew-member.interface';
-import {Genre} from '../../core/interfaces/genre.interface';
 import {PosterUrlPipePipe} from '../../core/pipes/poster-url-pipe.pipe';
 import {SkeletonModule} from 'primeng/skeleton';
 import {ItemSkeletonComponent} from './item-skeleton/item-skeleton.component';
 import {ItemStatus} from '../../core/enums/item-status.enum';
+import {SeasonsPanelComponent} from './seasons-panel/seasons-panel.component';
 
 @Component({
   selector: 'app-item',
@@ -29,24 +25,14 @@ import {ItemStatus} from '../../core/enums/item-status.enum';
     ButtonModule,
     RouterLink,
     NgIf,
-    Accordion,
-    AccordionPanel,
-    AccordionHeader,
-    AccordionContent,
     FieldsetModule,
-    Tabs,
-    TabList,
-    Tab,
-    TabPanels,
-    TabPanel,
-    NgClass,
     PanelModule,
     DatePipe,
-    MinutesToHoursPipe,
     DecimalPipe,
     PosterUrlPipePipe,
     SkeletonModule,
     ItemSkeletonComponent,
+    SeasonsPanelComponent,
   ],
   templateUrl: './item.component.html',
   styleUrl: './item.component.scss',
@@ -67,10 +53,7 @@ export class ItemComponent implements OnInit {
 
   reviews: WritableSignal<Review[]> = signal<Review[]>([])
 
-  isLoading = this.lib.isLoading;
-
-  // The currently expanded tab of the seasons list
-  activeSeason: number = 0;
+  isLoading: WritableSignal<boolean> = this.lib.isLoading;
 
   ngOnInit() {
     this.route.paramMap.subscribe(params => {
@@ -93,7 +76,6 @@ export class ItemComponent implements OnInit {
     this.lib.getItemFromApi(mediaType, id);
 
     this.reviews.set(this.lib.getReviewsByItemId(id));
-
   }
 
 }

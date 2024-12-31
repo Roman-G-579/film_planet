@@ -1,0 +1,21 @@
+::ng-deep .p-tablist-tab-list .p-tab:not(.p-tab-active):not(.p-disabled):hover {
+  color: var(--p-primary-color);
+}
+
+::ng-deep .p-panel .p-panel-header:hover {
+  color: var(--p-primary-color);
+  transition: 0.3s;
+  cursor: pointer;
+}
+
+::ng-deep .p-fieldset-legend-label,
+::ng-deep minusicon.p-component,
+::ng-deep plusicon.p-component{
+  color: var(--p-neutral-900);
+}
+
+::ng-deep .film_planet-dark .p-fieldset-legend-label,
+::ng-deep .film_planet-dark minusicon.p-component,
+::ng-deep .film_planet-dark plusicon.p-component{
+  color: var(--p-neutral-300);
+}
