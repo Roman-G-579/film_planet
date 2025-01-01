@@ -139,9 +139,12 @@ export class LibraryService {
    */
   getItemListFromApi(mediaType: MediaType, category: string, genreId?: string, pageNum?: number) {
     let pageUrl;
+
+    // Get items of a specific genre
     if (genreId) {
       pageUrl = `library/${mediaType}/genre/${genreId}`;
     }
+
     else {
       pageUrl = `library/${mediaType}/${category}`;
     }
@@ -189,7 +192,52 @@ export class LibraryService {
     // this.unfilteredItems.set(this.libraryItems());
   }
 
+  /**
+   * Fetches a list of items from the API based on the given search query
+   * @param query the name of the film or TV show that is being searched
+   * @param mediaType (optional) the item's media type
+   */
+  getSearchResultsFromApi(query: string, mediaType?: MediaType) {
+    query = query.toLowerCase().replace(/\s/g, '-');
 
+    if (mediaType) {
+      this.search(query, mediaType);
+    } else {
+      // Search both TV and Film if no mediaType is specified
+      this.search(query, MediaType.Film);
+      this.search(query, MediaType.TV);
+    }
+    this.isLoading.set(false);
+
+  }
+
+  /**
+   * Searches the TMDB database using the given query and media type
+   * @param query the search query
+   * @param mediaType film or TV
+   */
+  private search(query: string, mediaType: MediaType) {
+    const pageUrl = `library/search/${mediaType.toLowerCase()}/${query}`;
+    const { href } = new URL(pageUrl, this.apiUrl);
+
+    this.http.get(href).subscribe({
+      next: (data) => {
+        const resultsObject = data as ItemListResponse;
+        const resultItems: LibraryItem[] = resultsObject.results;
+
+        // Assign mediaType to all result items
+        resultItems.forEach((item) => (item.mediaType = mediaType));
+
+        // Update library items
+        this.libraryItems.set([...this.libraryItems(), ...resultItems]);
+      },
+      error: (err) => {
+        console.log(err);
+      }
+    });
+  }
+
+  //TODO: move item-specific functions to separate service
   /**
    * Fetches an item from the api based on the specified id
    * @param mediaType item type - film or TV (used for url generation)

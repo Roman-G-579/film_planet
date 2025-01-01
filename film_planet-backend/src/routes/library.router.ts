@@ -1,10 +1,15 @@
 import {Router} from "express";
 
 import {
-    getFilmsByGenre,
+    getFilmsByGenreMiddleware,
     getPopularFilmsMiddleware,
     getPopularTVMiddleware,
-    getRecentFilmsMiddleware, getRecentTVMiddleware, getTopFilmsMiddleware, getTopTVMiddleware, getTvByGenre
+    getRecentFilmsMiddleware,
+    getRecentTVMiddleware,
+    getFilmSearchResultsMiddleware,
+    getTopFilmsMiddleware,
+    getTopTVMiddleware,
+    getTVByGenreMiddleware, getTVSearchResultsMiddleware
 } from "../controllers/library.controller";
 
 const router = Router();
@@ -15,7 +20,9 @@ router.get('/film/popular', getPopularFilmsMiddleware);
 
 router.get('/film/top', getTopFilmsMiddleware);
 
-router.get('/film/genre/:id', getFilmsByGenre)
+router.get('/film/genre/:id', getFilmsByGenreMiddleware)
+
+router.get('/search/film/:query', getFilmSearchResultsMiddleware);
 
 router.get('/tv/recent', getRecentTVMiddleware);
 
@@ -23,6 +30,8 @@ router.get('/tv/popular', getPopularTVMiddleware);
 
 router.get('/tv/top', getTopTVMiddleware);
 
-router.get('/tv/genre/:id', getTvByGenre)
+router.get('/tv/genre/:id', getTVByGenreMiddleware);
+
+router.get('/search/tv/:query', getTVSearchResultsMiddleware);
 
 export default router;

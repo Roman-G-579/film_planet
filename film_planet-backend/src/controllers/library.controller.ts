@@ -71,12 +71,25 @@ export async function getTopFilmsMiddleware(req: Request, res: Response, next: N
     }
 }
 
-export async function getFilmsByGenre(req: Request, res: Response, next: NextFunction) {
+export async function getFilmsByGenreMiddleware(req: Request, res: Response, next: NextFunction) {
     try {
         const pageNum = req.headers['page-num'];
         const genre = req.headers['genre'];
 
         const response = await fetch(`https://api.themoviedb.org/3/discover/movie?language=en-US&page=${pageNum}&sort_by=popularity.desc&with_genres=${genre}&with_original_language=en`, options);
+        const data = await response.json();
+
+        return res.status(httpStatus.OK).send(data);
+    } catch (err) {
+        next(err);
+    }
+}
+
+export async function getFilmSearchResultsMiddleware(req: Request, res: Response, next: NextFunction) {
+    try {
+        const query = req.params.query;
+
+        const response = await fetch(`https://api.themoviedb.org/3/search/movie?query=${query}`, options);
         const data = await response.json();
 
         return res.status(httpStatus.OK).send(data);
@@ -141,12 +154,25 @@ export async function getTopTVMiddleware(req: Request, res: Response, next: Next
     }
 }
 
-export async function getTvByGenre(req: Request, res: Response, next: NextFunction) {
+export async function getTVByGenreMiddleware(req: Request, res: Response, next: NextFunction) {
     try {
         const pageNum = req.headers['page-num'];
         const genre = req.headers['genre'];
 
         const response = await fetch(`https://api.themoviedb.org/3/discover/tv?language=en-US&page=${pageNum}&sort_by=popularity.desc&with_genres=${genre}&with_original_language=en`, options);
+        const data = await response.json();
+
+        return res.status(httpStatus.OK).send(data);
+    } catch (err) {
+        next(err);
+    }
+}
+
+export async function getTVSearchResultsMiddleware(req: Request, res: Response, next: NextFunction) {
+    try {
+        const query = req.params.query;
+
+        const response = await fetch(`https://api.themoviedb.org/3/search/tv?query=${query}`, options);
         const data = await response.json();
 
         return res.status(httpStatus.OK).send(data);

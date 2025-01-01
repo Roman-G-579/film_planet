@@ -7,6 +7,11 @@ export default [
     pathMatch: 'full',
   },
   {
+    path: 'search/:query',
+    data: { type: 'all-types', category: 'search' },
+    loadComponent: () => import('./library.component').then((c) => c.LibraryComponent),
+  },
+  {
     path: 'tv/recent',
     data: { type: 'tv', category: 'recent'},
     loadComponent: () => import('./library.component').then((c) => c.LibraryComponent),

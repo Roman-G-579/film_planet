@@ -14,6 +14,8 @@ import {MenuModule} from 'primeng/menu';
 import {Router} from '@angular/router';
 import {MenubarModule} from 'primeng/menubar';
 import {SplitButtonModule} from 'primeng/splitbutton';
+import {DialogModule} from 'primeng/dialog';
+import {LibraryService} from '../../../core/services/library.service';
 
 @Component({
   selector: 'app-menu-bar',
@@ -26,14 +28,15 @@ import {SplitButtonModule} from 'primeng/splitbutton';
     ToastModule,
     MenuModule,
     MenubarModule,
-    SplitButtonModule
+    SplitButtonModule,
+    DialogModule
   ],
   templateUrl: './menu-bar.component.html',
   styleUrl: './menu-bar.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MenuBarComponent implements OnInit {
-
+  protected readonly lib = inject(LibraryService);
   private readonly router = inject(Router);
 
   isDarkModeEnabled: boolean = this.isSystemDark();
@@ -105,6 +108,8 @@ export class MenuBarComponent implements OnInit {
     },
   ]
 
+  isSearchVisible: boolean = false;
+
   ngOnInit() {
     // Automatically toggles dark mode based on user's system preferences
     if (this.isSystemDark()) {
@@ -126,10 +131,14 @@ export class MenuBarComponent implements OnInit {
     }
   }
 
-  showSearch() {
-    console.log("search bar - on")
-  }
+  searchItem(query: string) {
 
+    this.isSearchVisible = false;
+    this.lib.libraryItems.set([]);
+    console.log(query)
+    this.lib.getSearchResultsFromApi(query);
+    this.navigate( `/pages/library/search/${query}`);
+  }
   /**
    * Navigates to the specified route
    * @param route the destination route
