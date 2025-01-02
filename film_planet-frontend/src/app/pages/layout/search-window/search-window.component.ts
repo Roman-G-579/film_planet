@@ -1,13 +1,10 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  EventEmitter,
   inject,
-  input,
-  Input,
   model,
   ModelSignal,
-  Output, WritableSignal
+  WritableSignal
 } from '@angular/core';
 import {ButtonModule} from "primeng/button";
 import {DialogModule} from "primeng/dialog";
@@ -16,7 +13,6 @@ import {Router, RouterLink} from '@angular/router';
 import {DataViewModule} from 'primeng/dataview';
 import {DecimalPipe, NgClass, NgForOf} from '@angular/common';
 import {GenreNamesPipe} from '../../../core/pipes/genre-names.pipe';
-import {InfiniteScrollDirective} from 'ngx-infinite-scroll';
 import {ItemUrlPipePipe} from '../../../core/pipes/item-url-pipe.pipe';
 import {PosterUrlPipePipe} from '../../../core/pipes/poster-url-pipe.pipe';
 import {LibraryItem} from '../../../core/interfaces/library-item.interface';
@@ -31,7 +27,6 @@ import {LibraryItem} from '../../../core/interfaces/library-item.interface';
     DataViewModule,
     DecimalPipe,
     GenreNamesPipe,
-    InfiniteScrollDirective,
     ItemUrlPipePipe,
     NgForOf,
     PosterUrlPipePipe,
