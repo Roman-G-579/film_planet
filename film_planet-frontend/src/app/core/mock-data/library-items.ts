@@ -4,39 +4,39 @@ import {MediaType} from '../enums/media-type.enum';
 //TODO: update genre filter to use Genre object type
 
 export const LIBRARY_ITEMS: LibraryItem[] = [
-  // {
-  //   id: 1,
-  //   mediaType: MediaType.Film,
-  //   title: "Pulp Fiction",
-  //   release_date: "1994-1-1",
-  //   genres: [80, 18],
-  //   starring: ["John Travolta", "Uma Thurman"],
-  //   directors: ["Quentin Tarantino"],
-  //   poster_path: "assets/posters/1.jpg",
-  //   vote_average: 9.2,
-  // },
-  // {
-  //   id: 2,
-  //   mediaType: MediaType.Film,
-  //   title: "Prisoners",
-  //   release_date: "2013-1-1",
-  //   genres: [18, 53],
-  //   starring: ["Hugh Jackman", "Jake Gyllenhaal"],
-  //   directors: ["Denis Villeneuve"],
-  //   poster_path: "assets/posters/2.jpg",
-  //   vote_average: 9.1,
-  // },
-  // {
-  //   id: 3,
-  //   mediaType: MediaType.Film,
-  //   title: "The Blues Brothers",
-  //   release_date: "1980-1-1",
-  //   genres: [35, 10402],
-  //   starring: ["John Belushi", "Dan Aykroyd"],
-  //   directors: ["John Landis"],
-  //   poster_path: "assets/posters/3.jpg",
-  //   vote_average: 8.8,
-  // },
+  {
+    id: 1,
+    mediaType: MediaType.Film,
+    title: "Pulp Fiction",
+    release_date: "1994-1-1",
+    starring: ["John Travolta", "Uma Thurman"],
+    directors: ["Quentin Tarantino"],
+    poster_path: "assets/posters/1.jpg",
+    vote_average: 9.2,
+    genres: []
+  },
+  {
+    id: 2,
+    mediaType: MediaType.Film,
+    title: "Prisoners",
+    release_date: "2013-1-1",
+    starring: ["Hugh Jackman", "Jake Gyllenhaal"],
+    directors: ["Denis Villeneuve"],
+    poster_path: "assets/posters/2.jpg",
+    vote_average: 9.1,
+    genres: []
+  },
+  {
+    id: 3,
+    mediaType: MediaType.Film,
+    title: "The Blues Brothers",
+    release_date: "1980-1-1",
+    starring: ["John Belushi", "Dan Aykroyd"],
+    directors: ["John Landis"],
+    poster_path: "assets/posters/3.jpg",
+    vote_average: 8.8,
+    genres: []
+  },
   // {
   //   id: 4,
   //   mediaType: MediaType.Film,

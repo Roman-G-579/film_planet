@@ -207,6 +207,7 @@ export class LibraryService {
       this.search(query, MediaType.Film);
       this.search(query, MediaType.TV);
     }
+
     this.isLoading.set(false);
 
   }
@@ -228,8 +229,15 @@ export class LibraryService {
         // Assign mediaType to all result items
         resultItems.forEach((item) => (item.mediaType = mediaType));
 
-        // Update library items
-        this.libraryItems.set([...this.libraryItems(), ...resultItems]);
+        // Update library items and sort them by popularity
+        this.libraryItems.set(
+          [...this.libraryItems(), ...resultItems].sort(
+            (a: LibraryItem, b: LibraryItem) => {
+              const popularityA = a.popularity ?? 0;
+              const popularityB = b.popularity ?? 0;
+              return popularityB - popularityA;
+          })
+        );
       },
       error: (err) => {
         console.log(err);

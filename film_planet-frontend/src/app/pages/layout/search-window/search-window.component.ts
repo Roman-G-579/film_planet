@@ -3,7 +3,7 @@ import {
   Component,
   inject,
   model,
-  ModelSignal,
+  ModelSignal, OnInit,
   WritableSignal
 } from '@angular/core';
 import {ButtonModule} from "primeng/button";
@@ -11,11 +11,13 @@ import {DialogModule} from "primeng/dialog";
 import {LibraryService} from '../../../core/services/library.service';
 import {Router, RouterLink} from '@angular/router';
 import {DataViewModule} from 'primeng/dataview';
-import {DecimalPipe, NgClass, NgForOf} from '@angular/common';
+import {DatePipe, DecimalPipe, NgClass, NgForOf} from '@angular/common';
 import {GenreNamesPipe} from '../../../core/pipes/genre-names.pipe';
 import {ItemUrlPipePipe} from '../../../core/pipes/item-url-pipe.pipe';
 import {PosterUrlPipePipe} from '../../../core/pipes/poster-url-pipe.pipe';
 import {LibraryItem} from '../../../core/interfaces/library-item.interface';
+import {DividerModule} from 'primeng/divider';
+import {MediaType} from '../../../core/enums/media-type.enum';
 
 @Component({
   selector: 'app-search-window',
@@ -25,12 +27,12 @@ import {LibraryItem} from '../../../core/interfaces/library-item.interface';
     DialogModule,
     RouterLink,
     DataViewModule,
-    DecimalPipe,
-    GenreNamesPipe,
     ItemUrlPipePipe,
     NgForOf,
     PosterUrlPipePipe,
-    NgClass
+    NgClass,
+    DividerModule,
+    DatePipe
   ],
   templateUrl: './search-window.component.html',
   styleUrl: './search-window.component.scss',
@@ -38,16 +40,21 @@ import {LibraryItem} from '../../../core/interfaces/library-item.interface';
 })
 export class SearchWindowComponent {
   protected readonly lib = inject(LibraryService);
-  private readonly router = inject(Router);
 
   isSearchVisible: ModelSignal<boolean> = model<boolean>(false);
 
   searchResults: WritableSignal<LibraryItem[]> = this.lib.libraryItems;
 
   searchItem(query: string) {
+    //TODO: handle presses of spaces etc.
+    if (!query) {
+      return;
+    }
     // Clears the list of search results
     this.searchResults.set([]);
-
+    console.log(this.searchResults());
     this.lib.getSearchResultsFromApi(query);
   }
+
+  protected readonly MediaType = MediaType;
 }

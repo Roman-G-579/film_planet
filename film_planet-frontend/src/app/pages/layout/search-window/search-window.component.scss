@@ -1,0 +1,12 @@
+::ng-deep .p-dataview-content {
+  & a {
+    color: var(--p-dataview-content-color);
+  }
+}
+
+.table-item-wrapper:hover {
+  background-color: var(--p-surface-200);
+}
+::ng-deep .film_planet-dark .table-item-wrapper:hover  {
+  background-color: var(--p-surface-600);
+}
