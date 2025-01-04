@@ -18,7 +18,6 @@ import {ActivatedRoute, RouterLink} from '@angular/router';
 import {GenreNamesPipe} from '../../core/pipes/genre-names.pipe';
 import {MediaType} from '../../core/enums/media-type.enum';
 import {DataUtils} from '../../core/utils/data.utils';
-
 import {ItemUrlPipePipe} from '../../core/pipes/item-url-pipe.pipe';
 import {PosterUrlPipePipe} from '../../core/pipes/poster-url-pipe.pipe';
 import {LibraryTableSkeletonComponent} from './library-table-skeleton/library-table-skeleton.component';
@@ -104,10 +103,7 @@ export class LibraryComponent implements OnInit {
 
     this.route.data.subscribe((data) => {
       // Selecting media type for current page
-      if (data['type'] === 'all-types') {
-        this.mediaTypeText.set("");
-      }
-      else if (data['type'] === 'film') {
+      if (data['type'] === 'film') {
         this.selectedMediaType.set(MediaType.Film);
         this.mediaTypeText.set("Films");
       }
@@ -131,14 +127,6 @@ export class LibraryComponent implements OnInit {
 
         // Filters the library items based on the given genre
         this.lib.getItemListFromApi(this.selectedMediaType(), 'genre', this.genre().id);
-      }
-      //TODO: move to separate search component
-      else if (data['category'] === 'search') {
-        this.route.paramMap.subscribe((params) => {
-            const query = params.get('query') || '';
-            this.lib.getSearchResultsFromApi(query);
-            this.categoryText.set("Search Results");
-          });
       }
 
     });
