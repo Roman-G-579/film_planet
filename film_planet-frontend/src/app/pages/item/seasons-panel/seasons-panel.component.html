@@ -17,12 +17,24 @@
               <div class="row-span-3 mr-2">
                 <img alt="Season {{season.season_number}} Poster" class="w-24"  src="{{season.poster_path | posterUrl: 0}}" />
               </div>
-              <div class="mt-0 font-semibold h-9" *ngIf="season.vote_average">
+
+              <div class="mt-0 font-semibold h-9" *ngIf="season.vote_average; else vote_placeholder">
                 <i class="pi pi-star-fill text-yellow-500"></i>
                 {{ season.vote_average | number:'1.1-1'}}
               </div>
+              <ng-template #vote_placeholder>
+                <i class="text-surface-500">No ratings were given yet for this season</i>
+              </ng-template>
               <div class="h-9">
-                <p class="text-sm"><i>Premiered {{season.air_date | date: 'longDate'}}</i></p>
+                <p class="text-sm">
+                  <i>
+                    <ng-container *ngIf="season.air_date">
+                      {{ season.air_date > currentDate() ? 'Premiers' : 'Premiered' }}
+                      {{ season.air_date | date: 'longDate' }}
+                    </ng-container>
+
+                  </i>
+                </p>
               </div>
               <div class="h-9">
                 <p>{{season.episode_count}} Episodes</p>
@@ -33,7 +45,7 @@
             <p-fieldset
               legend="List of episodes"
               [toggleable]="true"
-              [collapsed]="collapsedStates[season.season_number] ?? true"
+              [collapsed]="collapsedStates[season.season_number]"
               (onAfterToggle)="showSeasonDetails(item().id, season.season_number)">
 
               <ng-container *ngIf="loadingSeasonDetails(); else episodeList">
@@ -41,7 +53,7 @@
               </ng-container>
 
               <ng-template #episodeList>
-                <app-episodes-panel [season]="season"></app-episodes-panel>
+                <app-episodes-panel [season]="season" [currentDate]="currentDate()"></app-episodes-panel>
               </ng-template>
             </p-fieldset>
 

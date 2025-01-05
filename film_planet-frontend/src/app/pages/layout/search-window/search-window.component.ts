@@ -62,7 +62,7 @@ export class SearchWindowComponent implements OnInit, OnDestroy {
     // Subscribe to the search subject with debounce logic
     this.searchSubject
       .pipe(
-        debounceTime(300), // Wait 300ms after the user stops typing
+        debounceTime(500), // Wait 500ms after the user stops typing
         distinctUntilChanged(), // Avoid duplicate searches for the same input
         takeUntil(this.destroy$) // Unsubscribe when the component is destroyed
       )

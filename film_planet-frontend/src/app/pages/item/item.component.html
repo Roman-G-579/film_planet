@@ -97,7 +97,7 @@
       </section>
 
       <section class="seasons-wrapper min-h-[500px] mb-8" *ngIf="item().mediaType === MediaType.TV">
-        <app-seasons-panel [item]="item()"></app-seasons-panel>
+        <app-seasons-panel [item]="item()" [currentDate]="currentDate()"></app-seasons-panel>
       </section>
     </div>
   }

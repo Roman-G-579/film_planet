@@ -48,13 +48,14 @@ export class DataUtils {
   }
 
   /**
-   * Converts a date object to a year
-   * If the date is already a number, returns it as is
-   * @param date the given date object or number
+   * Formats a Date object in the YYYY-MM-DD format
+   * @param date the given Date object
    */
-  static getYearFromDate(date: string): string {
-    const dateParts = date.split('-');
-    return dateParts[0];
+  static formatDate(date: Date): string {
+    const day = date.getDate().toString().padStart(2, '0');
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const year = date.getFullYear();
+    return `${year}-${month}-${day}`;
   }
 
   static getYearList() {

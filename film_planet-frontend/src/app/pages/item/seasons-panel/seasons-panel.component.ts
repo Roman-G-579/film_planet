@@ -39,6 +39,8 @@ export class SeasonsPanelComponent {
     mediaType: MediaType.TV,
     genres: []
   });
+  currentDate: InputSignal<string> = input<string>('');
+
   loadingSeasonDetails: WritableSignal<boolean> = this.lib.loadingSeasonDetails;
 
   // The currently expanded tab of the seasons list

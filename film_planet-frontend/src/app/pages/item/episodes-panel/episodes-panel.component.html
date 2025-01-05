@@ -9,7 +9,12 @@
           <div class="additional-episode-info flex flex-col ">
             <span>Directed by {{episode.directors}}</span>
             <span>Written by {{episode.writers}}</span>
-            <span>Released {{ episode.air_date | date: 'longDate' }}</span>
+            <ng-container *ngIf="episode.air_date">
+              <span>
+                {{ episode.air_date > currentDate() ? 'Releases' : 'Released' }}
+                {{ episode.air_date | date: 'longDate' }}
+              </span>
+            </ng-container>
           </div>
           <div class="ep-duration-wrapper flex justify-end">
             <span>Running time: {{episode.runtime || 0 | minutesToHours}}</span>

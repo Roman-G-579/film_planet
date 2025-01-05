@@ -16,6 +16,7 @@ import {SkeletonModule} from 'primeng/skeleton';
 import {ItemSkeletonComponent} from './item-skeleton/item-skeleton.component';
 import {ItemStatus} from '../../core/enums/item-status.enum';
 import {SeasonsPanelComponent} from './seasons-panel/seasons-panel.component';
+import {DataUtils} from '../../core/utils/data.utils';
 
 @Component({
   selector: 'app-item',
@@ -41,6 +42,7 @@ import {SeasonsPanelComponent} from './seasons-panel/seasons-panel.component';
 export class ItemComponent implements OnInit {
   protected readonly lib = inject(LibraryService);
   private route = inject(ActivatedRoute);
+  protected readonly dataUtils = DataUtils;
   protected readonly MediaType = MediaType;
   protected readonly ItemStatus = ItemStatus;
 
@@ -55,6 +57,8 @@ export class ItemComponent implements OnInit {
 
   isLoading: WritableSignal<boolean> = this.lib.isLoading;
 
+  currentDate: WritableSignal<string> = signal<string>('');
+
   ngOnInit() {
     this.route.paramMap.subscribe(params => {
       // Extracts the full item name from the url (id + title)
@@ -65,6 +69,9 @@ export class ItemComponent implements OnInit {
       const id = +itemName.split('-')[0];
       this.setParams(mediaType, id);
     });
+
+    // Sets the current date in a YYY-MM-DD format for date comparisons in the item's relevant fields
+    this.currentDate.set(this.dataUtils.formatDate(new Date()));
   }
 
   /**
