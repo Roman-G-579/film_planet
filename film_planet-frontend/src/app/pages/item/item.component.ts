@@ -1,7 +1,6 @@
 import {ChangeDetectionStrategy, Component, inject, OnInit, signal, WritableSignal} from '@angular/core';
 import {LibraryItem} from '../../core/interfaces/library-item.interface';
 import {MediaType} from '../../core/enums/media-type.enum';
-import {LibraryService} from '../../core/services/library.service';
 import {ActivatedRoute, RouterLink} from '@angular/router';
 import {CardModule} from 'primeng/card';
 import {ButtonModule} from 'primeng/button';
@@ -17,6 +16,7 @@ import {ItemSkeletonComponent} from './item-skeleton/item-skeleton.component';
 import {ItemStatus} from '../../core/enums/item-status.enum';
 import {SeasonsPanelComponent} from './seasons-panel/seasons-panel.component';
 import {DataUtils} from '../../core/utils/data.utils';
+import {DetailsService} from '../../core/services/details.service';
 
 @Component({
   selector: 'app-item',
@@ -40,22 +40,22 @@ import {DataUtils} from '../../core/utils/data.utils';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ItemComponent implements OnInit {
-  protected readonly lib = inject(LibraryService);
+  protected readonly det = inject(DetailsService);
   private route = inject(ActivatedRoute);
   protected readonly dataUtils = DataUtils;
   protected readonly MediaType = MediaType;
   protected readonly ItemStatus = ItemStatus;
 
-  item: WritableSignal<LibraryItem> = this.lib.item;
+  item: WritableSignal<LibraryItem> = this.det.item;
 
-  credits: WritableSignal<Credits> = this.lib.credits;
-  mainCast: WritableSignal<CastCrewMember[]> = this.lib.mainCast;
-  directorsAndCreators: WritableSignal<CastCrewMember[]> = this.lib.directorsAndCreators;
-  originalWriters: WritableSignal<CastCrewMember[]> = this.lib.originalWriters;
+  credits: WritableSignal<Credits> = this.det.credits;
+  mainCast: WritableSignal<CastCrewMember[]> = this.det.mainCast;
+  directorsAndCreators: WritableSignal<CastCrewMember[]> = this.det.directorsAndCreators;
+  originalWriters: WritableSignal<CastCrewMember[]> = this.det.originalWriters;
 
   reviews: WritableSignal<Review[]> = signal<Review[]>([])
 
-  isLoading: WritableSignal<boolean> = this.lib.isLoading;
+  isLoading: WritableSignal<boolean> = this.det.isLoading;
 
   currentDate: WritableSignal<string> = signal<string>('');
 
@@ -80,9 +80,9 @@ export class ItemComponent implements OnInit {
    * @param mediaType film or TV show
    */
   setParams(mediaType: MediaType, id: number) {
-    this.lib.getItemFromApi(mediaType, id);
+    this.det.getItemFromApi(mediaType, id);
 
-    this.reviews.set(this.lib.getReviewsByItemId(id));
+    this.reviews.set(this.det.getReviewsByItemId(id));
   }
 
 }

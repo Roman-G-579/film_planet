@@ -58,6 +58,7 @@ export class SearchWindowComponent implements OnInit, OnDestroy {
     return (screenWidth < 1024);
   })
 
+  //TODO: separate libraryItems array and searchResults array
   ngOnInit(): void {
     // Subscribe to the search subject with debounce logic
     this.searchSubject

@@ -1,8 +1,6 @@
 import {LibraryItem} from '../interfaces/library-item.interface';
 import {MediaType} from '../enums/media-type.enum';
 
-//TODO: update genre filter to use Genre object type
-
 export const LIBRARY_ITEMS: LibraryItem[] = [
   {
     id: 1,
