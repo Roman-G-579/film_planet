@@ -27,6 +27,7 @@ export class LibraryService {
   isLoading = signal<boolean>(true);
 
   libraryItems: WritableSignal<LibraryItem[]> = signal<LibraryItem[]>([]);
+  searchResults: WritableSignal<LibraryItem[]> = signal<LibraryItem[]>([]);
 
   // Backup copy of original items list
   unfilteredItems: WritableSignal<LibraryItem[]> = signal<LibraryItem[]>([]);
@@ -155,7 +156,7 @@ export class LibraryService {
    */
   getSearchResultsFromApi(query: string, mediaType?: MediaType) {
     query = query.toLowerCase().replace(/\s/g, '-');
-
+    console.log(mediaType)
     if (mediaType) {
       this.search(query, mediaType);
     } else {
@@ -186,8 +187,8 @@ export class LibraryService {
         resultItems.forEach((item) => (item.mediaType = mediaType));
 
         // Update library items and sort them by popularity
-        this.libraryItems.set(
-          [...this.libraryItems(), ...resultItems].sort(
+        this.searchResults.set(
+          [...this.searchResults(), ...resultItems].sort(
             (a: LibraryItem, b: LibraryItem) => {
               const popularityA = a.popularity ?? 0;
               const popularityB = b.popularity ?? 0;

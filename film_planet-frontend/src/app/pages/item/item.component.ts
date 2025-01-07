@@ -60,6 +60,7 @@ export class ItemComponent implements OnInit {
   currentDate: WritableSignal<string> = signal<string>('');
 
   ngOnInit() {
+    this.isLoading.set(true);
     this.route.paramMap.subscribe(params => {
       // Extracts the full item name from the url (id + title)
       const itemName = params.get('item') || '';
@@ -67,7 +68,7 @@ export class ItemComponent implements OnInit {
 
       // Extracts the id part of the full name, before the first hyphen
       const id = +itemName.split('-')[0];
-      this.setParams(mediaType, id);
+      this.setItemData(mediaType, id);
     });
 
     // Sets the current date in a YYY-MM-DD format for date comparisons in the item's relevant fields
@@ -79,7 +80,7 @@ export class ItemComponent implements OnInit {
    * @param id the id of the item
    * @param mediaType film or TV show
    */
-  setParams(mediaType: MediaType, id: number) {
+  setItemData(mediaType: MediaType, id: number) {
     this.det.getItemFromApi(mediaType, id);
 
     this.reviews.set(this.det.getReviewsByItemId(id));

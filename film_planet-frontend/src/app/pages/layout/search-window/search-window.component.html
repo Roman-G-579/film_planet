@@ -1,18 +1,45 @@
 <p-dialog header="Search for films or TV shows:" [modal]="true" [(visible)]="isSearchVisible" [style]="{ width: '90%', height: '90%', opacity: '90%' }" dismissableMask>
-  <div class="flex justify-center gap-4 mb-4">
-    <input
-      #searchInput
-      pInputText
-      placeholder="Search"
-      id="search-term"
-      class="flex-auto h-14 text-2xl w-[98%]"
-      style="font-family: Poppins, 'Helvetica Neue', sans-serif"
-      autocomplete="off"
-      (keyup)=onSearchInputChange(searchInput.value)
-    />
-  </div>
+  <section class="">
+    <div class="flex justify-center gap-4 mb-4">
+      <p-inputgroup styleClass="lg:!w-[60%]">
+        <ng-container *ngIf="!isSmallScreen(); else mobileSelectMenu">
+          <p-inputgroup-addon>
+            <p-radioButton name="mediaType" value="Films" [(ngModel)]="selectedOption" inputId="films"/>
+            <label for="films" class="ml-2">Films</label>
+          </p-inputgroup-addon>
+          <p-inputgroup-addon>
+            <p-radioButton name="mediaType" value="TV" [(ngModel)]="selectedOption" inputId="tv"/>
+            <label for="tv" class="ml-2">TV</label>
+          </p-inputgroup-addon>
+          <p-inputgroup-addon>
+            <p-radioButton name="mediaType" value="Everything" [(ngModel)]="selectedOption" inputId="everything"/>
+            <label for="everything" class="ml-2">Everything</label>
+          </p-inputgroup-addon>
+        </ng-container>
+        <ng-template #mobileSelectMenu>
+          <p-select styleClass="max-w-36" class="media-select-wrapper" [(ngModel)]="selectedOption" [options]="mediaOptions" optionLabel="name" placeholder="Everything" />
+        </ng-template>
 
-  <section class="table-wrapper  flex justify-center">
+        <input
+          type="text"
+          #searchInput
+          pInputText
+          placeholder="Search"
+          id="search-term"
+          class="flex-auto h-14 text-2xl"
+          style="font-family: Poppins, 'Helvetica Neue', sans-serif"
+          autocomplete="off"
+          (keyup)=onSearchInputChange(searchInput.value)
+        />
+        <p-inputgroup-addon>
+          <p-button icon="pi pi-times" severity="secondary" styleClass="!bg-transparent !border-none" (click)="searchInput.value = ''" />
+        </p-inputgroup-addon>
+      </p-inputgroup>
+    </div>
+  </section>
+
+
+  <section class="table-wrapper flex justify-center min-h-96">
     <div class="card w-[95%]">
       <p-dataView [value]="searchResults()" emptyMessage=" ">
         <ng-template pTemplate="list" let-searchResults>
