@@ -1,0 +1,20 @@
+<main>
+  <div class="person-wrapper flex flex-col w-10/12 m-auto mt-6">
+    <section class="main-details-wrapper grid grid-flow-col gap-x-4">
+      <div class="image-wrapper row-span-6">
+        <img alt="Picture of {{person().name}}" class="w-full" src="{{person().profile_path | posterUrl: 4}}" />
+      </div>
+      <div class="col-span-2 flex items-center">
+        <h1 class="text-5xl">
+          <b>{{person().name}}</b>
+        </h1>
+      </div>
+      <div class="col-span-2 flex items-center">
+        Biography:
+        <div class="col-span-3">
+            {{person().biography}}
+        </div>
+      </div>
+    </section>
+  </div>
+</main>

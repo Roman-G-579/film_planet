@@ -11,7 +11,12 @@ export const LIBRARY_ITEMS: LibraryItem[] = [
     directors: ["Quentin Tarantino"],
     poster_path: "assets/posters/1.jpg",
     vote_average: 9.2,
-    genres: []
+    genres: [],
+    credits: {
+      id: 1,
+      cast: [],
+      crew: []
+    }
   },
   {
     id: 2,
@@ -22,7 +27,12 @@ export const LIBRARY_ITEMS: LibraryItem[] = [
     directors: ["Denis Villeneuve"],
     poster_path: "assets/posters/2.jpg",
     vote_average: 9.1,
-    genres: []
+    genres: [],
+    credits: {
+      id: 2,
+      cast: [],
+      crew: []
+    }
   },
   {
     id: 3,
@@ -33,7 +43,12 @@ export const LIBRARY_ITEMS: LibraryItem[] = [
     directors: ["John Landis"],
     poster_path: "assets/posters/3.jpg",
     vote_average: 8.8,
-    genres: []
+    genres: [],
+    credits: {
+      id: 3,
+      cast: [],
+      crew: []
+    }
   },
   // {
   //   id: 4,

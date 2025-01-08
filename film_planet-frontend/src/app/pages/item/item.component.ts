@@ -17,6 +17,7 @@ import {ItemStatus} from '../../core/enums/item-status.enum';
 import {SeasonsPanelComponent} from './seasons-panel/seasons-panel.component';
 import {DataUtils} from '../../core/utils/data.utils';
 import {DetailsService} from '../../core/services/details.service';
+import {CastPanelComponent} from './cast-panel/cast-panel.component';
 
 @Component({
   selector: 'app-item',
@@ -34,6 +35,7 @@ import {DetailsService} from '../../core/services/details.service';
     SkeletonModule,
     ItemSkeletonComponent,
     SeasonsPanelComponent,
+    CastPanelComponent,
   ],
   templateUrl: './item.component.html',
   styleUrl: './item.component.scss',

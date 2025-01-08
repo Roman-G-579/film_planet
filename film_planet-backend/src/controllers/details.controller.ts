@@ -1,5 +1,5 @@
 /**
- * Contains function related to the retrieval of details of specific tmdb items
+ * Contains function related to the retrieval of details of specific tmdb items and people
  */
 import {Config} from "../config/config";
 import {NextFunction, Request, Response} from "express";
@@ -41,6 +41,19 @@ export async function getSeasonDetailsMiddleware(req: Request, res: Response, ne
         const season_number = req.headers['season-number'];
 
         const response = await fetch(`https://api.themoviedb.org/3/tv/${series_id}/season/${season_number}?language=en-US`, options);
+        const data = await response.json();
+
+        return res.status(httpStatus.OK).send(data);
+    } catch (err) {
+        next(err);
+    }
+}
+
+export async function getPersonDetailsMiddleware(req: Request, res: Response, next: NextFunction) {
+    try {
+        const id = req.headers['id'];
+        console.log(id)
+        const response = await fetch(`https://api.themoviedb.org/3/person/${id}?append_to_response=combined_credits&language=en-US`, options);
         const data = await response.json();
 
         return res.status(httpStatus.OK).send(data);

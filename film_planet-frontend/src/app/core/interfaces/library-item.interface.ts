@@ -35,7 +35,7 @@ export interface LibraryItem {
   backdrop_path?: string;
   vote_average?: number;
   vote_count?: number;
-  credits?: Credits;
+  credits: Credits;
   ranking?: number; // Used for top-items component
   status?: ItemStatus;
   seasons?: Season[];

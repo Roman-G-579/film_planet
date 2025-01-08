@@ -4,8 +4,15 @@
 export interface CastCrewMember {
   gender?: number;
   id: number;
+  imdb_id?: string;
   known_for_department?: string;
   name: string;
+  also_known_as?: string[];
+  biography?: string;
+  birthday?: string;
+  deathday?: string;
+  homepage?: string;
+  place_of_birth?: string;
   original_name?: string;
   popularity?: string;
   profile_path?: string;

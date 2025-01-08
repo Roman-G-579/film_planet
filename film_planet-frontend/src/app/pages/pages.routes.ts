@@ -23,6 +23,10 @@ export default [
     loadComponent: () => import('./item/item.component').then((c)=> c.ItemComponent),
   },
   {
+    path: 'person/:id',
+    loadComponent: () => import('./person/person.component').then((c)=> c.PersonComponent),
+  },
+  {
     path: 'top-films',
     data: { type: 'films' },
     loadComponent: () => import('./top-titles/top-titles.component').then((c) => c.TopTitlesComponent),

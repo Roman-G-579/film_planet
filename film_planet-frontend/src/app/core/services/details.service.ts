@@ -30,7 +30,18 @@ export class DetailsService {
   item: WritableSignal<LibraryItem> = signal<LibraryItem>({
     id: 0,
     mediaType: MediaType.Film,
-    genres: []
+    genres: [],
+    credits: {
+      id: 0,
+      cast: [],
+      crew: []
+    }
+  });
+
+  person: WritableSignal<CastCrewMember> = signal<CastCrewMember>({
+    id: 0,
+    name: '',
+    job: ""
   });
 
   credits: WritableSignal<Credits> = signal<Credits>({
@@ -140,6 +151,26 @@ export class DetailsService {
 
   }
 
+  getPersonDetails(id: number) {
+    //TODO: adjust urls to not get redirected to item page
+    const pageUrl = `details/person/${id}`;
+    const { href } = new URL(pageUrl, this.apiUrl);
+
+    let headers = new HttpHeaders().set('id',id.toString());
+
+    this.http.get(href, {headers}).subscribe({
+      next: (data) => {
+        let result: CastCrewMember = data as CastCrewMember;
+
+        this.person.set(result);
+
+        this.isLoading.set(false);
+      },
+      error: (err) => {
+        console.log(err);
+      }
+    });
+  }
   /**
    * Sets the values of the item's main actors and directors/creators
    * @param credits the film or TV show's full credits list

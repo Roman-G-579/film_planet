@@ -46,7 +46,12 @@ export class SeasonsPanelComponent implements OnInit {
     id: 0,
     mediaType: MediaType.TV,
     genres: [],
-    seasons: []
+    seasons: [],
+    credits: {
+      id: 0,
+      cast: [],
+      crew: []
+    }
   });
   currentDate: InputSignal<string> = input<string>('');
 
