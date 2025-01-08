@@ -31,7 +31,7 @@
           <p *ngIf="mainCast().length">
             <b>Starring:</b>
             @for (actor of mainCast(); track actor) {
-              <p-button [label]="actor.name" [link]="true" [routerLink]="['/pages/library/film/popular']" />
+              <p-button [label]="actor.name" [link]="true" [routerLink]="['/', 'pages', 'person', actor.id]" />
             }
           </p>
         </div>
@@ -69,6 +69,16 @@
         </div>
       </section>
 
+
+
+      <section class="seasons-wrapper min-h-[500px] mb-8" *ngIf="item().mediaType === MediaType.TV">
+        <app-seasons-panel [item]="item()" [currentDate]="currentDate()"></app-seasons-panel>
+      </section>
+
+      <section class="cast-wrapper">
+        <app-cast-panel [actors]="credits().cast"></app-cast-panel>
+      </section>
+
       <section class="reviews-wrapper">
         <div class="reviews-header"><h1>Reviews:</h1></div>
         <p *ngIf="reviews()">There are no reviews for this title yet.</p>
@@ -94,10 +104,6 @@
             </p>
           </p-panel>
         }
-      </section>
-
-      <section class="seasons-wrapper min-h-[500px] mb-8" *ngIf="item().mediaType === MediaType.TV">
-        <app-seasons-panel [item]="item()" [currentDate]="currentDate()"></app-seasons-panel>
       </section>
     </div>
   }

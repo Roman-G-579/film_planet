@@ -1,0 +1,31 @@
+<main>
+  <h1>Cast:</h1>
+  <p-carousel
+    [value]="actors()"
+    [numVisible]="5"
+    [numScroll]="3"
+    [responsiveOptions]="responsiveOptions"
+    indicatorStyleClass="!h-8 !rounded-full"
+    >
+    <ng-template let-actor pTemplate="actor">
+      <div class="border border-surface-200 dark:border-surface-700 rounded m-2 p-4">
+        <div class="mb-4">
+          <div class="relative mx-auto">
+            <img
+              src="{{actor.profile_path | posterUrl: 1}}"
+              [alt]="actor.name"
+              class="w-full rounded-border" />
+          </div>
+        </div>
+        <div class="mt-0 font-semibold">
+          <a class="no-underline hover:text-primary transition" [routerLink]="['/', 'pages', 'person', actor.id]">
+            {{ actor.name }}
+          </a>
+        </div>
+        <div class="mb-4 font-medium text-sm">
+          {{ actor.character }}
+        </div>
+      </div>
+    </ng-template>
+  </p-carousel>
+</main>
