@@ -3,21 +3,16 @@
     <div class="flex justify-center gap-4 mb-4">
       <p-inputgroup styleClass="lg:!w-[60%]">
         <ng-container *ngIf="!isSmallScreen(); else mobileSelectMenu">
-          <p-inputgroup-addon>
-            <p-radioButton name="mediaType" value="Films" [(ngModel)]="selectedOption" inputId="films"/>
-            <label for="films" class="ml-2">Films</label>
-          </p-inputgroup-addon>
-          <p-inputgroup-addon>
-            <p-radioButton name="mediaType" value="TV" [(ngModel)]="selectedOption" inputId="tv"/>
-            <label for="tv" class="ml-2">TV</label>
-          </p-inputgroup-addon>
-          <p-inputgroup-addon>
-            <p-radioButton name="mediaType" value="Everything" [(ngModel)]="selectedOption" inputId="everything"/>
-            <label for="everything" class="ml-2">Everything</label>
-          </p-inputgroup-addon>
+          @for (option of mediaOptions; track option) {
+            <p-inputgroup-addon>
+              <p-radioButton name="mediaType" value="{{option.mediaType}}" [(ngModel)]="selectedOption" inputId="{{option}}" (click)="searchItem(searchInput.value, option.mediaType)"/>
+              <label for="{{option}}" class="ml-2">{{option.name}}</label>
+            </p-inputgroup-addon>
+          }
         </ng-container>
+
         <ng-template #mobileSelectMenu>
-          <p-select styleClass="max-w-36" class="media-select-wrapper" [(ngModel)]="selectedOption" [options]="mediaOptions" optionLabel="name" placeholder="Everything" />
+          <p-select styleClass="max-w-36" class="media-select-wrapper" [(ngModel)]="selectedOption" [options]="mediaOptions" optionLabel="name" placeholder="Everything" (onChange)="searchItem(searchInput.value, selectedOption.mediaType)"/>
         </ng-template>
 
         <input
@@ -29,6 +24,7 @@
           class="flex-auto h-14 text-2xl"
           style="font-family: Poppins, 'Helvetica Neue', sans-serif"
           autocomplete="off"
+          autofocus
           (keyup)=onSearchInputChange(searchInput.value)
         />
         <p-inputgroup-addon>

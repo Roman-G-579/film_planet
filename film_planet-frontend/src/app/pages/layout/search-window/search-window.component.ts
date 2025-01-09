@@ -12,7 +12,7 @@ import {LibraryService} from '../../../core/services/library.service';
 import {RouterLink} from '@angular/router';
 import {DataViewModule} from 'primeng/dataview';
 import {DatePipe, NgClass, NgForOf, NgIf} from '@angular/common';
-import {ItemUrlPipePipe} from '../../../core/pipes/item-url-pipe.pipe';
+import {ItemUrlPipe} from '../../../core/pipes/item-url.pipe';
 import {PosterUrlPipePipe} from '../../../core/pipes/poster-url-pipe.pipe';
 import {LibraryItem} from '../../../core/interfaces/library-item.interface';
 import {DividerModule} from 'primeng/divider';
@@ -27,7 +27,7 @@ import {FormsModule} from '@angular/forms';
 import {CheckboxModule} from 'primeng/checkbox';
 import {Select} from 'primeng/select';
 
-interface MediaOption {name: string, mediaType: MediaType}
+interface MediaOption {name: string, mediaType: (MediaType | undefined)}
 
 @Component({
   selector: 'app-search-window',
@@ -37,7 +37,7 @@ interface MediaOption {name: string, mediaType: MediaType}
     DialogModule,
     RouterLink,
     DataViewModule,
-    ItemUrlPipePipe,
+    ItemUrlPipe,
     NgForOf,
     PosterUrlPipePipe,
     NgClass,
@@ -73,9 +73,9 @@ export class SearchWindowComponent implements OnInit, OnDestroy {
     return (screenWidth < 1024);
   })
 
-
+  //TODO: add option to search people
   mediaOptions: MediaOption[] = [
-    { name: 'All', mediaType: MediaType.Everything },
+    { name: 'All', mediaType: undefined },
     { name: 'Films', mediaType: MediaType.Film },
     { name: 'TV', mediaType: MediaType.TV }
   ];
@@ -109,11 +109,10 @@ export class SearchWindowComponent implements OnInit, OnDestroy {
    * @param query the search string, equal to the text in the input element
    */
   searchItem(query: string, mediaType?: MediaType) {
-    //TODO: fix media type filtering
-    console.log(mediaType)
     if (!query) {
       return;
     }
+
     // Clears the list of search results
     this.searchResults.set([]);
     this.lib.getSearchResultsFromApi(query, mediaType);
