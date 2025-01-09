@@ -3,12 +3,16 @@ import {CastCrewMember} from '../../core/interfaces/cast-crew-member.interface';
 import {PosterUrlPipePipe} from '../../core/pipes/poster-url-pipe.pipe';
 import {DetailsService} from '../../core/services/details.service';
 import {ActivatedRoute} from '@angular/router';
+import {DataUtils} from '../../core/utils/data.utils';
+import {DatePipe, NgIf} from '@angular/common';
 
 @Component({
   selector: 'app-person',
   standalone: true,
   imports: [
-    PosterUrlPipePipe
+    PosterUrlPipePipe,
+    NgIf,
+    DatePipe
   ],
   templateUrl: './person.component.html',
   styleUrl: './person.component.scss',
@@ -17,6 +21,7 @@ import {ActivatedRoute} from '@angular/router';
 export class PersonComponent implements OnInit {
   protected readonly det = inject(DetailsService);
   private route = inject(ActivatedRoute);
+  protected readonly dataUtils = DataUtils;
 
   person: WritableSignal<CastCrewMember> = this.det.person;
 
@@ -25,9 +30,11 @@ export class PersonComponent implements OnInit {
   ngOnInit() {
     this.isLoading.set(true);
     this.route.paramMap.subscribe(params => {
-      const personId = params.get('id') || '';
+      // Extracts the full item name from the url (id + title)
+      const pageSegment = params.get('id') || '';
 
-      this.det.getPersonDetails(Number(personId));
+      const personId = this.dataUtils.getIdFromUrlSegment(pageSegment);
+      this.det.getPersonDetails(personId);
     })
   }
 }

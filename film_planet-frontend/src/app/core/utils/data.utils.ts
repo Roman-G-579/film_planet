@@ -48,6 +48,15 @@ export class DataUtils {
   }
 
   /**
+   * Extracts the id part of the URL segment, before the first hyphen
+   * Used in film, tv and person URLs
+   * @param segmentString the URL segment containing an id and a name, separated by a hyphen
+   */
+  static getIdFromUrlSegment(segmentString: string): number {
+    return +segmentString.split('-')[0];
+  }
+
+  /**
    * Formats a Date object in the YYYY-MM-DD format
    * @param date the given Date object
    */
@@ -58,6 +67,10 @@ export class DataUtils {
     return `${year}-${month}-${day}`;
   }
 
+  /**
+   * Returns a list of years starting from the current year,
+   * and ending with 1880
+   */
   static getYearList() {
     const currentYear = new Date().getFullYear();
     return Array.from({length: currentYear - 1880 + 1}, (_, i) => currentYear - i);

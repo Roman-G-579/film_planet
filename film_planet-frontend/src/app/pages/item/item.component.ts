@@ -18,6 +18,7 @@ import {SeasonsPanelComponent} from './seasons-panel/seasons-panel.component';
 import {DataUtils} from '../../core/utils/data.utils';
 import {DetailsService} from '../../core/services/details.service';
 import {CastPanelComponent} from './cast-panel/cast-panel.component';
+import {PersonUrlPipe} from '../../core/pipes/person-url.pipe';
 
 @Component({
   selector: 'app-item',
@@ -36,6 +37,8 @@ import {CastPanelComponent} from './cast-panel/cast-panel.component';
     ItemSkeletonComponent,
     SeasonsPanelComponent,
     CastPanelComponent,
+    PersonUrlPipe,
+    PersonUrlPipe,
   ],
   templateUrl: './item.component.html',
   styleUrl: './item.component.scss',
@@ -65,11 +68,10 @@ export class ItemComponent implements OnInit {
     this.isLoading.set(true);
     this.route.paramMap.subscribe(params => {
       // Extracts the full item name from the url (id + title)
-      const itemName = params.get('item') || '';
+      const pageSegment = params.get('item') || '';
       const mediaType: MediaType = (params.get('media-type') === 'film' ? MediaType.Film : MediaType.TV);
 
-      // Extracts the id part of the full name, before the first hyphen
-      const id = +itemName.split('-')[0];
+      const id = this.dataUtils.getIdFromUrlSegment(pageSegment);
       this.setItemData(mediaType, id);
     });
 

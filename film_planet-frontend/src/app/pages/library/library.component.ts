@@ -18,7 +18,7 @@ import {ActivatedRoute, RouterLink} from '@angular/router';
 import {GenreNamesPipe} from '../../core/pipes/genre-names.pipe';
 import {MediaType} from '../../core/enums/media-type.enum';
 import {DataUtils} from '../../core/utils/data.utils';
-import {ItemUrlPipePipe} from '../../core/pipes/item-url-pipe.pipe';
+import {ItemUrlPipe} from '../../core/pipes/item-url.pipe';
 import {PosterUrlPipePipe} from '../../core/pipes/poster-url-pipe.pipe';
 import {LibraryTableSkeletonComponent} from './library-table-skeleton/library-table-skeleton.component';
 import {LibraryCarouselSkeletonComponent} from './library-carousel-skeleton/library-carousel-skeleton.component';
@@ -37,7 +37,7 @@ import {Genre} from '../../core/interfaces/genre.interface';
     SkeletonModule,
     GenreNamesPipe,
     RouterLink,
-    ItemUrlPipePipe,
+    ItemUrlPipe,
     PosterUrlPipePipe,
     LibraryTableSkeletonComponent,
     LibraryCarouselSkeletonComponent,

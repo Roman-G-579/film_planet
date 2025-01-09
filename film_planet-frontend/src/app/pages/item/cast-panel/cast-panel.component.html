@@ -14,11 +14,11 @@
             <img
               src="{{actor.profile_path | posterUrl: 1}}"
               [alt]="actor.name"
-              class="w-full rounded-border" />
+              class="w-full rounded-border min-w-[92px]" />
           </div>
         </div>
         <div class="mt-0 font-semibold">
-          <a class="no-underline hover:text-primary transition" [routerLink]="['/', 'pages', 'person', actor.id]">
+          <a class="no-underline hover:text-primary transition" [routerLink]="actor | personUrl">
             {{ actor.name }}
           </a>
         </div>

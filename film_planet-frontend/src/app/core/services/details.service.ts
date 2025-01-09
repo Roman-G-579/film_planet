@@ -152,7 +152,6 @@ export class DetailsService {
   }
 
   getPersonDetails(id: number) {
-    //TODO: adjust urls to not get redirected to item page
     const pageUrl = `details/person/${id}`;
     const { href } = new URL(pageUrl, this.apiUrl);
 

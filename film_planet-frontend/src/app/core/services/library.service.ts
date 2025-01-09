@@ -156,7 +156,7 @@ export class LibraryService {
    */
   getSearchResultsFromApi(query: string, mediaType?: MediaType) {
     query = query.toLowerCase().replace(/\s/g, '-');
-    console.log(mediaType)
+
     if (mediaType) {
       this.search(query, mediaType);
     } else {

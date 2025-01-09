@@ -4,6 +4,7 @@ import {CastCrewMember} from '../../../core/interfaces/cast-crew-member.interfac
 import {PosterUrlPipePipe} from '../../../core/pipes/poster-url-pipe.pipe';
 import {Credits} from '../../../core/interfaces/credits.interface';
 import {RouterLink} from '@angular/router';
+import {PersonUrlPipe} from '../../../core/pipes/person-url.pipe';
 
 @Component({
   selector: 'app-cast-panel',
@@ -11,7 +12,8 @@ import {RouterLink} from '@angular/router';
   imports: [
     CarouselModule,
     PosterUrlPipePipe,
-    RouterLink
+    RouterLink,
+    PersonUrlPipe
   ],
   templateUrl: './cast-panel.component.html',
   styleUrl: './cast-panel.component.scss',

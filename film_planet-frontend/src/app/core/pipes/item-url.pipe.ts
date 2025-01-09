@@ -10,7 +10,7 @@ import {LibraryItem} from '../interfaces/library-item.interface';
  * Takes a libraryItem's details and creates a link based on its
  * id and name
  */
-export class ItemUrlPipePipe implements PipeTransform {
+export class ItemUrlPipe implements PipeTransform {
 
   transform(item: LibraryItem): string[] {
     const itemName = item.title || item.name || '';

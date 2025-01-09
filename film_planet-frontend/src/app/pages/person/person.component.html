@@ -4,15 +4,16 @@
       <div class="image-wrapper row-span-6">
         <img alt="Picture of {{person().name}}" class="w-full" src="{{person().profile_path | posterUrl: 4}}" />
       </div>
-      <div class="col-span-2 flex items-center">
+      <div class="col-span-3 flex items-center">
         <h1 class="text-5xl">
           <b>{{person().name}}</b>
+          <span class="text-surface-400" *ngIf="person().deathday">({{person().birthday | date: 'yyyy'}}-{{person().deathday | date: 'yyyy'}})</span>
         </h1>
       </div>
-      <div class="col-span-2 flex items-center">
-        Biography:
+      <div class="col-span-3 flex items-center">
         <div class="col-span-3">
-            {{person().biography}}
+          <b>Biography:</b>
+          <p>{{person().biography}}</p>
         </div>
       </div>
     </section>

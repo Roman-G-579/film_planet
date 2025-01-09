@@ -19,7 +19,7 @@ import {DataUtils} from '../../core/utils/data.utils';
 import {ActivatedRoute, RouterLink} from '@angular/router';
 import {SliderModule} from 'primeng/slider';
 import {LibraryService} from '../../core/services/library.service';
-import {ItemUrlPipePipe} from '../../core/pipes/item-url-pipe.pipe';
+import {ItemUrlPipe} from '../../core/pipes/item-url.pipe';
 import {DatePipe, DecimalPipe, NgIf} from '@angular/common';
 import {Drawer} from 'primeng/drawer';
 import {TitlesFilterComponent} from './titles-filter/titles-filter.component';
@@ -41,7 +41,7 @@ import {MiscUtils} from '../../core/utils/misc.utils';
     GenreNamesPipe,
     SliderModule,
     RouterLink,
-    ItemUrlPipePipe,
+    ItemUrlPipe,
     DatePipe,
     DecimalPipe,
     Drawer,

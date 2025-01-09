@@ -31,7 +31,7 @@
           <p *ngIf="mainCast().length">
             <b>Starring:</b>
             @for (actor of mainCast(); track actor) {
-              <p-button [label]="actor.name" [link]="true" [routerLink]="['/', 'pages', 'person', actor.id]" />
+              <p-button [label]="actor.name" [link]="true" [routerLink]="actor | personUrl" />
             }
           </p>
         </div>
@@ -39,13 +39,13 @@
           <p>
             <b>{{item().mediaType === MediaType.Film ? 'Directed by: ' : 'Created by: '}}</b>
             @for (person of directorsAndCreators(); track person) {
-              <p-button [label]="person.name" [link]="true" [routerLink]="['/pages/library/film/popular']" />
+              <p-button [label]="person.name" [link]="true" [routerLink]="person | personUrl" />
             }
           </p>
           <ng-template *ngIf="originalWriters()">
             <b>Based on a {{originalWriters()[0].job.toLowerCase()}} by:</b>
             @for (person of originalWriters(); track person) {
-              <p-button [label]="person.name" [link]="true" [routerLink]="['/pages/library/film/popular']"/>
+              <p-button [label]="person.name" [link]="true" [routerLink]="person | personUrl"/>
             }
           </ng-template>
         </div>
