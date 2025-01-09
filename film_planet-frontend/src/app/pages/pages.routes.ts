@@ -1,4 +1,23 @@
-import {Route} from '@angular/router';
+import {Route, UrlMatchResult, UrlSegment} from '@angular/router';
+
+/**
+ * Matches a route against a URL containing 'film' or 'tv' in its segments array
+ *
+ * If no such value exists, returns null
+ * @param segments the URL segments array
+ */
+export function mediaTypeMatcher(segments: UrlSegment[]): UrlMatchResult | null {
+  if (segments.length === 2 && (segments[0].path === 'film' || segments[0].path === 'tv')) {
+    return {
+      consumed: segments,
+      posParams: {
+        'media-type': segments[0],
+        item: segments[1],
+      },
+    };
+  }
+  return null; // Reject the route if it doesn't match
+}
 
 export default [
   {
@@ -19,7 +38,7 @@ export default [
     loadChildren: () => import('./genres/genres.routes'),
   },
   {
-    path: ':media-type/:item',
+    matcher: mediaTypeMatcher, // 'film/:item' , 'tv/:item'
     loadComponent: () => import('./item/item.component').then((c)=> c.ItemComponent),
   },
   {
