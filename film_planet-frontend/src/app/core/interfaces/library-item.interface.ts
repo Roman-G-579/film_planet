@@ -29,10 +29,10 @@ export interface LibraryItem {
   original_title?: string; // used for films
   original_name?: string; // used for tv shows
   popularity?: number;
-  poster_path?: string;
+  poster_path?: string | null;
   revenue?: number;
   tagline?: string;
-  backdrop_path?: string;
+  backdrop_path?: string | null;
   vote_average?: number;
   vote_count?: number;
   credits: Credits;
