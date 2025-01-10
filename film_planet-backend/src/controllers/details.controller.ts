@@ -52,7 +52,7 @@ export async function getSeasonDetailsMiddleware(req: Request, res: Response, ne
 export async function getPersonDetailsMiddleware(req: Request, res: Response, next: NextFunction) {
     try {
         const id = req.headers['id'];
-        const response = await fetch(`https://api.themoviedb.org/3/person/${id}?append_to_response=combined_credits&language=en-US`, options);
+        const response = await fetch(`https://api.themoviedb.org/3/person/${id}?append_to_response=combined_credits%2Cexternal_ids&language=en-US`, options);
         const data = await response.json();
 
         return res.status(httpStatus.OK).send(data);
