@@ -9,6 +9,8 @@ import {environment} from '../../../environments/environment';
 import {Credits} from '../interfaces/credits.interface';
 import {Season} from '../interfaces/season.interface';
 import {Episode} from '../interfaces/episode.interface';
+import {PEOPLE} from '../mock-data/people';
+import {ItemCredit} from '../interfaces/item-credit.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -43,6 +45,16 @@ export class DetailsService {
     name: '',
     job: ""
   });
+
+  castCredits: WritableSignal<ItemCredit[]> = signal<ItemCredit[]>([{
+    id: 0,
+    credit_id: ''
+  }]);
+
+  crewCredits: WritableSignal<ItemCredit[]> = signal<ItemCredit[]>([{
+    id: 0,
+    credit_id: ''
+  }]);
 
   credits: WritableSignal<Credits> = signal<Credits>({
     id: 0,
@@ -155,20 +167,33 @@ export class DetailsService {
     const pageUrl = `details/person/${id}`;
     const { href } = new URL(pageUrl, this.apiUrl);
 
-    let headers = new HttpHeaders().set('id',id.toString());
+    // let headers = new HttpHeaders().set('id',id.toString());
+    //
+    // this.http.get(href, {headers}).subscribe({
+    //   next: (data) => {
+    //     let result: CastCrewMember = data as CastCrewMember;
+    //
+    //     this.person.set(result);
+    //
+    //     this.isLoading.set(false);
+    //   },
+    //   error: (err) => {
+    //     console.log(err);
+    //   }
+    // });
 
-    this.http.get(href, {headers}).subscribe({
-      next: (data) => {
-        let result: CastCrewMember = data as CastCrewMember;
+    // MOCK DATA
+    this.person.set(PEOPLE[0]);
+    console.log(this.person())
 
-        this.person.set(result);
+    if (PEOPLE[0].combined_credits?.cast) {
+      this.castCredits.set(PEOPLE[0].combined_credits?.cast);
+    }
+    if (PEOPLE[0].combined_credits?.crew) {
+      this.crewCredits.set(PEOPLE[0].combined_credits?.crew);
+    }
 
-        this.isLoading.set(false);
-      },
-      error: (err) => {
-        console.log(err);
-      }
-    });
+    console.log(this.castCredits());
   }
   /**
    * Sets the values of the item's main actors and directors/creators

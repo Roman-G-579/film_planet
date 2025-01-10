@@ -16,6 +16,29 @@
           <p>{{person().biography}}</p>
         </div>
       </div>
+      <div class="col-span-3">
+        <b>Credits:</b>
+<!--        TODO: fix table data not appearing-->
+        <p-table [value]="castCredits()" [tableStyle]="{ 'min-width': '50rem' }">
+          <ng-template #header>
+            <tr>
+              <th>Year</th>
+              <th>Title/th>
+              <th>Role</th>
+            </tr>
+          </ng-template>
+          <ng-template #body let-credit>
+            <tr>
+              <td>{{ (credit.release_date | date: 'yyyy') || '' }}</td>
+              <td>{{ credit.title || credit.name || '' }}</td>
+              <td>{{ credit.character || '' }}</td>
+            </tr>
+          </ng-template>
+        </p-table>
+<!--        @for (credit of person().combined_credits.cast; track credit) {-->
+<!--          -->
+<!--        }-->
+      </div>
     </section>
   </div>
 </main>

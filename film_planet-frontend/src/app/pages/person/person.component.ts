@@ -5,6 +5,8 @@ import {DetailsService} from '../../core/services/details.service';
 import {ActivatedRoute} from '@angular/router';
 import {DataUtils} from '../../core/utils/data.utils';
 import {DatePipe, NgIf} from '@angular/common';
+import {TableModule} from 'primeng/table';
+import {ItemCredit} from '../../core/interfaces/item-credit.interface';
 
 @Component({
   selector: 'app-person',
@@ -12,7 +14,8 @@ import {DatePipe, NgIf} from '@angular/common';
   imports: [
     PosterUrlPipePipe,
     NgIf,
-    DatePipe
+    DatePipe,
+    TableModule
   ],
   templateUrl: './person.component.html',
   styleUrl: './person.component.scss',
@@ -24,6 +27,8 @@ export class PersonComponent implements OnInit {
   protected readonly dataUtils = DataUtils;
 
   person: WritableSignal<CastCrewMember> = this.det.person;
+  castCredits: WritableSignal<ItemCredit[]> = this.det.castCredits;
+  crewCredits: WritableSignal<ItemCredit[]> = this.det.crewCredits;
 
   isLoading: WritableSignal<boolean> = this.det.isLoading;
 
