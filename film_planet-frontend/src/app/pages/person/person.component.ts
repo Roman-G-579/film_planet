@@ -2,11 +2,14 @@ import {ChangeDetectionStrategy, Component, inject, OnInit, signal, WritableSign
 import {CastCrewMember} from '../../core/interfaces/cast-crew-member.interface';
 import {PosterUrlPipePipe} from '../../core/pipes/poster-url-pipe.pipe';
 import {DetailsService} from '../../core/services/details.service';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, RouterLink} from '@angular/router';
 import {DataUtils} from '../../core/utils/data.utils';
-import {DatePipe, NgIf} from '@angular/common';
+import {DatePipe, DecimalPipe, NgIf} from '@angular/common';
 import {TableModule} from 'primeng/table';
 import {ItemCredit} from '../../core/interfaces/item-credit.interface';
+import {DividerModule} from 'primeng/divider';
+import {ButtonModule} from 'primeng/button';
+import {ItemUrlPipe} from '../../core/pipes/item-url.pipe';
 
 @Component({
   selector: 'app-person',
@@ -15,7 +18,12 @@ import {ItemCredit} from '../../core/interfaces/item-credit.interface';
     PosterUrlPipePipe,
     NgIf,
     DatePipe,
-    TableModule
+    TableModule,
+    DecimalPipe,
+    DividerModule,
+    ButtonModule,
+    ItemUrlPipe,
+    RouterLink
   ],
   templateUrl: './person.component.html',
   styleUrl: './person.component.scss',

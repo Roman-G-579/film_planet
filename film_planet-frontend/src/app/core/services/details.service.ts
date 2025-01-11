@@ -186,14 +186,14 @@ export class DetailsService {
     this.person.set(PEOPLE[0]);
     console.log(this.person())
 
+
     if (PEOPLE[0].combined_credits?.cast) {
-      this.castCredits.set(PEOPLE[0].combined_credits?.cast);
+      this.castCredits.set(this.sortCreditsByDate(PEOPLE[0].combined_credits?.cast));
     }
     if (PEOPLE[0].combined_credits?.crew) {
-      this.crewCredits.set(PEOPLE[0].combined_credits?.crew);
+      this.crewCredits.set(this.sortCreditsByDate(PEOPLE[0].combined_credits?.crew));
     }
 
-    console.log(this.castCredits());
   }
   /**
    * Sets the values of the item's main actors and directors/creators
@@ -235,5 +235,22 @@ export class DetailsService {
     }
 
     return episode;
+  }
+
+  private sortCreditsByDate(itemCredits: ItemCredit[]): ItemCredit[] {
+    return itemCredits.sort((a,b) => {
+      const dateA = new Date(a.release_date || a.first_air_date || '').getTime();
+      const dateB = new Date(b.release_date || b.first_air_date || '').getTime();
+
+      if (!dateA && !dateB) {
+        return 0; // Both have no dates, so they are considered equal
+      } else if (!dateA) {
+        return -1; // `a` has no date, so place it before `b`
+      } else if (!dateB) {
+        return 1; // `b` has no date, so place it before `a`
+      }
+
+      return new Date(dateB).getTime() - new Date(dateA).getTime();
+    })
   }
 }

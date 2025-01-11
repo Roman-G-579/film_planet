@@ -11,27 +11,56 @@
         </h1>
       </div>
       <div class="col-span-3 flex items-center">
-        <div class="col-span-3">
+        <div class="col-span-3 text-xl">
           <b>Biography:</b>
           <p>{{person().biography}}</p>
         </div>
       </div>
-      <div class="col-span-3">
+      <div class="col-span-3 text-xl">
         <b>Credits:</b>
-<!--        TODO: fix table data not appearing-->
+
         <p-table [value]="castCredits()" [tableStyle]="{ 'min-width': '50rem' }">
-          <ng-template #header>
+          <ng-template pTemplate="caption">
+            <span class="font-bold">Acting:</span>
+          </ng-template>
+          <ng-template pTemplate="header">
             <tr>
               <th>Year</th>
-              <th>Title/th>
+              <th></th>
+              <th>Title</th>
               <th>Role</th>
+              <th>Rating</th>
             </tr>
           </ng-template>
-          <ng-template #body let-credit>
+          <ng-template pTemplate="body" let-credit>
             <tr>
-              <td>{{ (credit.release_date | date: 'yyyy') || '' }}</td>
-              <td>{{ credit.title || credit.name || '' }}</td>
+              <td>{{ (credit.release_date | date: 'yyyy') || credit.first_air_date | date: 'yyyy' || '' }}</td>
+              <td><img class="w-[48px] rounded" src="{{ ( credit.poster_path | posterUrl: 0 ) || ''}}"/></td>
+<!--              TODO: add pipe for ItemCredits-->
+              <td><a [routerLink]="['/', 'pages', credit.media_type, credit.id]"><p-button class="title-link" styleClass="text-left" [label]="credit.title || credit.name || ''" [link]="true"></p-button></a></td>
               <td>{{ credit.character || '' }}</td>
+              <td>{{credit.vote_average  | number:'1.0-1' || ''}}</td>
+            </tr>
+          </ng-template>
+        </p-table>
+        <p-divider styleClass="!mt-8 !mb-8"></p-divider>
+        <p-table [value]="crewCredits()" [tableStyle]="{ 'min-width': '50rem' }">
+          <ng-template pTemplate="header">
+            <tr>
+              <th>Year</th>
+              <th></th>
+              <th>Title</th>
+              <th>Job</th>
+              <th>Rating</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-crewCredit>
+            <tr>
+              <td>{{ (crewCredit.release_date | date: 'yyyy') || crewCredit.first_air_date | date: 'yyyy' || '' }}</td>
+              <td><img class="w-[48px] rounded" src="{{ ( crewCredit.poster_path | posterUrl: 0 ) || ''}}"/></td>
+              <td>{{ crewCredit.title || crewCredit.name || '' }}</td>
+              <td>{{ crewCredit.job || '' }}</td>
+              <td>{{crewCredit.vote_average  | number:'1.0-1' || ''}}</td>
             </tr>
           </ng-template>
         </p-table>
