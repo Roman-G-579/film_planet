@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, inject, OnInit, signal, WritableSignal} from '@angular/core';
+import {ChangeDetectionStrategy, Component, inject, OnInit, WritableSignal} from '@angular/core';
 import {CastCrewMember} from '../../core/interfaces/cast-crew-member.interface';
 import {PosterUrlPipePipe} from '../../core/pipes/poster-url-pipe.pipe';
 import {DetailsService} from '../../core/services/details.service';
@@ -9,7 +9,6 @@ import {TableModule} from 'primeng/table';
 import {ItemCredit} from '../../core/interfaces/item-credit.interface';
 import {DividerModule} from 'primeng/divider';
 import {ButtonModule} from 'primeng/button';
-import {ItemUrlPipe} from '../../core/pipes/item-url.pipe';
 
 @Component({
   selector: 'app-person',
@@ -22,7 +21,6 @@ import {ItemUrlPipe} from '../../core/pipes/item-url.pipe';
     DecimalPipe,
     DividerModule,
     ButtonModule,
-    ItemUrlPipe,
     RouterLink
   ],
   templateUrl: './person.component.html',
