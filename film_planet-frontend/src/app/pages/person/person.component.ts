@@ -9,6 +9,7 @@ import {TableModule} from 'primeng/table';
 import {ItemCredit} from '../../core/interfaces/item-credit.interface';
 import {DividerModule} from 'primeng/divider';
 import {ButtonModule} from 'primeng/button';
+import {ItemCreditUrlPipe} from '../../core/pipes/item-credit-url.pipe';
 
 @Component({
   selector: 'app-person',
@@ -21,7 +22,8 @@ import {ButtonModule} from 'primeng/button';
     DecimalPipe,
     DividerModule,
     ButtonModule,
-    RouterLink
+    RouterLink,
+    ItemCreditUrlPipe
   ],
   templateUrl: './person.component.html',
   styleUrl: './person.component.scss',

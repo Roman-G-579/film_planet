@@ -36,8 +36,7 @@
             <tr>
               <td>{{ (credit.release_date | date: 'yyyy') || credit.first_air_date | date: 'yyyy' || '' }}</td>
               <td><img class="w-[48px] rounded" src="{{ ( credit.poster_path | posterUrl: 0 ) || ''}}"/></td>
-<!--              TODO: add pipe for ItemCredits-->
-              <td><a [routerLink]="['/', 'pages', credit.media_type, credit.id]"><p-button class="title-link" styleClass="text-left" [label]="credit.title || credit.name || ''" [link]="true"></p-button></a></td>
+              <td><a [routerLink]="credit | itemCreditUrl"><p-button class="title-link" styleClass="text-left" [label]="credit.title || credit.name || ''" [link]="true"></p-button></a></td>
               <td>{{ credit.character || '' }}</td>
               <td>{{credit.vote_average  | number:'1.0-1' || ''}}</td>
             </tr>
