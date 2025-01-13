@@ -10,6 +10,7 @@ import {ItemCredit} from '../../core/interfaces/item-credit.interface';
 import {DividerModule} from 'primeng/divider';
 import {ButtonModule} from 'primeng/button';
 import {ItemCreditUrlPipe} from '../../core/pipes/item-credit-url.pipe';
+import {Accordion, AccordionContent, AccordionHeader, AccordionPanel} from 'primeng/accordion';
 
 @Component({
   selector: 'app-person',
@@ -23,7 +24,11 @@ import {ItemCreditUrlPipe} from '../../core/pipes/item-credit-url.pipe';
     DividerModule,
     ButtonModule,
     RouterLink,
-    ItemCreditUrlPipe
+    ItemCreditUrlPipe,
+    Accordion,
+    AccordionPanel,
+    AccordionHeader,
+    AccordionContent
   ],
   templateUrl: './person.component.html',
   styleUrl: './person.component.scss',

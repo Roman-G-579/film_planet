@@ -1,8 +1,8 @@
 <main>
   <div class="person-wrapper flex flex-col w-10/12 m-auto mt-6">
     <section class="main-details-wrapper grid grid-flow-col gap-x-4">
-      <div class="image-wrapper row-span-6">
-        <img alt="Picture of {{person().name}}" class="w-full" src="{{person().profile_path | posterUrl: 4}}" />
+      <div class="image-wrapper row-span-4">
+        <img alt="Picture of {{person().name}}" class="w-full min-w-64" src="{{person().profile_path | posterUrl: 4}}" />
       </div>
       <div class="col-span-3 flex items-center">
         <h1 class="text-5xl">
@@ -11,61 +11,80 @@
         </h1>
       </div>
       <div class="col-span-3 flex items-center">
-        <div class="col-span-3 text-xl">
+        <div class="col-span-3 text-xl min-h-[380px]">
           <b>Biography:</b>
           <p>{{person().biography}}</p>
         </div>
       </div>
+<!--      TODO: fix grid layout of person details-->
+      <div class=" text-xl min-h-[380px]">
+        <b>Details:</b>
+        <p>Known for: {{person().known_for_department}}</p>
+        <p>Known credits: {{castCredits().length + crewCredits().length}}</p>
+        <p>Gender: {{person().gender === 1 ? 'Female' : person().gender === 2 ? 'Male' : 'Not Specified'}}</p>
+        <p>Birthplace: {{person().place_of_birth}}</p>
+        <p>Birthday: {{person().birthday | date: 'longDate'}}</p>
+<!--        <p>IMDB link: {{person().external_ids?.imdb_id || ''}}</p>-->
+      </div>
       <div class="col-span-3 text-xl">
-        <b>Credits:</b>
+        <div class="mb-8">
+          <b>Credits:</b>
+        </div>
+        <p-accordion value="0" [multiple]="true">
+          <p-accordion-panel value="0">
+            <p-accordion-header>Acting:</p-accordion-header>
+            <p-accordion-content>
+              <p-table [value]="castCredits()" [tableStyle]="{ 'min-width': '50rem' }">
+                <ng-template pTemplate="header">
+                  <tr>
+                    <th>Year</th>
+                    <th></th>
+                    <th>Title</th>
+                    <th>Role</th>
+                    <th>Rating</th>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-credit>
+                  <tr>
+                    <td>{{ (credit.release_date | date: 'yyyy') || credit.first_air_date | date: 'yyyy' || '' }}</td>
+                    <td><img class="w-[48px] rounded" src="{{ ( credit.poster_path | posterUrl: 0 ) || ''}}"/></td>
+                    <td><a [routerLink]="credit | itemCreditUrl"><p-button class="title-link" styleClass="text-left" [label]="credit.title || credit.name || ''" [link]="true"></p-button></a></td>
+                    <td>{{ credit.character || '' }}</td>
+                    <td>{{credit.vote_average  | number:'1.0-1' || ''}}</td>
+                  </tr>
+                </ng-template>
+              </p-table>
+            </p-accordion-content>
+          </p-accordion-panel>
 
-        <p-table [value]="castCredits()" [tableStyle]="{ 'min-width': '50rem' }">
-          <ng-template pTemplate="caption">
-            <span class="font-bold">Acting:</span>
-          </ng-template>
-          <ng-template pTemplate="header">
-            <tr>
-              <th>Year</th>
-              <th></th>
-              <th>Title</th>
-              <th>Role</th>
-              <th>Rating</th>
-            </tr>
-          </ng-template>
-          <ng-template pTemplate="body" let-credit>
-            <tr>
-              <td>{{ (credit.release_date | date: 'yyyy') || credit.first_air_date | date: 'yyyy' || '' }}</td>
-              <td><img class="w-[48px] rounded" src="{{ ( credit.poster_path | posterUrl: 0 ) || ''}}"/></td>
-              <td><a [routerLink]="credit | itemCreditUrl"><p-button class="title-link" styleClass="text-left" [label]="credit.title || credit.name || ''" [link]="true"></p-button></a></td>
-              <td>{{ credit.character || '' }}</td>
-              <td>{{credit.vote_average  | number:'1.0-1' || ''}}</td>
-            </tr>
-          </ng-template>
-        </p-table>
-        <p-divider styleClass="!mt-8 !mb-8"></p-divider>
-        <p-table [value]="crewCredits()" [tableStyle]="{ 'min-width': '50rem' }">
-          <ng-template pTemplate="header">
-            <tr>
-              <th>Year</th>
-              <th></th>
-              <th>Title</th>
-              <th>Job</th>
-              <th>Rating</th>
-            </tr>
-          </ng-template>
-          <ng-template pTemplate="body" let-crewCredit>
-            <tr>
-              <td>{{ (crewCredit.release_date | date: 'yyyy') || crewCredit.first_air_date | date: 'yyyy' || '' }}</td>
-              <td><img class="w-[48px] rounded" src="{{ ( crewCredit.poster_path | posterUrl: 0 ) || ''}}"/></td>
-              <td>{{ crewCredit.title || crewCredit.name || '' }}</td>
-              <td>{{ crewCredit.job || '' }}</td>
-              <td>{{crewCredit.vote_average  | number:'1.0-1' || ''}}</td>
-            </tr>
-          </ng-template>
-        </p-table>
-<!--        @for (credit of person().combined_credits.cast; track credit) {-->
-<!--          -->
-<!--        }-->
+          <p-divider styleClass="!mt-8 !mb-8"></p-divider>
+
+          <p-accordion-panel value="1">
+            <p-accordion-header>Directing / Production:</p-accordion-header>
+            <p-accordion-content>
+              <p-table [value]="crewCredits()" [tableStyle]="{ 'min-width': '50rem' }">
+                <ng-template pTemplate="header">
+                  <tr>
+                    <th>Year</th>
+                    <th></th>
+                    <th>Title</th>
+                    <th>Job</th>
+                    <th>Rating</th>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-crewCredit>
+                  <tr>
+                    <td>{{ (crewCredit.release_date | date: 'yyyy') || crewCredit.first_air_date | date: 'yyyy' || '' }}</td>
+                    <td><img class="w-[48px] rounded" src="{{ ( crewCredit.poster_path | posterUrl: 0 ) || ''}}"/></td>
+                    <td>{{ crewCredit.title || crewCredit.name || '' }}</td>
+                    <td>{{ crewCredit.job || '' }}</td>
+                    <td>{{crewCredit.vote_average  | number:'1.0-1' || ''}}</td>
+                  </tr>
+                </ng-template>
+              </p-table>
+            </p-accordion-content>
+          </p-accordion-panel>
+        </p-accordion>
       </div>
     </section>
   </div>

@@ -184,7 +184,6 @@ export class DetailsService {
 
     // MOCK DATA
     this.person.set(PEOPLE[0]);
-    console.log(this.person())
 
 
     if (PEOPLE[0].combined_credits?.cast) {
