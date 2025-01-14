@@ -40,30 +40,39 @@ export class DetailsService {
     }
   });
 
+  // Details of specific person
   person: WritableSignal<CastCrewMember> = signal<CastCrewMember>({
     id: 0,
     name: '',
     job: ""
   });
 
+  // List of acting credits associated with a specific person
   castCredits: WritableSignal<ItemCredit[]> = signal<ItemCredit[]>([{
     id: 0,
     credit_id: ''
   }]);
 
+  // List of various non-acting credits associated with a specific person
   crewCredits: WritableSignal<ItemCredit[]> = signal<ItemCredit[]>([{
     id: 0,
     credit_id: ''
   }]);
 
+  // List of credits associated with a specific film or TV show
   credits: WritableSignal<Credits> = signal<Credits>({
     id: 0,
     cast: [],
     crew: []
   });
 
+  // List of actors who acted in a specific film or TV show
   mainCast: WritableSignal<CastCrewMember[]> = signal<CastCrewMember[]>([]);
+
+  // List of directors and creators associated with a specific film or TV show
   directorsAndCreators: WritableSignal<CastCrewMember[]> = signal<CastCrewMember[]>([]);
+
+  // List of the original writers of a specific film or TV show
   originalWriters: WritableSignal<CastCrewMember[]> = signal<CastCrewMember[]>([]);
 
   /**
@@ -163,6 +172,10 @@ export class DetailsService {
 
   }
 
+  /**
+   * Returns the details of a person matching the given id from the TMDB database
+   * @param id the person's id
+   */
   getPersonDetails(id: number) {
     const pageUrl = `details/person/${id}`;
     const { href } = new URL(pageUrl, this.apiUrl);
@@ -236,6 +249,10 @@ export class DetailsService {
     return episode;
   }
 
+  /**
+   * Sorts a list of film/TV show credits by date (newest to oldest)
+   * @param itemCredits a list of film/ TV show credits
+   */
   private sortCreditsByDate(itemCredits: ItemCredit[]): ItemCredit[] {
     return itemCredits.sort((a,b) => {
       const dateA = new Date(a.release_date || a.first_air_date || '').getTime();
