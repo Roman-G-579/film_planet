@@ -41,7 +41,7 @@ export class PersonComponent implements OnInit {
 
   person: WritableSignal<CastCrewMember> = this.det.person;
   castCredits: WritableSignal<ItemCredit[]> = this.det.castCredits;
-  crewCredits: WritableSignal<ItemCredit[]> = this.det.crewCredits;
+  crewCredits: WritableSignal<ItemCredit[][]> = this.det.crewCredits;
 
   isLoading: WritableSignal<boolean> = this.det.isLoading;
 

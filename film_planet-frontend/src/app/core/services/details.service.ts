@@ -53,13 +53,11 @@ export class DetailsService {
     credit_id: ''
   }]);
 
-  // List of various non-acting credits associated with a specific person
-  crewCredits: WritableSignal<ItemCredit[]> = signal<ItemCredit[]>([{
-    id: 0,
-    credit_id: ''
-  }]);
+  // List of various non-acting credits associated with a specific person,
+  // grouped by their departments
+  crewCredits: WritableSignal<ItemCredit[][]> = signal<ItemCredit[][]>([]);
 
-  // List of credits associated with a specific film or TV show
+  // Lists of cast and crew associated with a specific film or TV show
   credits: WritableSignal<Credits> = signal<Credits>({
     id: 0,
     cast: [],
@@ -203,7 +201,7 @@ export class DetailsService {
       this.castCredits.set(this.sortCreditsByDate(PEOPLE[0].combined_credits?.cast));
     }
     if (PEOPLE[0].combined_credits?.crew) {
-      this.crewCredits.set(this.sortCreditsByDate(PEOPLE[0].combined_credits?.crew));
+      this.crewCredits.set(this.createDepartmentsCreditsArray(PEOPLE[0].combined_credits?.crew));
     }
 
   }
@@ -268,5 +266,20 @@ export class DetailsService {
 
       return new Date(dateB).getTime() - new Date(dateA).getTime();
     })
+  }
+
+  private createDepartmentsCreditsArray(crewCredits: ItemCredit[]) {
+    const departmentMap = new Map<string, ItemCredit[]>();
+
+    for (const credit of crewCredits) {
+      const department = credit.department || 'Unknown'; // Use 'Unknown' if department is missing
+      if (!departmentMap.has(department)) {
+        departmentMap.set(department, []);
+      }
+      departmentMap.get(department)!.push(credit);
+    }
+
+    // Convert the Map values to an array of arrays
+    return Array.from(departmentMap.values()).map((credits) => this.sortCreditsByDate(credits));
   }
 }
