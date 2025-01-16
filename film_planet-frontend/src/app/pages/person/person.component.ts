@@ -2,14 +2,13 @@ import {ChangeDetectionStrategy, Component, inject, OnInit, WritableSignal} from
 import {CastCrewMember} from '../../core/interfaces/cast-crew-member.interface';
 import {PosterUrlPipePipe} from '../../core/pipes/poster-url-pipe.pipe';
 import {DetailsService} from '../../core/services/details.service';
-import {ActivatedRoute, RouterLink} from '@angular/router';
+import {ActivatedRoute} from '@angular/router';
 import {DataUtils} from '../../core/utils/data.utils';
-import {DatePipe, DecimalPipe, NgIf} from '@angular/common';
+import {DatePipe, NgIf} from '@angular/common';
 import {TableModule} from 'primeng/table';
 import {ItemCredit} from '../../core/interfaces/item-credit.interface';
 import {DividerModule} from 'primeng/divider';
 import {ButtonModule} from 'primeng/button';
-import {ItemCreditUrlPipe} from '../../core/pipes/item-credit-url.pipe';
 import {Accordion, AccordionContent, AccordionHeader, AccordionPanel} from 'primeng/accordion';
 import {CreditsTableComponent} from './credits-table/credits-table.component';
 
@@ -21,11 +20,8 @@ import {CreditsTableComponent} from './credits-table/credits-table.component';
     NgIf,
     DatePipe,
     TableModule,
-    DecimalPipe,
     DividerModule,
     ButtonModule,
-    RouterLink,
-    ItemCreditUrlPipe,
     Accordion,
     AccordionPanel,
     AccordionHeader,
