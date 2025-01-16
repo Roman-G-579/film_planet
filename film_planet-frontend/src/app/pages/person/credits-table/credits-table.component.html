@@ -1,0 +1,35 @@
+<p-table
+  [value]="departmentCredits()"
+  [tableStyle]="{ 'min-width': '50rem' }"
+>
+  <ng-template pTemplate="header">
+    <tr>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-credit>
+    <tr>
+      <td>{{ (credit.release_date | date: 'yyyy') || credit.first_air_date | date: 'yyyy' || '' }}</td>
+      <td><img class="w-[48px] rounded" src="{{ ( credit.poster_path | posterUrl: 0 ) || ''}}"/></td>
+      <td>
+        <a [routerLink]="credit | itemCreditUrl">
+          <p-button class="title-link" styleClass="text-left" [label]="credit.title || credit.name || ''" [link]="true"/>
+        </a>
+        <div class="mt-0 ml-3">
+          <div class=" flex items-center gap-1.5" *ngIf="credit.vote_average">
+            <i class="pi pi-star-fill text-yellow-500"></i>
+            <span class="font-semibold">{{credit.vote_average  | number:'1.0-1' || ''}}</span>
+          </div>
+          <!--suppress CssUnresolvedCustomProperty -->
+          <p style="color: var(--p-surface-400)" *ngIf="credit.character || credit.job">{{ credit.character || credit.job || '' }}</p>
+        </div>
+      </td>
+      <td>
+        <span *ngIf="credit.episode_count"> {{credit.episode_count }} {{credit.episode_count > 1 ? 'episodes' : 'episode'}} </span>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>

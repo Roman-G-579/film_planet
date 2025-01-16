@@ -11,6 +11,7 @@ import {DividerModule} from 'primeng/divider';
 import {ButtonModule} from 'primeng/button';
 import {ItemCreditUrlPipe} from '../../core/pipes/item-credit-url.pipe';
 import {Accordion, AccordionContent, AccordionHeader, AccordionPanel} from 'primeng/accordion';
+import {CreditsTableComponent} from './credits-table/credits-table.component';
 
 @Component({
   selector: 'app-person',
@@ -28,7 +29,8 @@ import {Accordion, AccordionContent, AccordionHeader, AccordionPanel} from 'prim
     Accordion,
     AccordionPanel,
     AccordionHeader,
-    AccordionContent
+    AccordionContent,
+    CreditsTableComponent
   ],
   templateUrl: './person.component.html',
   styleUrl: './person.component.scss',
