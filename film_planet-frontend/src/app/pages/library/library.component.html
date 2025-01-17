@@ -20,7 +20,7 @@
                 <div class="relative mx-auto">
                   <a [routerLink]="item | itemUrl">
                     <img
-                      src="{{item.poster_path | posterUrl}}"
+                      src="{{(item.poster_path | posterUrl) || 'assets/placeholder-images/poster-md.jpg'}}"
                       [alt]="item.title || item.name"
                       class="img-poster rounded-border" />
                   </a>

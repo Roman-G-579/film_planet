@@ -12,7 +12,7 @@
         <div class="mb-4">
           <div class="relative mx-auto">
             <img
-              src="{{actor.profile_path | posterUrl: 1}}"
+              src="{{(actor.profile_path | posterUrl: 1) || 'assets/placeholder-images/person-md.jpg'}}"
               [alt]="actor.name"
               class="w-full rounded-border min-w-[92px]" />
           </div>

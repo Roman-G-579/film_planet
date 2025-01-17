@@ -49,7 +49,7 @@
                       <a class="no-underline" [routerLink]="item | itemUrl" (click)="isSearchVisible.set(false)">
                         <img
                           class="block xl:block mx-auto rounded-border w-full"
-                          src="{{item.poster_path | posterUrl: 0}}"
+                          src="{{(item.poster_path | posterUrl: 0) || 'assets/placeholder-images/poster-md.jpg'}}"
                           [alt]="item.title || item.name"
                         />
                       </a>

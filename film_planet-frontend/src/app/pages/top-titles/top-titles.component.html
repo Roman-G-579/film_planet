@@ -45,7 +45,7 @@
             <td style="width: 20%"><a [routerLink]="item | itemUrl"><p-button class="title-link" styleClass="text-left" [label]="item.ranking + '. ' + (item.title || item.name)" [link]="true "/></a></td>
             <td style="width: 15%">
               <img
-                src="{{item.poster_path | posterUrl: 0}}"
+                src="{{(item.poster_path | posterUrl: 0) || 'assets/placeholder-images/poster-md.jpg'}}"
                 [alt]="item.title"
                 class="w-48 lg:w-24 rounded"
               />

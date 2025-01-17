@@ -13,7 +13,7 @@
   <ng-template pTemplate="body" let-credit>
     <tr>
       <td>{{ (credit.release_date | date: 'yyyy') || credit.first_air_date | date: 'yyyy' || '' }}</td>
-      <td><img class="w-[48px] rounded" src="{{ ( credit.poster_path | posterUrl: 0 ) || ''}}"/></td>
+      <td><img class="w-[48px] rounded" src="{{ ( credit.poster_path | posterUrl: 0 ) || 'assets/placeholder-images/poster-md.jpg'}}"/></td>
       <td>
         <a [routerLink]="credit | itemCreditUrl">
           <p-button class="title-link" styleClass="text-left" [label]="credit.title || credit.name || ''" [link]="true"/>
