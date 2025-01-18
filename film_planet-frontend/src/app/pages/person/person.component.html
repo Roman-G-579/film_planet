@@ -5,12 +5,34 @@
         <img alt="Picture of {{person().name}}" class="w-full min-w-64" src="{{(person().profile_path | posterUrl: 4) || 'assets/placeholder-images/person-md.jpg'}}" />
         <div class=" text-lg min-h-[380px]">
           <h2>Details:</h2>
-          <p>Known for: {{person().known_for_department}}</p>
-          <p>Known credits: {{castCredits().length + crewCredits().length}}</p>
-          <p>Gender: {{person().gender === 1 ? 'Female' : person().gender === 2 ? 'Male' : 'Not Specified'}}</p>
-          <p>Birthplace: {{person().place_of_birth}}</p>
-          <p>Birthday: {{person().birthday | date: 'longDate'}}</p>
-          <!--        <p>IMDB link: {{person().external_ids?.imdb_id || ''}}</p>-->
+          <div>
+            <p>Known for: {{person().known_for_department}}</p>
+            <p>Known credits: {{castCredits().length + crewCredits().length}}</p>
+            <p>Gender: {{person().gender === 1 ? 'Female' : person().gender === 2 ? 'Male' : 'Not Specified'}}</p>
+            <p>Birthplace: {{person().place_of_birth}}</p>
+            <p>Birthday: {{person().birthday | date: 'longDate'}}</p>
+          </div>
+
+          <h2 class="leading-9">Links and Social Media:</h2>
+          @for (link of externalLinks(); track link) {
+           <p>
+             <a *ngIf="link.id"
+                class="no-underline text-surface-300 font-bold hover:text-primary transition"
+                [href]="link.url">
+               {{ link.label }}
+             </a>
+           </p>
+          }
+          <div>
+          @for (social of socialLinks(); track social) {
+            <a *ngIf="social.id"
+               class="no-underline text-surface-300 hover:text-primary transition"
+               [href]="social.url">
+              <i [class]="'pi ' + social.icon + ' mr-4'" style="font-size: 2rem"></i>
+            </a>
+          }
+          </div>
+
         </div>
       </div>
       <div class="col-span-3 flex items-center">
