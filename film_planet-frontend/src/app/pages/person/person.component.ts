@@ -10,7 +10,7 @@ import {
 import {CastCrewMember} from '../../core/interfaces/cast-crew-member.interface';
 import {PosterUrlPipePipe} from '../../core/pipes/poster-url-pipe.pipe';
 import {DetailsService} from '../../core/services/details.service';
-import {ActivatedRoute, RouterLink} from '@angular/router';
+import {ActivatedRoute} from '@angular/router';
 import {DataUtils} from '../../core/utils/data.utils';
 import {DatePipe, NgIf} from '@angular/common';
 import {TableModule} from 'primeng/table';

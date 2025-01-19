@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, input, InputSignal, signal, WritableSignal} from '@angular/core';
+import {ChangeDetectionStrategy, Component, input, InputSignal} from '@angular/core';
 import {AccordionContent, AccordionHeader, AccordionPanel} from "primeng/accordion";
 import {DatePipe, NgIf} from "@angular/common";
 import {LineBreakPipe} from "../../../core/pipes/line-break.pipe";

@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, computed, input, InputSignal, Signal} from '@angular/core';
+import {ChangeDetectionStrategy, Component, input, InputSignal} from '@angular/core';
 import {CarouselModule, CarouselResponsiveOptions} from 'primeng/carousel';
 import {CastCrewMember} from '../../../core/interfaces/cast-crew-member.interface';
 import {PosterUrlPipePipe} from '../../../core/pipes/poster-url-pipe.pipe';

@@ -1,5 +1,5 @@
-import {ChangeDetectionStrategy, Component, computed, inject, OnInit, signal, WritableSignal} from '@angular/core';
-import {ActivatedRoute, Router, RouterLink} from '@angular/router';
+import {ChangeDetectionStrategy, Component, inject, signal, WritableSignal} from '@angular/core';
+import {ActivatedRoute, RouterLink} from '@angular/router';
 import {DataUtils} from '../../core/utils/data.utils';
 import {MediaType} from '../../core/enums/media-type.enum';
 import {ButtonModule} from 'primeng/button';
@@ -22,7 +22,6 @@ import {TvGenres} from '../../core/constants/tv-genres.record';
 })
 export class GenresComponent {
   private route = inject(ActivatedRoute);
-  private readonly router = inject(Router);
   protected readonly dataUtils = DataUtils;
   protected readonly FilmGenres = FilmGenres;
   protected readonly TvGenres = TvGenres;
