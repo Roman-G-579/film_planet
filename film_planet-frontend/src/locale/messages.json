@@ -1,0 +1,10 @@
+{
+  "locale": "en-US",
+  "translations": {
+    "8946439208415680450": "Find what to watch next",
+    "3453385097834893387": "Starring: {$INTERPOLATION}",
+    "5634966465145818482": "Directed by {$INTERPOLATION}",
+    "9131836378905533756": "Created by {$INTERPOLATION}",
+    "App-Description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam urna lacus, maximus sed tortor in, gravida ullamcorper turpis. Ut sem urna, elementum in dui a, facilisis ultricies eros. Nulla consectetur dapibus neque, a accumsan massa gravida et. Suspendisse potenti. In laoreet libero mi, ut porttitor diam porta quis. Integer feugiat nisl at placerat laoreet. Sed et laoreet lorem, nec commodo diam. Nunc ultricies, lectus ac porttitor egestas, ligula justo bibendum diam, ornare porta diam justo id lectus. Quisque ultrices, leo venenatis imperdiet vehicula, sem eros aliquam neque, quis tincidunt arcu neque nec ipsum. Curabitur faucibus leo nec lectus feugiat, et mollis neque ultricies. Vestibulum tempus augue non nibh suscipit pharetra. Vestibulum ultricies aliquam velit, nec cursus arcu sagittis a. In eu odio id tortor sollicitudin sollicitudin. Aliquam bibendum consectetur diam, quis euismod diam tempor nec. Maecenas cursus lectus vitae diam efficitur viverra. Aenean tincidunt felis et purus varius, vel consectetur leo accumsan."
+  }
+}

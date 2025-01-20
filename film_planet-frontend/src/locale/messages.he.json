@@ -1,0 +1,10 @@
+{
+  "locale": "he",
+  "translations": {
+    "8946439208415680450": "Find what to watch next",
+    "3453385097834893387": "שחקנים ראשיים: {$INTERPOLATION}",
+    "5634966465145818482": "במאי: {$INTERPOLATION}",
+    "9131836378905533756": "יוצר: {$INTERPOLATION}",
+    "App-Description": "תאור של האפליקציה בעברית."
+  }
+}
