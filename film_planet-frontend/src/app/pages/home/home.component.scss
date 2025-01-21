@@ -33,6 +33,10 @@ section {
   & .section-5 {
     @apply text-indigo-300;
     background: rgba(27, 26, 85, 0.15);
+
+    p {
+      text-align: initial;
+    }
   }
 }
 
