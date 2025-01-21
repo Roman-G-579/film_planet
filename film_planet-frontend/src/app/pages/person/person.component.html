@@ -4,7 +4,7 @@
       <div class="image-wrapper row-span-4">
         <img alt="Picture of {{person().name}}" class="w-full min-w-64" src="{{(person().profile_path | posterUrl: 4) || 'assets/placeholder-images/person-md.jpg'}}" />
         <div class=" text-lg min-h-[380px]">
-          <h2>Details:</h2>
+          <h2 i18n="@@person.details">Details:</h2>
           <div>
             <p>Known for: {{person().known_for_department}}</p>
             <p>Known credits: {{castCredits().length + crewCredits().length}}</p>

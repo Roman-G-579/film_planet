@@ -5,6 +5,17 @@
     "3453385097834893387": "В главных ролях: {$INTERPOLATION}",
     "5634966465145818482": "Режиссер: {$INTERPOLATION}",
     "9131836378905533756": "Создатель: {$INTERPOLATION}",
-    "App-Description": "Описание приложения на русском языке."
+    "App-Description": "Описание приложения на русском языке.",
+    "menu.films": "Films",
+    "menu.films.recent": "Recently released films",
+    "menu.films.popular": "Most popular Films",
+    "menu.films.top200": "Top 200 Films",
+    "menu.films.genre": "Browse films by genre",
+    "menu.tv": "TV",
+    "menu.tv.recent": "Recently released TV Shows",
+    "menu.tv.popular": "Most popular TV Shows",
+    "menu.tv.top200": "Top 200 TV shows",
+    "menu.tv.genre": "Browse TV Shows by genre",
+    "menu.top200": "Top 200"
   }
 }

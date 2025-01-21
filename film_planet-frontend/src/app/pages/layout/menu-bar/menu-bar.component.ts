@@ -16,6 +16,7 @@ import {MenubarModule} from 'primeng/menubar';
 import {SplitButtonModule} from 'primeng/splitbutton';
 import {DialogModule} from 'primeng/dialog';
 import {SearchWindowComponent} from '../search-window/search-window.component';
+import {$localize} from '@angular/localize/init';
 
 @Component({
   selector: 'app-menu-bar',
@@ -58,55 +59,56 @@ export class MenuBarComponent implements OnInit {
 
   menuOptions = [
     {
-      label: 'Films',
+      label: $localize`:@@menu.films:Films`,
       route: '/pages/library/film/recent',
       items: [
         {
-          label: 'Recently released films',
+          label: $localize`:@@menu.films.recent:Recently released films`,
           routerLink: '/pages/library/film/recent',
         },
         {
-          label: 'Most popular Films',
+          label: $localize`:@@menu.films.popular:Most popular Films`,
           routerLink: '/pages/library/film/popular',
         },
         {
-          label: 'Top 200 Films',
+          label: $localize`:@@menu.films.top200:Top 200 Films`,
           routerLink: '/pages/top-films',
         },
         {
-          label: 'Browse films by genre',
+          label: $localize`:@@menu.films.genre:Browse films by genre`,
           routerLink: '/pages/genres/film',
         }
       ]
     },
     {
-      label: 'TV',
+      label: $localize`:@@menu.tv:TV`,
       route: '/pages/library/tv/recent',
       items: [
         {
-          label: 'Recently released TV Shows',
+          label: $localize`:@@menu.tv.recent:Recently released TV Shows`,
           routerLink: '/pages/library/tv/recent',
         },
         {
-          label: 'Most popular TV Shows',
+          label: $localize`:@@menu.tv.popular:Most popular TV Shows`,
           routerLink: '/pages/library/tv/popular',
         },
         {
-          label: 'Top 200 TV shows',
+          label: $localize`:@@menu.tv.top200:Top 200 TV shows`,
           routerLink: '/pages/top-tv',
         },
         {
-          label: 'Browse TV Shows by genre',
+          label: $localize`:@@menu.tv.genre:Browse TV Shows by genre`,
           routerLink: '/pages/genres/tv',
         }
       ]
     },
     {
-      label: 'Top 200',
+      label: $localize`:@@menu.top200:Top 200`,
       route: '/pages/top-films',
       items: [],
     },
-  ]
+  ];
+
 
   isSearchVisible = false;
 
@@ -138,5 +140,4 @@ export class MenuBarComponent implements OnInit {
   navigate(route: string) {
     this.router.navigate([route]).then();
   }
-
 }

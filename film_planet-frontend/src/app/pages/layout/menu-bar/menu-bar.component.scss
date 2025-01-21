@@ -8,6 +8,7 @@
   .p-menubar-start {
     gap: 1rem;
   }
+
   .p-menubar-root-list {
     font-size:  var(--menu-font-size);
     line-height: 2.25rem;
@@ -48,5 +49,10 @@
 
 }
 
+// Alternate menu bar positioning for hebrew language
+::ng-deep html.lang-he .menu-bar .p-menubar-end {
+  margin-right: auto;
+  margin-left: inherit;
+}
 
 

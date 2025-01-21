@@ -1,10 +1,26 @@
 {
   "locale": "he",
   "translations": {
-    "8946439208415680450": "Find what to watch next",
+    "8946439208415680450": "יש מה לראות.",
     "3453385097834893387": "שחקנים ראשיים: {$INTERPOLATION}",
     "5634966465145818482": "במאי: {$INTERPOLATION}",
     "9131836378905533756": "יוצר: {$INTERPOLATION}",
-    "App-Description": "תאור של האפליקציה בעברית."
+    "App-Description": "תאור של האפליקציה בעברית. פילם פלאנט מאפשרת לך למצוא את הסרטים הכי טובים והסדרות הכי האיכותיות. מצאו בקלות מה הכי פופולרי, הכי מוערך על ידי הצופים, מצאו מי השחקנים והיוצרים של כל סרט וסדרה, תדרגו את מה שצפיתם בו, כתבו וקראו ביקורות, ועוד. ",
+    "menu.films": "סרטים",
+    "menu.films.recent": "סרטים חדשים",
+    "menu.films.popular": "סרטים פופולריים",
+    "menu.films.top200": "200 הסרטים הטובים ביותר",
+    "menu.films.genre": "חיפוש לפי ז'אנר",
+    "menu.tv": "סדרות",
+    "menu.tv.recent": "סדרות חדשות",
+    "menu.tv.popular": "סדרות פופולריות",
+    "menu.tv.top200": "200 הסדרות הטובות ביותר",
+    "menu.tv.genre": "חיפוש לפי ז'אנר",
+    "menu.top200": "200 הטובים ביותר",
+    "copyrightLink": " Film Planet © 2024 כל הזכויות שמורות, ר.ג. ",
+    "privacyPolicyLink": "מדיניות פרטיות",
+    "contactLink": "צור קשר",
+    "person.details": "פרטים אישיים:",
+    "top-titles-heading|Heading for top films / top tv page": "הטובים ביותר ה{$INTERPOLATION} 200"
   }
 }

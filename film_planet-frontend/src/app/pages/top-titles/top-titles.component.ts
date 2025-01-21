@@ -27,30 +27,38 @@ import {PosterUrlPipePipe} from '../../core/pipes/poster-url-pipe.pipe';
 import {SkeletonModule} from 'primeng/skeleton';
 import {TopTitlesTableSkeletonComponent} from './top-titles-table-skeleton/top-titles-table-skeleton.component';
 import {MiscUtils} from '../../core/utils/misc.utils';
+import {MenubarModule} from "primeng/menubar";
+import {SplitButtonModule} from "primeng/splitbutton";
+import {ToggleSwitchModule} from "primeng/toggleswitch";
+import {TooltipModule} from "primeng/tooltip";
 
 @Component({
   selector: 'app-top-titles',
   standalone: true,
-  imports: [
-    TableModule,
-    ButtonModule,
-    IftaLabelModule,
-    FormsModule,
-    CalendarModule,
-    DatePickerModule,
-    GenreNamesPipe,
-    SliderModule,
-    RouterLink,
-    ItemUrlPipe,
-    DatePipe,
-    DecimalPipe,
-    Drawer,
-    TitlesFilterComponent,
-    PosterUrlPipePipe,
-    SkeletonModule,
-    TopTitlesTableSkeletonComponent,
-    NgIf,
-  ],
+    imports: [
+        TableModule,
+        ButtonModule,
+        IftaLabelModule,
+        FormsModule,
+        CalendarModule,
+        DatePickerModule,
+        GenreNamesPipe,
+        SliderModule,
+        RouterLink,
+        ItemUrlPipe,
+        DatePipe,
+        DecimalPipe,
+        Drawer,
+        TitlesFilterComponent,
+        PosterUrlPipePipe,
+        SkeletonModule,
+        TopTitlesTableSkeletonComponent,
+        NgIf,
+        MenubarModule,
+        SplitButtonModule,
+        ToggleSwitchModule,
+        TooltipModule,
+    ],
   templateUrl: './top-titles.component.html',
   styleUrl: './top-titles.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
