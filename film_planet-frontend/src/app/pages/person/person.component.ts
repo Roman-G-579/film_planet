@@ -19,6 +19,7 @@ import {DividerModule} from 'primeng/divider';
 import {ButtonModule} from 'primeng/button';
 import {Accordion, AccordionContent, AccordionHeader, AccordionPanel} from 'primeng/accordion';
 import {CreditsTableComponent} from './credits-table/credits-table.component';
+import {$localize} from '@angular/localize/init';
 
 // Interface for links to external websites
 export interface ExternalLink {
@@ -112,4 +113,5 @@ export class PersonComponent implements OnInit {
       this.det.getPersonDetails(personId);
     })
   }
+
 }

@@ -9,7 +9,21 @@
     "copyrightLink": " Film Planet © 2024 R.G. ",
     "privacyPolicyLink": "Privacy Policy",
     "contactLink": "Contact",
+    "credits-table.episodeCount": "{$START_TAG_SPAN} {$INTERPOLATION} {$CLOSE_TAG_SPAN} {$ICU} ",
+    "116511269612478398": "{VAR_SELECT, select, 1 {episodes} other {episode}}",
     "person.details": "Details:",
+    "person.knownFor": "Known for: {$INTERPOLATION}",
+    "person.creditsCnt": "Known credits: {$INTERPOLATION}",
+    "person.gender": " Gender: {$ICU} ",
+    "2531097858832095289": "{VAR_SELECT, select, 1 {Female} 2 {Male} 3 {Non-binary} other {Not Specified}}",
+    "person.birthPlace": "Birthplace: {$INTERPOLATION}",
+    "person.birthDay": "Birthday: {$INTERPOLATION}",
+    "person.links": "Links and Social Media:",
+    "person.biographyTitle": "Biography:",
+    "person.creditsTitle": "Credits:",
+    "person.actingHeader": "Acting:",
+    "person.departmentHeader": " {$ICU}: ",
+    "4993120158400848189": "{VAR_SELECT, select, Production {Production} Directing {Directing} Writing {Writing} Creator {Creator} other {departmentCredits[0].department}}",
     "top-titles-heading|Heading for top films / top tv page": "Top 200 {$INTERPOLATION}"
   }
 }

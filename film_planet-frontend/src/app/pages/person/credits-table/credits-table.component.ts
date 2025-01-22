@@ -1,6 +1,6 @@
 import {ChangeDetectionStrategy, Component, input, InputSignal} from '@angular/core';
 import {ButtonModule} from "primeng/button";
-import {DatePipe, DecimalPipe, NgIf} from "@angular/common";
+import {DatePipe, DecimalPipe, NgClass, NgIf} from "@angular/common";
 import {ItemCreditUrlPipe} from "../../../core/pipes/item-credit-url.pipe";
 import {PosterUrlPipePipe} from "../../../core/pipes/poster-url-pipe.pipe";
 import {SharedModule} from "primeng/api";
@@ -20,7 +20,8 @@ import {ItemCredit} from '../../../core/interfaces/item-credit.interface';
     PosterUrlPipePipe,
     SharedModule,
     TableModule,
-    RouterLink
+    RouterLink,
+    NgClass
   ],
   templateUrl: './credits-table.component.html',
   styleUrl: './credits-table.component.scss',

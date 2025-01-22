@@ -6,14 +6,21 @@
         <div class=" text-lg min-h-[380px]">
           <h2 i18n="@@person.details">Details:</h2>
           <div>
-            <p>Known for: {{person().known_for_department}}</p>
-            <p>Known credits: {{castCredits().length + crewCredits().length}}</p>
-            <p>Gender: {{person().gender === 1 ? 'Female' : person().gender === 2 ? 'Male' : 'Not Specified'}}</p>
-            <p>Birthplace: {{person().place_of_birth}}</p>
-            <p>Birthday: {{person().birthday | date: 'longDate'}}</p>
+            <p i18n="@@person.knownFor">Known for: {{person().known_for_department}}</p>
+            <p i18n="@@person.creditsCnt">Known credits: {{castCredits().length + crewCredits().length}}</p>
+            <p i18n="@@person.gender">
+              Gender:
+              {person().gender, select,
+                1 {Female}
+                2 {Male}
+                3 {Non-binary}
+                other {Not Specified}
+                }
+            </p>            <p i18n="@@person.birthPlace">Birthplace: {{person().place_of_birth}}</p>
+            <p i18n="@@person.birthDay">Birthday: {{person().birthday | date: 'longDate'}}</p>
           </div>
 
-          <h2 class="leading-9">Links and Social Media:</h2>
+          <h2 i18n="@@person.links" class="leading-9">Links and Social Media:</h2>
           @for (link of externalLinks(); track link) {
            <p>
              <a *ngIf="link.id"
@@ -43,18 +50,18 @@
       </div>
       <div class="col-span-3 flex items-center">
         <div class="col-span-3 text-xl min-h-[380px]">
-          <h2>Biography:</h2>
+          <h2 i18n="@@person.biographyTitle">Biography:</h2>
           <p>{{person().biography}}</p>
         </div>
       </div>
 
       <div class="col-span-3 mb-4">
         <div class="mb-8">
-          <h2>Credits:</h2>
+          <h2 i18n="@@person.creditsTitle">Credits:</h2>
         </div>
         <p-accordion value="0" [multiple]="true">
           <p-accordion-panel value="0">
-            <p-accordion-header>Acting:</p-accordion-header>
+            <p-accordion-header i18n="@@person.actingHeader">Acting:</p-accordion-header>
             <p-accordion-content>
               <app-credits-table [departmentCredits]="castCredits()"></app-credits-table>
             </p-accordion-content>
@@ -64,7 +71,15 @@
             <p-divider styleClass="!mt-8 !mb-8"></p-divider>
 
             <p-accordion-panel [value]="$index + 1">
-              <p-accordion-header>{{departmentCredits[0].department}}:</p-accordion-header>
+              <p-accordion-header i18n="@@person.departmentHeader">
+                {departmentCredits[0].department, select,
+                  Production {Production}
+                  Directing {Directing}
+                  Writing {Writing}
+                  Creator {Creator}
+                  other {departmentCredits[0].department}
+                }:
+              </p-accordion-header>
               <p-accordion-content>
                 <app-credits-table [departmentCredits]="departmentCredits"></app-credits-table>
               </p-accordion-content>

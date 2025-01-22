@@ -1,11 +1,11 @@
 {
   "locale": "he",
   "translations": {
-    "8946439208415680450": "יש מה לראות.",
-    "3453385097834893387": "שחקנים ראשיים: {$INTERPOLATION}",
-    "5634966465145818482": "במאי: {$INTERPOLATION}",
-    "9131836378905533756": "יוצר: {$INTERPOLATION}",
-    "App-Description": "תאור של האפליקציה בעברית. פילם פלאנט מאפשרת לך למצוא את הסרטים הכי טובים והסדרות הכי האיכותיות. מצאו בקלות מה הכי פופולרי, הכי מוערך על ידי הצופים, מצאו מי השחקנים והיוצרים של כל סרט וסדרה, תדרגו את מה שצפיתם בו, כתבו וקראו ביקורות, ועוד. ",
+    "home.tagline|Film Planet tagline": "יש מה לראות.",
+    "home.starring": "שחקנים ראשיים: {$INTERPOLATION}",
+    "home.director": "במאים: {$INTERPOLATION}",
+    "home.creator": "יוצרים: {$INTERPOLATION}",
+    "home.appDescription": "תאור של האפליקציה בעברית. פילם פלאנט מאפשרת לך למצוא את הסרטים הכי טובים והסדרות הכי האיכותיות. מצאו בקלות מה הכי פופולרי, הכי מוערך על ידי הצופים, מצאו מי השחקנים והיוצרים של כל סרט וסדרה, תדרגו את מה שצפיתם בו, כתבו וקראו ביקורות, ועוד. ",
     "menu.films": "סרטים",
     "menu.films.recent": "סרטים חדשים",
     "menu.films.popular": "סרטים פופולריים",
@@ -20,7 +20,21 @@
     "copyrightLink": " Film Planet © 2024 כל הזכויות שמורות, ר.ג. ",
     "privacyPolicyLink": "מדיניות פרטיות",
     "contactLink": "צור קשר",
+    "credits-table.episodeCount": "{$START_TAG_SPAN} {$INTERPOLATION} {$CLOSE_TAG_SPAN} {$ICU} ",
+    "116511269612478398": "{VAR_SELECT, select, 1 {פרק אחד} other {פרקים}}",
     "person.details": "פרטים אישיים:",
+    "person.knownFor": "תעסוקה: {$INTERPOLATION}",
+    "person.creditsCnt": "כמות קרדיטים: {$INTERPOLATION}",
+    "person.gender": " מין: {$ICU} ",
+    "2531097858832095289": "{VAR_SELECT, select, 1 {נקבה} 2 {זכר} 3 {לא-בינארי} other {לא צוין}}",
+    "person.birthPlace": "מקום לידה: {$INTERPOLATION}",
+    "person.birthDay": "יום הולדת: {$INTERPOLATION}",
+    "person.links": "קישורים ומדיה חברתית:",
+    "person.biographyTitle": "ביוגרפיה:",
+    "person.creditsTitle": "קרדיטים:",
+    "person.actingHeader": "שחקן:",
+    "person.departmentHeader": " {$ICU}: ",
+    "4993120158400848189": "{VAR_SELECT, select, Production {מפיק} Directing {במאי} Writing {תסריטאי} Creator {יוצר} other {departmentCredits[0].department}}",
     "top-titles-heading|Heading for top films / top tv page": "הטובים ביותר ה{$INTERPOLATION} 200"
   }
 }

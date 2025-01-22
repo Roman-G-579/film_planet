@@ -28,7 +28,15 @@
         </div>
       </td>
       <td>
-        <span *ngIf="credit.episode_count"> {{credit.episode_count }} {{credit.episode_count > 1 ? 'episodes' : 'episode'}} </span>
+          <span i18n="@@credits-table.episodeCount" *ngIf="credit.episode_count">
+            <span [ngClass]="{ 'hide-episode-count': credit.episode_count === 1 }">
+              {{credit.episode_count }}
+            </span>
+            {credit.episode_count, select,
+              1 {episodes}
+              other {episode}
+              }
+          </span>
       </td>
     </tr>
   </ng-template>
