@@ -27,17 +27,26 @@
         [lazy]="true"
       >
         <ng-template pTemplate="caption">
-          <span i18n="@@top-titles-heading|Heading for top films / top tv page" class="text-xl font-bold">Top 200 {{titleText()}}</span>
+          <span i18n="@@top-titles-heading|Heading for top films / top tv page" class="text-xl font-bold">
+            Top 200 {{titleText()}}
+          </span>
+          <span class="heading-addon text-xl font-bold hidden">
+            {titleText(), select,
+               סרטים {הטובים ביותר}
+               סדרות{הטובות ביותר}
+              other {הטובים ביותר}
+            }
+          </span>
 
         </ng-template>
         <ng-template pTemplate="header">
           <tr>
-            <th>Title</th>
+            <th i18n="@@top-titles.title">Title</th>
             <th> </th>
-            <th>Year</th>
-            <th>Genres</th>
-            <th class="!text-center">Rating</th>
-            <th class="!text-center">Number of Votes</th>
+            <th i18n="@@top-titles.year">Year</th>
+            <th i18n="@@top-titles.genres">Genres</th>
+            <th i18n="@@top-titles.rating" class="!text-center">Rating</th>
+            <th i18n="@@top-titles.numVotes" class="!text-center">Number of Votes</th>
           </tr>
         </ng-template>
         <ng-template pTemplate="body" let-item let-i="rowIndex">

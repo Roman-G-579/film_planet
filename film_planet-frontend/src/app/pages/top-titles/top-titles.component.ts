@@ -95,11 +95,13 @@ export class TopTitlesComponent implements OnInit {
     this.route.data.subscribe((data) => {
       if (data['type'] === 'film') {
         this.selectedMediaType.set(MediaType.Film);
-        this.titleText.set("Films");
+        const titleStr = $localize `:@@top-titles.filmsString:Films`;
+        this.titleText.set(titleStr);
       }
       else if (data['type'] === 'tv') {
         this.selectedMediaType.set(MediaType.TV);
-        this.titleText.set("TV shows");
+        const titleStr = $localize `:@@top-titles.tvShowsString:TV Shows`;
+        this.titleText.set(titleStr);
       }
 
       this.lib.getItemListFromApi(this.selectedMediaType(),'top');

@@ -15,7 +15,10 @@
   height: 175px;
 }
 
-
+// Displays gender-based text at the end of the heading in hebrew only
+::ng-deep html.lang-he .heading-addon {
+  display: initial;
+}
 
 @media (max-width: 1024px) {
   .top-table-row-wrapper {
