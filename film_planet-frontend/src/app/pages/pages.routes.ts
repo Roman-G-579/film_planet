@@ -47,7 +47,7 @@ export default [
   },
   {
     path: 'top-films',
-    data: { type: 'films' },
+    data: { type: 'film' },
     loadComponent: () => import('./top-titles/top-titles.component').then((c) => c.TopTitlesComponent),
   },
   {
