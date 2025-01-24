@@ -2,7 +2,17 @@
   <p-menubar class="menu-bar" styleClass="!border-0 !rounded-none" >
     <ng-template pTemplate="start">
       <img class="w-1/12 mr-2 cursor-pointer" src="assets/logo.png" routerLink="/pages/home" alt="film planet logo">
-      <p-button class="search-btn" icon="pi pi-search" size="large" [rounded]="true" [text]="true" (onClick)="isSearchVisible = true" />
+      <p-button
+        class="search-btn"
+        icon="pi pi-search"
+        size="large"
+        [rounded]="true"
+        [text]="true"
+        pTooltip="Search"
+        i18n-pTooltip="@@menu.searchTooltip"
+        showDelay="400"
+        tooltipPosition="bottom"
+        (onClick)="isSearchVisible = true" />
 
       <app-search-window [(isSearchVisible)]="isSearchVisible"></app-search-window>
 
@@ -19,8 +29,15 @@
     </ng-template>
     <ng-template pTemplate="end">
       <div class="flex items-center gap-6">
-        <a class="signup-login-link" routerLink="/signup">Sign Up</a>
-        <p-toggleswitch class="mt-2" [(ngModel)]="isDarkModeEnabled" title="Toggle Dark Mode" (onChange)="toggleDarkMode()"></p-toggleswitch>
+        <a class="signup-login-link" i18n="@@menu.signUpBtn" routerLink="/signup">Sign Up</a>
+        <p-toggleswitch
+          class="mt-2"
+          [(ngModel)]="isDarkModeEnabled"
+          pTooltip="Language"
+          i18n-pTooltip="@@menu.toggleDarkModeTooltip"
+          showDelay="400"
+          tooltipPosition="bottom"
+          (onChange)="toggleDarkMode()"></p-toggleswitch>
         <p-select
           styleClass="!text-base !shadow-none !bg-transparent"
           [options]="languages"

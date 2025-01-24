@@ -1,11 +1,11 @@
 <main>
   <app-titles-filter class="hidden lg:block" [genres]="genres()"></app-titles-filter>
 
-  <p-drawer styleClass="!h-auto" header="Filters" [(visible)]="topDrawerVisible" position="top">
+  <p-drawer styleClass="!h-auto" header="Filters" i18n-header="@@top-titles.filtersHeader" [(visible)]="topDrawerVisible" position="top">
     <app-titles-filter [genres]="genres()" (closeDrawer)="topDrawerVisible = false"></app-titles-filter>
   </p-drawer>
-  <div class="flex ml-4 mt-2 mb-2">
-    <p-button class="lg:hidden" type="button" label="Filters" (click)="topDrawerVisible = true" icon="pi pi-sliders-h" />
+  <div class="flex ml-4 mt-2 mb-2 pr-[8px]">
+    <p-button class="lg:hidden" type="button" label="Filters" i18n-label="@@top-titles.filterBtn" (click)="topDrawerVisible = true" icon="pi pi-sliders-h" />
   </div>
 
   @if (isLoading()) {

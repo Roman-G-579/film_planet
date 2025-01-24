@@ -15,4 +15,20 @@
   margin: auto 2px;
 }
 
+// Flips the inputgroup's border curves when the language is hebrew
+::ng-deep html.lang-he {
+  p-inputgroup-addon.p-inputgroupaddon:first-child {
+    border-radius: 0 var(--p-inputgroup-addon-border-radius) var(--p-inputgroup-addon-border-radius) 0;
+  }
+  p-inputgroup-addon.p-inputgroupaddon:last-child {
+    border-radius: var(--p-inputgroup-addon-border-radius) 0 0 var(--p-inputgroup-addon-border-radius);
+  }
+}
 
+::ng-deep html.lang-he p-inputgroup-addon.p-inputgroupaddon:first-child {
+  border-radius: 0 var(--p-inputgroup-addon-border-radius) var(--p-inputgroup-addon-border-radius) 0;
+}
+
+::ng-deep html.lang-he p-inputgroup-addon.p-inputgroupaddon:last-child {
+  border-radius: var(--p-inputgroup-addon-border-radius) 0 0 var(--p-inputgroup-addon-border-radius);
+}

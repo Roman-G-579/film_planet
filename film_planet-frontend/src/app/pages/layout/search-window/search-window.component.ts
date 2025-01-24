@@ -75,9 +75,9 @@ export class SearchWindowComponent implements OnInit, OnDestroy {
 
   //TODO: add option to search people
   mediaOptions: MediaOption[] = [
-    { name: 'All', mediaType: undefined },
-    { name: 'Films', mediaType: MediaType.Film },
-    { name: 'TV', mediaType: MediaType.TV }
+    { name: $localize`:@@search.filterAll:All`, mediaType: undefined },
+    { name: $localize`:@@search.filterFilms:Films`, mediaType: MediaType.Film },
+    { name: $localize`:@@search.filterTV:TV`, mediaType: MediaType.TV }
   ];
 
   selectedOption: MediaOption = this.mediaOptions[0];

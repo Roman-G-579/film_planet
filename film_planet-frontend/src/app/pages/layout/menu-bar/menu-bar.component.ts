@@ -16,7 +16,6 @@ import {MenubarModule} from 'primeng/menubar';
 import {SplitButtonModule} from 'primeng/splitbutton';
 import {DialogModule} from 'primeng/dialog';
 import {SearchWindowComponent} from '../search-window/search-window.component';
-import {$localize} from '@angular/localize/init';
 
 @Component({
   selector: 'app-menu-bar',

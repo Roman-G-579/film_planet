@@ -3,3 +3,16 @@
   border-radius: var(--p-select-border-radius);
   background: var(--p-form-field-background);
 }
+
+::ng-deep html.lang-he {
+  .year-filter-wrapper, .genre-filter-wrapper {
+    .p-select {
+      direction: ltr;
+    }
+  }
+}
+//::ng-deep html.lang-he .genre-filter-wrapper{
+//  .p-select {
+//    direction: ltr;
+//  }
+//}

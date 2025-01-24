@@ -1,4 +1,10 @@
-<p-dialog header="Search for films or TV shows:" [modal]="true" [(visible)]="isSearchVisible" [style]="{ width: '90%', height: '90%', opacity: '90%' }" dismissableMask>
+<p-dialog
+  header="Search for films or TV shows:"
+  i18n-header="@@search.header"
+  [modal]="true"
+  [(visible)]="isSearchVisible"
+  [style]="{ width: '90%', height: '90%', opacity: '90%' }"
+  dismissableMask>
   <section class="">
     <div class="flex justify-center gap-4 mb-4">
       <p-inputgroup styleClass="lg:!w-[60%]">
@@ -20,6 +26,7 @@
           #searchInput
           pInputText
           placeholder="Search"
+          i18n-placeholder="@@search.inputPlaceholder"
           id="search-term"
           class="flex-auto h-14 text-2xl"
           style="font-family: Poppins, 'Helvetica Neue', sans-serif"
