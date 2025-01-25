@@ -6,7 +6,15 @@
     <!--  Top 5 items carousel-->
     <section class="carousel-wrapper flex flex-col items-center p-6">
       <div class=" flex justify-items-start items-start content-start">
-        <h1>{{categoryText()}} {{mediaTypeText()}}</h1>
+        @if (lang.isHebrewLanguage()) {
+          <h1>
+            {{mediaTypeText()}}
+            {{categoryText()}}{{mediaTypeText() === 'סרטים' ? 'ים' : 'ות'}}
+          </h1>
+        }
+        @else {
+          <h1>{{categoryText()}} {{mediaTypeText()}}</h1>
+        }
       </div>
       <div class=" inline-block justify-center">
         <p-carousel

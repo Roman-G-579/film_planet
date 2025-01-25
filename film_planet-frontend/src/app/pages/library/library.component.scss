@@ -9,3 +9,10 @@
     color: var(--p-dataview-content-color);
   }
 }
+
+// Flips carousel arrows when the language is hebrew
+::ng-deep html.lang-he p-button.p-ripple:first-child,
+::ng-deep html.lang-he p-button.p-ripple:last-child {
+  transform: scaleX(-1);
+}
+

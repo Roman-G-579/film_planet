@@ -24,6 +24,7 @@ import {LibraryTableSkeletonComponent} from './library-table-skeleton/library-ta
 import {LibraryCarouselSkeletonComponent} from './library-carousel-skeleton/library-carousel-skeleton.component';
 import {InfiniteScrollDirective} from 'ngx-infinite-scroll';
 import {Genre} from '../../core/interfaces/genre.interface';
+import {LanguageService} from '../../core/services/language.service';
 
 @Component({
   selector: 'app-library',
@@ -49,6 +50,7 @@ import {Genre} from '../../core/interfaces/genre.interface';
 })
 export class LibraryComponent implements OnInit {
   protected readonly lib = inject(LibraryService);
+  protected readonly lang = inject(LanguageService);
   protected readonly dataUtils = DataUtils;
   private route = inject(ActivatedRoute);
 
@@ -105,22 +107,22 @@ export class LibraryComponent implements OnInit {
       // Selecting media type for current page
       if (data['type'] === 'film') {
         this.selectedMediaType.set(MediaType.Film);
-        this.mediaTypeText.set("Films");
+        this.mediaTypeText.set($localize `:@@library.heading.films:Films`);
       }
       else if (data['type'] === 'tv') {
         this.selectedMediaType.set(MediaType.TV);
-        this.mediaTypeText.set("TV shows");
+        this.mediaTypeText.set($localize `:@@library.heading.tv:TV Shows`);
       }
 
 
       // Selecting category of current page
       if(data['category'] === 'recent') {
         this.lib.getItemListFromApi(this.selectedMediaType(), 'recent');
-        this.categoryText.set("Recent");
+        this.categoryText.set($localize `:@@library.heading.recent:Recent`);
       }
       else if (data['category'] === 'popular') {
         this.lib.getItemListFromApi(this.selectedMediaType(), 'popular');
-        this.categoryText.set("Popular");
+        this.categoryText.set($localize `:@@library.heading.popular:Popular`);
       }
       else if (data['category'] === 'genre') {
         this.setGenreParams();
