@@ -5,7 +5,7 @@
   @else {
     <div *ngIf="item().id" class="item-wrapper flex flex-col w-10/12 m-auto mt-6">
       <section class="main-details-wrapper grid grid-flow-col gap-x-4">
-        <div class="poster-wrapper row-span-6">
+        <div class="poster-wrapper row-span-7">
           <img alt="{{item().title || item().name}} Poster" class="w-full"  src="{{(item().poster_path || '' | posterUrl: 4) || 'assets/placeholder-images/poster-md.jpg' }}" />
         </div>
         <div class="title-wrapper col-span-2  flex  items-center">
@@ -15,21 +15,21 @@
               (
               <span>{{item().release_date || item().first_air_date | date: 'yyyy'}}</span>
               <span *ngIf="item().last_air_date"> - </span>
-              <span *ngIf="item().status === ItemStatus.Ended && item().status === ItemStatus.Canceled">{{item().last_air_date | date: 'yyyy'}}</span>
+              <span *ngIf="item().status === ItemStatus.Ended || item().status === ItemStatus.Canceled">{{item().last_air_date | date: 'yyyy'}}</span>
               )
             </span></h1>
         </div>
         <div class="genres-wrapper col-span-2 flex items-center">
           <div class="genres-wrapper col-span-3">
             @for (genre of item().genres; track genre; let last = $last) {
-              {{genre.name}}<span *ngIf="!last">,</span>
+              <span i18n="@@item.genre">{{genre.name}}</span><span *ngIf="!last">,</span>
             }
           </div>
         </div>
-        <div class="overview-wrapper col-span-2"><b>Overview: </b> {{item().overview}}</div>
+        <div class="overview-wrapper col-span-2"><b i18n="@@item.overview">Overview: </b> {{item().overview}}</div>
         <div class="starring-wrapper col-span-3 flex items-center">
           <p *ngIf="mainCast().length">
-            <b>Starring:</b>
+            <b i18n="@@item.starring">Starring:</b>
             @for (actor of mainCast(); track actor) {
               <p-button [label]="actor.name" [link]="true" [routerLink]="actor | personUrl" />
             }
@@ -37,17 +37,26 @@
         </div>
         <div class="directors-creators-wrapper col-span-3 flex items-center">
           <p>
-            <b>{{item().mediaType === MediaType.Film ? 'Directed by: ' : 'Created by: '}}</b>
+            <b>
+              @if (item().mediaType === MediaType.Film) {
+                <span i18n="@@item.directedBy">Directed by: </span>
+              }
+              @else {
+                <span i18n="@@item.createdBy">Created by: </span>
+              }
+            </b>
             @for (person of directorsAndCreators(); track person) {
               <p-button [label]="person.name" [link]="true" [routerLink]="person | personUrl" />
             }
           </p>
-          <ng-template *ngIf="originalWriters()">
-            <b>Based on a {{originalWriters()[0].job || ''}} by:</b>
-            @for (person of originalWriters(); track person) {
-              <p-button [label]="person.name" [link]="true" [routerLink]="person | personUrl"/>
-            }
-          </ng-template>
+
+        </div>
+
+        <div class="col-span-3">
+          <b i18n="@@item.basedOn">Based on a {{originalWriters()[0].job || ''}} by:</b>
+          @for (person of originalWriters(); track person) {
+            <p-button [label]="person.name" [link]="true" [routerLink]="person | personUrl"/>
+          }
         </div>
 
         <div class="media-buttons-wrapper flex justify-end col-span-3">

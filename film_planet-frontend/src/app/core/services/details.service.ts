@@ -219,9 +219,20 @@ export class DetailsService {
 
     // Finds every original writer for the item (if it is based on a novel or a short story)
     const originalWriters: CastCrewMember[] = credits.crew.filter((person) => {
-      const job: string | undefined = person.job?.toLowerCase();
-      return job?.includes('novel') || job?.includes('short story');
+      let job: string | undefined = person.job?.toLowerCase();
+      if (job?.includes('novel')) {
+        person.job = $localize`:@@details-service.novel:novel`;
+        return true;
+      }
+      else if (job?.includes('short story')) {
+        person.job = $localize`:@@details-service.shortStory:short story`;
+        return true;
+      }
+      else {
+        return false;
+      }
     })
+
     this.directorsAndCreators.set(this.item().created_by || directors);
     this.originalWriters.set(originalWriters);
   }
