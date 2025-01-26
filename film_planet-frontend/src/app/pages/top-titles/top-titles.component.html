@@ -4,7 +4,7 @@
   <p-drawer styleClass="!h-auto" header="Filters" i18n-header="@@top-titles.filtersHeader" [(visible)]="topDrawerVisible" position="top">
     <app-titles-filter [genres]="genres()" (closeDrawer)="topDrawerVisible = false"></app-titles-filter>
   </p-drawer>
-  <div class="flex ml-4 mt-2 mb-2 pr-[8px]">
+  <div class="flex ml-4 mt-8 mb-2 pr-[8px]">
     <p-button class="lg:hidden" type="button" label="Filters" i18n-label="@@top-titles.filterBtn" (click)="topDrawerVisible = true" icon="pi pi-sliders-h" />
   </div>
 
@@ -16,7 +16,7 @@
       <p-table
         *ngIf="libraryItems().length"
         [value]="libraryItems()"
-        [tableStyle]="{ 'min-width': '60rem' }"
+        [tableStyle]="{ 'min-width': tableWidth() }"
         responsiveLayout="stack"
         scrollable="true"
         [scrollHeight]="'85vh'"
@@ -51,7 +51,15 @@
         </ng-template>
         <ng-template pTemplate="body" let-item let-i="rowIndex">
           <tr class="top-table-row-wrapper">
-            <td style="width: 20%"><a [routerLink]="item | itemUrl"><p-button class="title-link" styleClass="text-left" [label]="item.ranking + '. ' + (item.title || item.name)" [link]="true "/></a></td>
+            <td style="width: 20%">
+              <a [routerLink]="item | itemUrl">
+                <p-button
+                  class="title-link"
+                  styleClass="text-left"
+                  [label]="item.ranking + '. ' + (item.title || item.name)"
+                  [link]="true"/>
+              </a>
+            </td>
             <td style="width: 15%">
               <img
                 src="{{(item.poster_path | posterUrl: 0) || 'assets/placeholder-images/poster-md.jpg'}}"

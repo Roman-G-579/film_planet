@@ -87,6 +87,12 @@ export class TopTitlesComponent implements OnInit {
     return (screenWidth >= 1024) ? 175 : 600;
   })
 
+  // The width of the table, adjusted based on the viewport width
+  tableWidth = computed(() => {
+    const screenWidth = this.miscUtils.getScreenWidth();
+    return (screenWidth >= 1024) ? `60rem` : `${screenWidth}px`;
+  })
+
   ngOnInit() {
     this.lib.clearAllFilters();
     this.lib.libraryItems.set([]);

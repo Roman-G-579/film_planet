@@ -7,6 +7,12 @@
   }
 }
 
+::ng-deep .p-button-link:not(:disabled):hover .p-button-label {
+  text-decoration: none;
+}
+
+
+
 ::ng-deep .top-table-wrapper .p-scroller.p-scroller-inline {
   max-height: 85vh; // p-table scrollHeight value
 }
