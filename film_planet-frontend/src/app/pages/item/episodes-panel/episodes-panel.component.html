@@ -7,17 +7,21 @@
         <p class="m-0 mb-2" [innerHTML]="(episode.overview || '') | lineBreak"></p>
         <div class="ep-info-wrapper text-sm text-surface-500 dark:text-surface-400">
           <div class="additional-episode-info flex flex-col ">
-            <span>Directed by {{episode.directors}}</span>
-            <span>Written by {{episode.writers}}</span>
+            <span i18n="@@episodes-panel.directedBy">Directed by {{episode.directors}}</span>
+            <span i18n="@@episodes-panel.writtenBy">Written by {{episode.writers}}</span>
             <ng-container *ngIf="episode.air_date">
               <span>
-                {{ episode.air_date > currentDate() ? 'Releases' : 'Released' }}
+                @if (episode.air_date > currentDate()) {
+                  <span i18n="@@episodes-panel.season-releases">Releases</span>
+                } @else {
+                  <span i18n="@@episodes-panel.season-released">Released</span>
+                }
                 {{ episode.air_date | date: 'longDate' }}
               </span>
             </ng-container>
           </div>
           <div class="ep-duration-wrapper flex justify-end">
-            <span>Running time: {{episode.runtime || 0 | minutesToHours}}</span>
+            <span i18n="@@episodes-panel.runningTime">Running time: {{episode.runtime || 0 | minutesToHours}}</span>
           </div>
         </div>
       </p-accordion-content>

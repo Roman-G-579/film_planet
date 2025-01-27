@@ -1,5 +1,5 @@
 <main>
-  <h1>Cast:</h1>
+  <h1 i18n="@@cast-panel.title">Cast:</h1>
   <p-carousel
     [value]="actors()"
     [numVisible]="5"
@@ -12,7 +12,7 @@
         <div class="mb-4">
           <div class="relative mx-auto">
             <img
-              src="{{(actor.profile_path | posterUrl: 1) || 'assets/placeholder-images/person-md.jpg'}}"
+              src="{{(actor.profile_path | posterUrl: 2) || 'assets/placeholder-images/person-md.jpg'}}"
               [alt]="actor.name"
               class="w-full rounded-border min-w-[92px]" />
           </div>

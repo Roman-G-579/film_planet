@@ -19,6 +19,7 @@ import {DataUtils} from '../../core/utils/data.utils';
 import {DetailsService} from '../../core/services/details.service';
 import {CastPanelComponent} from './cast-panel/cast-panel.component';
 import {PersonUrlPipe} from '../../core/pipes/person-url.pipe';
+import {GenreNamesPipe} from '../../core/pipes/genre-names.pipe';
 
 @Component({
   selector: 'app-item',
@@ -39,6 +40,7 @@ import {PersonUrlPipe} from '../../core/pipes/person-url.pipe';
     CastPanelComponent,
     PersonUrlPipe,
     PersonUrlPipe,
+    GenreNamesPipe,
   ],
   templateUrl: './item.component.html',
   styleUrl: './item.component.scss',

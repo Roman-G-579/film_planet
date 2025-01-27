@@ -1,65 +1,71 @@
 <main>
-  <h1>Seasons:</h1>
-  <p-tabs [(value)]="activeSeason" scrollable lazy>
-    <p-tablist>
-      @for(season of item().seasons; track season){
-        <p-tab [value]="season.id">
-          <i class="pi" [ngClass]="activeSeason === season.id ? 'pi-circle-on' : 'pi-circle-off'"></i>
-          {{ season.name || ('Season ' + season.season_number)}}
-        </p-tab>
-      }
-    </p-tablist>
-    <p-tabpanels>
-      @for(season of item().seasons; track season){
-        <p-tabpanel [value]="season.id">
-          <p-accordion [value]="season.id" [multiple]="true">
-            <div class="grid grid-rows-3 grid-cols-[min-content_1fr] grid-flow-col">
-              <div class="row-span-3 mr-2">
-                <img alt="Season {{season.season_number}} Poster" class="w-24"  src="{{season.poster_path | posterUrl: 0}}" />
+  <h1 i18n="@@seasons-panel.title">Seasons:</h1>
+    <p-tabs [(value)]="activeSeason" scrollable lazy>
+      <p-tablist>
+        @for(season of item().seasons; track season){
+          <p-tab [value]="season.id">
+            <i class="pi" [ngClass]="activeSeason === season.id ? 'pi-circle-on' : 'pi-circle-off'"></i>
+            <span *ngIf="!season.name; else custom_season_name" i18n="@@seasons-panel.seasonLabel">Season {{ season.season_number }}</span>
+            <ng-template #custom_season_name>{{ season.name }}</ng-template>
+          </p-tab>
+        }
+      </p-tablist>
+      <p-tabpanels>
+        @for(season of item().seasons; track season){
+          <p-tabpanel [value]="season.id">
+            <p-accordion [value]="season.id" [multiple]="true">
+              <div class="grid grid-rows-3 grid-cols-[min-content_1fr] grid-flow-col">
+                <div class="row-span-3 mr-2">
+                  <img alt="Season {{season.season_number}} Poster" class="w-24"  src="{{season.poster_path | posterUrl: 0}}" />
+                </div>
+
+                <div class="mt-0 font-semibold h-9" *ngIf="season.vote_average; else vote_placeholder">
+                  <i class="pi pi-star-fill text-yellow-500"></i>
+                  {{ season.vote_average | number:'1.1-1'}}
+                </div>
+                <ng-template #vote_placeholder>
+                  <i i18n="@@seasons-panel.noRatingsMsg" class="text-surface-500">No ratings were given yet for this season</i>
+                </ng-template>
+                <div class="h-9">
+                  <p class="text-sm">
+                    <i>
+                      <ng-container *ngIf="season.air_date">
+                        @if (season.air_date > currentDate()) {
+                          <span i18n="@@seasons-panel.season-premiers">Premiers</span>
+                        } @else {
+                          <span i18n="@@seasons-panel.season-premiered">Premiered</span>
+                        }
+                        {{ season.air_date | date: 'longDate' }}
+                      </ng-container>
+
+                    </i>
+                  </p>
+                </div>
+                <div class="h-9">
+                  <p i18n="@@seasons-panel.episodes">{{season.episode_count || season.episodes?.length}} Episodes</p>
+                </div>
               </div>
 
-              <div class="mt-0 font-semibold h-9" *ngIf="season.vote_average; else vote_placeholder">
-                <i class="pi pi-star-fill text-yellow-500"></i>
-                {{ season.vote_average | number:'1.1-1'}}
-              </div>
-              <ng-template #vote_placeholder>
-                <i class="text-surface-500">No ratings were given yet for this season</i>
-              </ng-template>
-              <div class="h-9">
-                <p class="text-sm">
-                  <i>
-                    <ng-container *ngIf="season.air_date">
-                      {{ season.air_date > currentDate() ? 'Premiers' : 'Premiered' }}
-                      {{ season.air_date | date: 'longDate' }}
-                    </ng-container>
+              <p>{{season.overview}}</p>
+              <p-fieldset
+                legend="List of episodes"
+                i18n-legend="@@seasons-panel.listOfEpisodesLegend"
+                [toggleable]="true"
+                [collapsed]="collapsedStates[season.season_number]"
+                (onAfterToggle)="showSeasonDetails(item().id, season.season_number)">
 
-                  </i>
-                </p>
-              </div>
-              <div class="h-9">
-                <p>{{season.episode_count || season.episodes?.length}} Episodes</p>
-              </div>
-            </div>
+                <ng-container *ngIf="loadingSeasonDetails(); else episodeList">
+                  <p>Loading episodes...</p>
+                </ng-container>
 
-            <p>{{season.overview}}</p>
-            <p-fieldset
-              legend="List of episodes"
-              [toggleable]="true"
-              [collapsed]="collapsedStates[season.season_number]"
-              (onAfterToggle)="showSeasonDetails(item().id, season.season_number)">
+                <ng-template #episodeList>
+                  <app-episodes-panel [season]="season" [currentDate]="currentDate()"></app-episodes-panel>
+                </ng-template>
+              </p-fieldset>
 
-              <ng-container *ngIf="loadingSeasonDetails(); else episodeList">
-                <p>Loading episodes...</p>
-              </ng-container>
-
-              <ng-template #episodeList>
-                <app-episodes-panel [season]="season" [currentDate]="currentDate()"></app-episodes-panel>
-              </ng-template>
-            </p-fieldset>
-
-          </p-accordion>
-        </p-tabpanel>
-      }
-    </p-tabpanels>
-  </p-tabs>
+            </p-accordion>
+          </p-tabpanel>
+        }
+      </p-tabpanels>
+    </p-tabs>
 </main>
