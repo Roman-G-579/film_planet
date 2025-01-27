@@ -33,6 +33,7 @@ export class DetailsService {
     id: 0,
     mediaType: MediaType.Film,
     genres: [],
+    genre_ids: [],
     credits: {
       id: 0,
       cast: [],
@@ -103,8 +104,13 @@ export class DetailsService {
         resultItem = data as LibraryItem;
         resultItem.mediaType = mediaType;
 
-        this.item.set(resultItem);
+        // Setting item's genre ids
+        resultItem.genre_ids = [];
+        for (let genre of resultItem.genres) {
+          resultItem.genre_ids.push(Number(genre.id));
+        }
 
+        this.item.set(resultItem);
         if (resultItem.credits) {
           this.credits.set(resultItem.credits);
         }
@@ -220,7 +226,7 @@ export class DetailsService {
     // Finds every original writer for the item (if it is based on a novel or a short story)
     const originalWriters: CastCrewMember[] = credits.crew.filter((person) => {
       let job: string | undefined = person.job?.toLowerCase();
-      if (job?.includes('novel')) {
+      if (job?.includes('novel') || job?.includes('book')) {
         person.job = $localize`:@@details-service.novel:novel`;
         return true;
       }
@@ -231,7 +237,7 @@ export class DetailsService {
       else {
         return false;
       }
-    })
+    });
 
     this.directorsAndCreators.set(this.item().created_by || directors);
     this.originalWriters.set(originalWriters);
