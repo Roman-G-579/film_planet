@@ -14,7 +14,7 @@
         @for(season of item().seasons; track season){
           <p-tabpanel [value]="season.id">
             <p-accordion [value]="season.id" [multiple]="true">
-              <div class="grid grid-rows-3 grid-cols-[min-content_1fr] grid-flow-col">
+              <div class="grid grid-rows-3 grid-cols-[min-content_1fr] grid-flow-col gap-2">
                 <div class="row-span-3 mr-2">
                   <img alt="Season {{season.season_number}} Poster" class="w-24"  src="{{season.poster_path | posterUrl: 0}}" />
                 </div>

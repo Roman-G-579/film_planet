@@ -90,14 +90,14 @@
       </section>
 
       <section class="reviews-wrapper">
-        <div class="reviews-header"><h1>Reviews:</h1></div>
-        <p *ngIf="reviews()">There are no reviews for this title yet.</p>
+        <div class="reviews-header"><h1 i18n="@@item.reviews.title">Reviews:</h1></div>
+        <p i18n="@@item.reviews.noReviews" *ngIf="reviews()">There are no reviews for this title yet.</p>
 
         @for (review of reviews(); track review) {
           <p-panel [toggleable]="true" toggler="header" collapsed>
             <ng-template pTemplate="header">
               <div class="flex items-center gap-2 cursor-pointer">
-                <span class="flex font-bold">A Review by {{review.author}}</span>
+                <span i18n="@@item.reviews.reviewHeading" class="flex font-bold">A Review by {{review.author}}</span>
               </div>
             </ng-template>
             <ng-template pTemplate="footer">
@@ -106,7 +106,7 @@
                   <p-button rounded text><i class="pi pi-user"></i> {{review.author}}</p-button>
                   <i class="pi pi-star-fill"></i>{{review.rating}}
                 </div>
-                <span class="text-surface-500 dark:text-surface-400">Written on {{review.created_at | date: 'MMMM d, y'}}</span>
+                <span i18n="@@item.reviews.reviewDate" class="text-surface-500 dark:text-surface-400">Written on {{review.created_at | date: 'MMMM d, y'}}</span>
               </div>
             </ng-template>
             <p class="m-0">

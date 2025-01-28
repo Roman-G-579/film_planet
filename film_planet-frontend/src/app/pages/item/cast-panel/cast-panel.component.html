@@ -6,19 +6,22 @@
     [numScroll]="3"
     [responsiveOptions]="responsiveOptions"
     indicatorStyleClass="!h-8 !rounded-full"
+    dir="ltr"
     >
     <ng-template let-actor pTemplate="actor">
       <div class="border border-surface-200 dark:border-surface-700 rounded m-2 p-4">
         <div class="mb-4">
           <div class="relative mx-auto">
-            <img
-              src="{{(actor.profile_path | posterUrl: 2) || 'assets/placeholder-images/person-md.jpg'}}"
-              [alt]="actor.name"
-              class="w-full rounded-border min-w-[92px]" />
+            <a [routerLink]="actor | personUrl">
+              <img
+                src="{{(actor.profile_path | posterUrl: 2) || 'assets/placeholder-images/person-md.jpg'}}"
+                [alt]="actor.name"
+                class="w-full rounded-border min-w-[92px]" />
+            </a>
           </div>
         </div>
         <div class="mt-0 font-semibold">
-          <a class="no-underline hover:text-primary transition" [routerLink]="actor | personUrl">
+          <a class="no-underline hover:text-primary transition visited:text-blue-600" [routerLink]="actor | personUrl">
             {{ actor.name }}
           </a>
         </div>
