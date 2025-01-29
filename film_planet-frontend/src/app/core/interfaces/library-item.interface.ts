@@ -24,7 +24,7 @@ export interface LibraryItem {
   starring?: string[];
   directors?: string[];
   created_by?: CastCrewMember[];
-  origin_country?: string;
+  origin_country?: string[];
   original_language?: string;
   original_title?: string; // used for films
   original_name?: string; // used for tv shows
