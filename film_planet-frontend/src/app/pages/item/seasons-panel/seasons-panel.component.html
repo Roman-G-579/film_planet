@@ -1,8 +1,12 @@
 <main>
   <h1 i18n="@@seasons-panel.title">Seasons:</h1>
+  @if(isLoading()){
+    Loading seasons...
+  }
+  @else {
     <p-tabs [(value)]="activeSeason" scrollable lazy>
       <p-tablist>
-        @for(season of item().seasons; track season){
+        @for(season of item().seasons; track season.id){
           <p-tab [value]="season.id">
             <i class="pi" [ngClass]="activeSeason === season.id ? 'pi-circle-on' : 'pi-circle-off'"></i>
             <span *ngIf="!season.name; else custom_season_name" i18n="@@seasons-panel.seasonLabel">Season {{ season.season_number }}</span>
@@ -11,7 +15,7 @@
         }
       </p-tablist>
       <p-tabpanels>
-        @for(season of item().seasons; track season){
+        @for(season of item().seasons; track season.id){
           <p-tabpanel [value]="season.id">
             <p-accordion [value]="season.id" [multiple]="true">
               <div class="grid grid-rows-3 grid-cols-[min-content_1fr] grid-flow-col gap-2">
@@ -68,4 +72,6 @@
         }
       </p-tabpanels>
     </p-tabs>
+  }
+
 </main>

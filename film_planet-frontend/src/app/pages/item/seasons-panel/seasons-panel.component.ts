@@ -56,6 +56,7 @@ export class SeasonsPanelComponent implements OnInit {
   currentDate: InputSignal<string> = input<string>('');
 
   loadingSeasonDetails: WritableSignal<boolean> = this.det.loadingSeasonDetails;
+  isLoading: InputSignal<boolean> = input<boolean>(true);
 
   // The currently expanded tab of the seasons list
   activeSeason: number = 0;
