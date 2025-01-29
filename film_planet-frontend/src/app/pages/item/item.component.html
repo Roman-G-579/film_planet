@@ -4,7 +4,7 @@
   }
   @else {
     <div *ngIf="item().id" class="item-wrapper flex flex-col w-10/12 m-auto mt-6">
-      <section class="main-details-wrapper grid grid-flow-col gap-x-4">
+      <section class="main-details-wrapper grid lg:grid-flow-col gap-x-4">
         <div class="poster-wrapper row-span-7">
           <img alt="{{item().title || item().name}} Poster" class="w-full"  src="{{(item().poster_path || '' | posterUrl: 4) || 'assets/placeholder-images/poster-md.jpg' }}" />
         </div>
@@ -17,7 +17,15 @@
               <span *ngIf="item().last_air_date"> - </span>
               <span *ngIf="item().status === ItemStatus.Ended || item().status === ItemStatus.Canceled">{{item().last_air_date | date: 'yyyy'}}</span>
               )
-            </span></h1>
+            </span>
+          </h1>
+          <div class="rating-wrapper lg:hidden flex flex-col items-end justify-between lg:justify-center mt-7  ">
+            <div class="rating-num flex gap-2 text-5xl -mb-4">
+              <i class="pi pi-star-fill" style="font-size: 2.5rem; color: gold"></i>
+              <span><b>{{item().vote_average | number:'1.1-1'}}</b></span>
+            </div>
+            <p>{{item().vote_count}} Ratings</p>
+          </div>
         </div>
         <div class="genres-wrapper col-span-2 flex items-center">
           <div class="genres-wrapper col-span-3 font-bold">
@@ -52,7 +60,7 @@
           </p>
         </div>
 
-        <div class="col-span-3">
+        <div class="original-writers-wrapper col-span-3">
           <div *ngIf="originalWriters().length">
             <b i18n="@@item.basedOn">Based on a {{originalWriters()[0].job || ''}} by:</b>
             @for (person of originalWriters(); track person) {
@@ -72,7 +80,7 @@
             </p-button>
           </div>
         </div>
-        <div class="rating-wrapper flex flex-col items-end justify-center mt-7  ">
+        <div class="rating-wrapper hidden lg:block flex flex-col items-end justify-center mt-7  ">
           <div class="rating-num flex gap-2 text-5xl -mb-4">
             <i class="pi pi-star-fill" style="font-size: 2.5rem; color: gold"></i>
             <span><b>{{item().vote_average | number:'1.1-1'}}</b></span>
@@ -82,7 +90,7 @@
       </section>
 
       <section class="seasons-wrapper min-h-[500px] mb-8" *ngIf="item().mediaType === MediaType.TV">
-        <app-seasons-panel [item]="item()" [currentDate]="currentDate()"></app-seasons-panel>
+        <app-seasons-panel [item]="item()" [currentDate]="currentDate()" [isLoading]="isLoading()"></app-seasons-panel>
       </section>
 
       <section class="cast-wrapper">

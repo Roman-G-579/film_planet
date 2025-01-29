@@ -11,6 +11,7 @@ import {Season} from '../interfaces/season.interface';
 import {Episode} from '../interfaces/episode.interface';
 import {PEOPLE} from '../mock-data/people';
 import {ItemCredit} from '../interfaces/item-credit.interface';
+import {LIBRARY_ITEMS} from '../mock-data/library-items';
 
 @Injectable({
   providedIn: 'root',
@@ -94,34 +95,41 @@ export class DetailsService {
     const { href } = new URL(pageUrl, this.apiUrl);
     const mediaTypeHeader = mediaType === MediaType.Film ? 'movie' : 'tv';
 
-    let headers = new HttpHeaders().set('media-type', mediaTypeHeader);
-    headers = headers.set('id',id.toString());
+    this.item.set(LIBRARY_ITEMS[0]);
+    if (LIBRARY_ITEMS[0].credits) {
+      this.credits.set(LIBRARY_ITEMS[0].credits);
+    }
 
-    let resultItem: LibraryItem;
-
-    this.http.get(href, {headers}).subscribe({
-      next: (data) => {
-        resultItem = data as LibraryItem;
-        resultItem.mediaType = mediaType;
-
-        // Setting item's genre ids
-        resultItem.genre_ids = [];
-        for (let genre of resultItem.genres) {
-          resultItem.genre_ids.push(Number(genre.id));
-        }
-
-        this.item.set(resultItem);
-        if (resultItem.credits) {
-          this.credits.set(resultItem.credits);
-        }
-
-        this.setMainCredits(this.credits());
-        this.isLoading.set(false);
-      },
-      error: (err) => {
-        console.log(err);
-      }
-    });
+    this.setMainCredits(this.credits());
+    this.isLoading.set(false);
+    // let headers = new HttpHeaders().set('media-type', mediaTypeHeader);
+    // headers = headers.set('id',id.toString());
+    //
+    // let resultItem: LibraryItem;
+    //
+    // this.http.get(href, {headers}).subscribe({
+    //   next: (data) => {
+    //     resultItem = data as LibraryItem;
+    //     resultItem.mediaType = mediaType;
+    //
+    //     // Setting item's genre ids
+    //     resultItem.genre_ids = [];
+    //     for (let genre of resultItem.genres) {
+    //       resultItem.genre_ids.push(Number(genre.id));
+    //     }
+    //
+    //     this.item.set(resultItem);
+    //     if (resultItem.credits) {
+    //       this.credits.set(resultItem.credits);
+    //     }
+    //
+    //     this.setMainCredits(this.credits());
+    //     this.isLoading.set(false);
+    //   },
+    //   error: (err) => {
+    //     console.log(err);
+    //   }
+    // });
 
   }
 

@@ -7,4 +7,14 @@
   font-size: 20px;
 }
 
+@media (max-width: 1024px) {
+  .main-details-wrapper {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .media-buttons-wrapper {
+    margin: auto;
+  }
+}
 
