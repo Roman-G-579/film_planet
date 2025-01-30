@@ -4,7 +4,7 @@ import {MediaType} from '../../core/enums/media-type.enum';
 import {ActivatedRoute, RouterLink} from '@angular/router';
 import {CardModule} from 'primeng/card';
 import {ButtonModule} from 'primeng/button';
-import {DatePipe, DecimalPipe, NgIf} from '@angular/common';
+import {DatePipe, NgIf} from '@angular/common';
 import {FieldsetModule} from 'primeng/fieldset';
 import {PanelModule} from 'primeng/panel';
 import {Review} from '../../core/interfaces/review.interface';
@@ -33,7 +33,6 @@ import {RatingsCardComponent} from './ratings-card/ratings-card.component';
     FieldsetModule,
     PanelModule,
     DatePipe,
-    DecimalPipe,
     PosterUrlPipePipe,
     SkeletonModule,
     ItemSkeletonComponent,
