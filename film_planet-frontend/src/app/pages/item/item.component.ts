@@ -20,6 +20,7 @@ import {DetailsService} from '../../core/services/details.service';
 import {CastPanelComponent} from './cast-panel/cast-panel.component';
 import {PersonUrlPipe} from '../../core/pipes/person-url.pipe';
 import {GenreNamesPipe} from '../../core/pipes/genre-names.pipe';
+import {RatingsCardComponent} from './ratings-card/ratings-card.component';
 
 @Component({
   selector: 'app-item',
@@ -41,6 +42,7 @@ import {GenreNamesPipe} from '../../core/pipes/genre-names.pipe';
     PersonUrlPipe,
     PersonUrlPipe,
     GenreNamesPipe,
+    RatingsCardComponent,
   ],
   templateUrl: './item.component.html',
   styleUrl: './item.component.scss',

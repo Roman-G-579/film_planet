@@ -5,10 +5,10 @@
   @else {
     <div *ngIf="item().id" class="item-wrapper flex flex-col w-10/12 m-auto mt-6">
       <section class="main-details-wrapper grid lg:grid-flow-col gap-x-4">
-        <div class="poster-wrapper row-span-7">
-          <img alt="{{item().title || item().name}} Poster" class="w-full"  src="{{(item().poster_path || '' | posterUrl: 4) || 'assets/placeholder-images/poster-md.jpg' }}" />
+        <div class="poster-wrapper row-span-7 flex lg:block justify-center">
+          <img alt="{{item().title || item().name}} Poster" class="w-3/5 lg:w-full"  src="{{(item().poster_path || '' | posterUrl: 4) || 'assets/placeholder-images/poster-md.jpg' }}" />
         </div>
-        <div class="title-wrapper col-span-2  flex  items-center">
+        <div class="title-wrapper col-span-2  flex justify-between  items-center">
           <h1 class="text-5xl">
             <b>{{item().title || item().name}}</b>
             <span class="text-surface-400">
@@ -19,13 +19,7 @@
               )
             </span>
           </h1>
-          <div class="rating-wrapper lg:hidden flex flex-col items-end justify-between lg:justify-center mt-7  ">
-            <div class="rating-num flex gap-2 text-5xl -mb-4">
-              <i class="pi pi-star-fill" style="font-size: 2.5rem; color: gold"></i>
-              <span><b>{{item().vote_average | number:'1.1-1'}}</b></span>
-            </div>
-            <p>{{item().vote_count}} Ratings</p>
-          </div>
+          <app-ratings-card class="flex lg:hidden" [voteAverage]="item().vote_average || 0" [voteCount]="item().vote_count || 0"></app-ratings-card>
         </div>
         <div class="genres-wrapper col-span-2 flex items-center">
           <div class="genres-wrapper col-span-3 font-bold">
@@ -80,13 +74,7 @@
             </p-button>
           </div>
         </div>
-        <div class="rating-wrapper hidden lg:block flex flex-col items-end justify-center mt-7  ">
-          <div class="rating-num flex gap-2 text-5xl -mb-4">
-            <i class="pi pi-star-fill" style="font-size: 2.5rem; color: gold"></i>
-            <span><b>{{item().vote_average | number:'1.1-1'}}</b></span>
-          </div>
-          <p>{{item().vote_count}} Ratings</p>
-        </div>
+        <app-ratings-card class="hidden lg:flex" [voteAverage]="item().vote_average || 0" [voteCount]="item().vote_count || 0"></app-ratings-card>
       </section>
 
       <section class="seasons-wrapper min-h-[500px] mb-8" *ngIf="item().mediaType === MediaType.TV">
