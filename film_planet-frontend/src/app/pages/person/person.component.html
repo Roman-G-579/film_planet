@@ -1,9 +1,10 @@
 <main>
   <div class="person-wrapper flex flex-col w-10/12 m-auto mt-6">
-    <section class="main-details-wrapper grid grid-flow-col gap-x-4">
+    <section class="main-details-wrapper grid lg:grid-flow-col gap-x-4">
       <div class="image-wrapper row-span-4">
-        <img alt="Picture of {{person().name}}" class="w-full min-w-64" src="{{(person().profile_path | posterUrl: 4) || 'assets/placeholder-images/person-md.jpg'}}" />
-        <div class=" text-lg min-h-[380px]">
+        <img alt="Picture of {{person().name}}" class="w-3/5 lg:w-full min-w-64" src="{{(person().profile_path | posterUrl: 4) || 'assets/placeholder-images/person-md.jpg'}}" />
+<!--        TODO: move details to separate component-->
+        <div class="details-wrapper text-lg min-h-[380px]">
           <h2 i18n="@@person.details">Details:</h2>
           <div>
             <p i18n="@@person.knownFor">Known for: {{person().known_for_department}}</p>
@@ -16,7 +17,8 @@
                 3 {Non-binary}
                 other {Not Specified}
                 }
-            </p>            <p i18n="@@person.birthPlace">Birthplace: {{person().place_of_birth}}</p>
+            </p>
+            <p i18n="@@person.birthPlace">Birthplace: {{person().place_of_birth}}</p>
             <p i18n="@@person.birthDay">Birthday: {{person().birthday | date: 'longDate'}}</p>
           </div>
 
@@ -39,7 +41,6 @@
             </a>
           }
           </div>
-
         </div>
       </div>
       <div class="col-span-3 flex items-center">

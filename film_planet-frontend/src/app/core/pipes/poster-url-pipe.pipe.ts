@@ -30,7 +30,7 @@ import {API_IMG_SIZES} from '../config/api-image-sizes';
  */
 export class PosterUrlPipePipe implements PipeTransform {
 
-  transform(posterPath: string | undefined, size?: number): string {
+  transform(posterPath: string | undefined | null, size?: number): string {
     if (!posterPath) {
       return '';
     }

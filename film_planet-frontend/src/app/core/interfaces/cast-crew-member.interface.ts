@@ -18,7 +18,7 @@ export interface CastCrewMember {
   place_of_birth?: string;
   original_name?: string;
   popularity?: number;
-  profile_path?: string | null;
+  profile_path?: string | undefined | null;
   cast_id?: number;
   character?: string;
   credit_id?: string;
