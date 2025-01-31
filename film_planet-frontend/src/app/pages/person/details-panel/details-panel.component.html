@@ -1,0 +1,38 @@
+<div class="details-wrapper text-lg min-h-[380px]">
+  <h2 i18n="@@person.details">Details:</h2>
+  <div>
+    <p i18n="@@person.knownFor">Known for: {{known_for_department()}}</p>
+    <p i18n="@@person.creditsCnt">Known credits: {{creditsCnt()}}</p>
+    <p i18n="@@person.gender">
+      Gender:
+      {gender(), select,
+        1 {Female}
+        2 {Male}
+        3 {Non-binary}
+        other {Not Specified}
+        }
+    </p>
+    <p i18n="@@person.birthPlace">Birthplace: {{place_of_birth()}}</p>
+    <p i18n="@@person.birthDay">Birthday: {{birthday() | date: 'longDate'}}</p>
+  </div>
+
+  <h2 i18n="@@person.links" class="leading-9">Links and Social Media:</h2>
+  @for (link of externalLinks(); track link) {
+    <p>
+      <a *ngIf="link.id"
+         class="no-underline text-surface-300 font-bold hover:text-primary transition"
+         [href]="link.url">
+        {{ link.label }}
+      </a>
+    </p>
+  }
+  <div>
+    @for (social of socialLinks(); track social) {
+      <a *ngIf="social.id"
+         class="no-underline text-surface-300 hover:text-primary transition"
+         [href]="social.url">
+        <i [class]="'pi ' + social.icon + ' mr-4'" style="font-size: 2rem"></i>
+      </a>
+    }
+  </div>
+</div>

@@ -3,45 +3,14 @@
     <section class="main-details-wrapper grid lg:grid-flow-col gap-x-4">
       <div class="image-wrapper row-span-4">
         <img alt="Picture of {{person().name}}" class="w-3/5 lg:w-full min-w-64" src="{{(person().profile_path | posterUrl: 4) || 'assets/placeholder-images/person-md.jpg'}}" />
-<!--        TODO: move details to separate component-->
-        <div class="details-wrapper text-lg min-h-[380px]">
-          <h2 i18n="@@person.details">Details:</h2>
-          <div>
-            <p i18n="@@person.knownFor">Known for: {{person().known_for_department}}</p>
-            <p i18n="@@person.creditsCnt">Known credits: {{castCredits().length + crewCredits().length}}</p>
-            <p i18n="@@person.gender">
-              Gender:
-              {person().gender, select,
-                1 {Female}
-                2 {Male}
-                3 {Non-binary}
-                other {Not Specified}
-                }
-            </p>
-            <p i18n="@@person.birthPlace">Birthplace: {{person().place_of_birth}}</p>
-            <p i18n="@@person.birthDay">Birthday: {{person().birthday | date: 'longDate'}}</p>
-          </div>
-
-          <h2 i18n="@@person.links" class="leading-9">Links and Social Media:</h2>
-          @for (link of externalLinks(); track link) {
-           <p>
-             <a *ngIf="link.id"
-                class="no-underline text-surface-300 font-bold hover:text-primary transition"
-                [href]="link.url">
-               {{ link.label }}
-             </a>
-           </p>
-          }
-          <div>
-          @for (social of socialLinks(); track social) {
-            <a *ngIf="social.id"
-               class="no-underline text-surface-300 hover:text-primary transition"
-               [href]="social.url">
-              <i [class]="'pi ' + social.icon + ' mr-4'" style="font-size: 2rem"></i>
-            </a>
-          }
-          </div>
-        </div>
+        <app-details-panel
+          [creditsCnt]="castCredits().length + crewCredits().length"
+          [external_ids]="person().external_ids"
+          [known_for_department]="person().known_for_department || ''"
+          [gender]="person().gender || 4"
+          [place_of_birth]="person().place_of_birth || ''"
+          [birthday]="person().birthday || ''"
+        ></app-details-panel>
       </div>
       <div class="col-span-3 flex items-center">
         <h1 class="text-5xl">

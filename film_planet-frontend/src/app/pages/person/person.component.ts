@@ -19,7 +19,7 @@ import {DividerModule} from 'primeng/divider';
 import {ButtonModule} from 'primeng/button';
 import {Accordion, AccordionContent, AccordionHeader, AccordionPanel} from 'primeng/accordion';
 import {CreditsTableComponent} from './credits-table/credits-table.component';
-import {$localize} from '@angular/localize/init';
+import {DetailsPanelComponent} from './details-panel/details-panel.component';
 
 // Interface for links to external websites
 export interface ExternalLink {
@@ -50,6 +50,7 @@ export interface SocialLink {
     AccordionHeader,
     AccordionContent,
     CreditsTableComponent,
+    DetailsPanelComponent,
   ],
   templateUrl: './person.component.html',
   styleUrl: './person.component.scss',
