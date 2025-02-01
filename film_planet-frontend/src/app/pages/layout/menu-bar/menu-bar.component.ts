@@ -16,6 +16,7 @@ import {MenubarModule} from 'primeng/menubar';
 import {SplitButtonModule} from 'primeng/splitbutton';
 import {DialogModule} from 'primeng/dialog';
 import {SearchWindowComponent} from '../search-window/search-window.component';
+import {NgIf} from '@angular/common';
 
 @Component({
   selector: 'app-menu-bar',
@@ -30,7 +31,8 @@ import {SearchWindowComponent} from '../search-window/search-window.component';
     MenubarModule,
     SplitButtonModule,
     DialogModule,
-    SearchWindowComponent
+    SearchWindowComponent,
+    NgIf
   ],
   templateUrl: './menu-bar.component.html',
   styleUrl: './menu-bar.component.scss',
@@ -45,14 +47,17 @@ export class MenuBarComponent implements OnInit {
     {
       language: Language.English,
       name: 'EN',
+      flag_img: 'assets/language-flags/english.png'
     },
     {
       language: Language.Hebrew,
       name: 'HE',
+      flag_img: 'assets/language-flags/hebrew.png'
     },
     {
       language: Language.Russian,
       name: 'RU',
+      flag_img: 'assets/language-flags/russian.png'
     }
   ];
 

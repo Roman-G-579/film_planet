@@ -38,11 +38,49 @@
           showDelay="400"
           tooltipPosition="bottom"
           (onChange)="toggleDarkMode()"></p-toggleswitch>
+<!--        <p-select-->
+<!--          styleClass="!text-base !shadow-none !bg-transparent"-->
+<!--          [options]="languages"-->
+<!--          [(ngModel)]="selectedLanguage"-->
+<!--          optionLabel="name">-->
+<!--          <ng-template #selectedItem let-selectedLanguage>-->
+<!--            <div class="flex items-center gap-2" *ngIf="selectedLanguage">-->
+<!--              <img-->
+<!--                [src]="selectedLanguage.flag_img"-->
+<!--                [class]="'flag flag-' + selectedLanguage.name"-->
+<!--                style="width: 18px"-->
+<!--              />-->
+<!--              <div>{{ selectedLanguage.name }}</div>-->
+<!--            </div>-->
+<!--          </ng-template>-->
+<!--        </p-select>-->
         <p-select
-          styleClass="!text-base !shadow-none !bg-transparent"
           [options]="languages"
           [(ngModel)]="selectedLanguage"
-          optionLabel="name"/>
+          optionLabel="name"
+          placeholder="Select a country" class="w-full md:w-48">
+          <ng-template #selectedItem let-selectedLanguage>
+            <div class="flex items-center gap-2" *ngIf="selectedLanguage">
+              <img
+                [src]="selectedLanguage.flag_img"
+                [class]="'flag flag-' + selectedLanguage.name"
+                style="width: 18px"
+              />
+              <div>{{ selectedLanguage.name }}</div>
+            </div>
+          </ng-template>
+          <ng-template let-country #item>
+            <div class="flex items-center gap-2">
+              <img
+                [src]="country.flag_img"
+                [class]="'flag flag-' + country.name"
+                style="width: 18px"
+              />
+              <div>{{ country.name }}</div>
+            </div>
+          </ng-template>
+        </p-select>
+
       </div>
 
     </ng-template>
