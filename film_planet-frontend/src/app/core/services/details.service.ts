@@ -95,41 +95,44 @@ export class DetailsService {
     const { href } = new URL(pageUrl, this.apiUrl);
     const mediaTypeHeader = mediaType === MediaType.Film ? 'movie' : 'tv';
 
-    this.item.set(LIBRARY_ITEMS[0]);
-    if (LIBRARY_ITEMS[0].credits) {
-      this.credits.set(LIBRARY_ITEMS[0].credits);
-    }
 
-    this.setMainCredits(this.credits());
-    this.isLoading.set(false);
-    // let headers = new HttpHeaders().set('media-type', mediaTypeHeader);
-    // headers = headers.set('id',id.toString());
+    let headers = new HttpHeaders().set('media-type', mediaTypeHeader);
+    headers = headers.set('id',id.toString());
+
+    let resultItem: LibraryItem;
+
+    this.http.get(href, {headers}).subscribe({
+      next: (data) => {
+        resultItem = data as LibraryItem;
+        resultItem.mediaType = mediaType;
+
+        // Setting item's genre ids
+        resultItem.genre_ids = [];
+        for (let genre of resultItem.genres) {
+          resultItem.genre_ids.push(Number(genre.id));
+        }
+
+        this.item.set(resultItem);
+        if (resultItem.credits) {
+          this.credits.set(resultItem.credits);
+        }
+
+        this.setMainCredits(this.credits());
+        this.isLoading.set(false);
+      },
+      error: (err) => {
+        console.log(err);
+      }
+    });
+
+    // // MOCK DATA
+    // this.item.set(LIBRARY_ITEMS[0]);
+    // if (LIBRARY_ITEMS[0].credits) {
+    //   this.credits.set(LIBRARY_ITEMS[0].credits);
+    // }
     //
-    // let resultItem: LibraryItem;
-    //
-    // this.http.get(href, {headers}).subscribe({
-    //   next: (data) => {
-    //     resultItem = data as LibraryItem;
-    //     resultItem.mediaType = mediaType;
-    //
-    //     // Setting item's genre ids
-    //     resultItem.genre_ids = [];
-    //     for (let genre of resultItem.genres) {
-    //       resultItem.genre_ids.push(Number(genre.id));
-    //     }
-    //
-    //     this.item.set(resultItem);
-    //     if (resultItem.credits) {
-    //       this.credits.set(resultItem.credits);
-    //     }
-    //
-    //     this.setMainCredits(this.credits());
-    //     this.isLoading.set(false);
-    //   },
-    //   error: (err) => {
-    //     console.log(err);
-    //   }
-    // });
+    // this.setMainCredits(this.credits());
+    // this.isLoading.set(false);
 
   }
 
@@ -192,31 +195,32 @@ export class DetailsService {
     const pageUrl = `details/person/${id}`;
     const { href } = new URL(pageUrl, this.apiUrl);
 
-    // let headers = new HttpHeaders().set('id',id.toString());
-    //
-    // this.http.get(href, {headers}).subscribe({
-    //   next: (data) => {
-    //     let result: CastCrewMember = data as CastCrewMember;
-    //
-    //     this.person.set(result);
-    //
-    //     this.isLoading.set(false);
-    //   },
-    //   error: (err) => {
-    //     console.log(err);
-    //   }
-    // });
+    let headers = new HttpHeaders().set('id',id.toString());
 
-    // MOCK DATA
-    this.person.set(PEOPLE[0]);
+    this.http.get(href, {headers}).subscribe({
+      next: (data) => {
+        let result: CastCrewMember = data as CastCrewMember;
 
+        this.person.set(result);
 
-    if (PEOPLE[0].combined_credits?.cast) {
-      this.castCredits.set(this.sortCreditsByDate(PEOPLE[0].combined_credits?.cast));
-    }
-    if (PEOPLE[0].combined_credits?.crew) {
-      this.crewCredits.set(this.createDepartmentsCreditsArray(PEOPLE[0].combined_credits?.crew));
-    }
+        if (this.person().combined_credits?.cast) {
+          this.castCredits.set(this.sortCreditsByDate(this.person().combined_credits?.cast ?? []));
+        }
+        if (this.person().combined_credits?.crew) {
+          this.crewCredits.set(this.createDepartmentsCreditsArray(this.person().combined_credits?.crew ?? []));
+        }
+
+        this.isLoading.set(false);
+      },
+      error: (err) => {
+        console.log(err);
+      }
+    });
+
+    // // MOCK DATA
+    // this.person.set(PEOPLE[0]);
+    //
+    //
 
   }
   /**
