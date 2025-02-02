@@ -14,7 +14,7 @@
           <div class="relative mx-auto">
             <a [routerLink]="actor | personUrl">
               <img
-                src="{{(actor.profile_path | posterUrl: 2) || 'assets/placeholder-images/person-md.jpg'}}"
+                src="{{(actor.profile_path | ImageUrlPipe: 2) || 'assets/placeholder-images/person-md.jpg'}}"
                 [alt]="actor.name"
                 class="w-full rounded-border min-w-[92px]" />
             </a>

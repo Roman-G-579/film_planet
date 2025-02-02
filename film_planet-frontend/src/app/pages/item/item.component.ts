@@ -10,7 +10,7 @@ import {PanelModule} from 'primeng/panel';
 import {Review} from '../../core/interfaces/review.interface';
 import {Credits} from '../../core/interfaces/credits.interface';
 import {CastCrewMember} from '../../core/interfaces/cast-crew-member.interface';
-import {PosterUrlPipePipe} from '../../core/pipes/poster-url-pipe.pipe';
+import {ImageUrlPipePipe} from '../../core/pipes/image-url.pipe';
 import {SkeletonModule} from 'primeng/skeleton';
 import {ItemSkeletonComponent} from './item-skeleton/item-skeleton.component';
 import {ItemStatus} from '../../core/enums/item-status.enum';
@@ -33,7 +33,7 @@ import {RatingsCardComponent} from './ratings-card/ratings-card.component';
     FieldsetModule,
     PanelModule,
     DatePipe,
-    PosterUrlPipePipe,
+    ImageUrlPipePipe,
     SkeletonModule,
     ItemSkeletonComponent,
     SeasonsPanelComponent,

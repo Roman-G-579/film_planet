@@ -20,7 +20,7 @@
             <p-accordion [value]="season.id" [multiple]="true">
               <div class="grid grid-rows-3 grid-cols-[min-content_1fr] grid-flow-col gap-2">
                 <div class="row-span-3 mr-2">
-                  <img alt="Season {{season.season_number}} Poster" class="w-24"  src="{{season.poster_path | posterUrl: 0}}" />
+                  <img alt="Season {{season.season_number}} Poster" class="w-24"  src="{{season.poster_path | ImageUrlPipe: 0}}" />
                 </div>
 
                 <div class="mt-0 font-semibold h-9" *ngIf="season.vote_average; else vote_placeholder">

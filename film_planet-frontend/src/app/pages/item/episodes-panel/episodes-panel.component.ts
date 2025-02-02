@@ -3,7 +3,7 @@ import {AccordionContent, AccordionHeader, AccordionPanel} from "primeng/accordi
 import {DatePipe, NgIf} from "@angular/common";
 import {LineBreakPipe} from "../../../core/pipes/line-break.pipe";
 import {MinutesToHoursPipe} from "../../../core/pipes/minutes-to-hours.pipe";
-import {PosterUrlPipePipe} from "../../../core/pipes/poster-url-pipe.pipe";
+import {ImageUrlPipePipe} from "../../../core/pipes/image-url.pipe";
 import {Season} from '../../../core/interfaces/season.interface';
 
 @Component({
@@ -16,7 +16,7 @@ import {Season} from '../../../core/interfaces/season.interface';
     DatePipe,
     LineBreakPipe,
     MinutesToHoursPipe,
-    PosterUrlPipePipe,
+    ImageUrlPipePipe,
     NgIf
   ],
   templateUrl: './episodes-panel.component.html',

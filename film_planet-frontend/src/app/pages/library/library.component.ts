@@ -19,7 +19,7 @@ import {GenreNamesPipe} from '../../core/pipes/genre-names.pipe';
 import {MediaType} from '../../core/enums/media-type.enum';
 import {DataUtils} from '../../core/utils/data.utils';
 import {ItemUrlPipe} from '../../core/pipes/item-url.pipe';
-import {PosterUrlPipePipe} from '../../core/pipes/poster-url-pipe.pipe';
+import {ImageUrlPipePipe} from '../../core/pipes/image-url.pipe';
 import {LibraryTableSkeletonComponent} from './library-table-skeleton/library-table-skeleton.component';
 import {LibraryCarouselSkeletonComponent} from './library-carousel-skeleton/library-carousel-skeleton.component';
 import {InfiniteScrollDirective} from 'ngx-infinite-scroll';
@@ -39,7 +39,7 @@ import {LanguageService} from '../../core/services/language.service';
     GenreNamesPipe,
     RouterLink,
     ItemUrlPipe,
-    PosterUrlPipePipe,
+    ImageUrlPipePipe,
     LibraryTableSkeletonComponent,
     LibraryCarouselSkeletonComponent,
     InfiniteScrollDirective,

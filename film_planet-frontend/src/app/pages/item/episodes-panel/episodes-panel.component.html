@@ -3,7 +3,7 @@
     <p-accordion-panel [value]="episode.id">
       <p-accordion-header>{{episode.episode_number}} &nbsp;&nbsp; {{ episode.name }}</p-accordion-header>
       <p-accordion-content>
-        <img alt="Episode {{episode.episode_number}} Poster" class="w-[342px]"  src="{{episode.still_path | posterUrl: 0}}" />
+        <img alt="Episode {{episode.episode_number}} Poster" class="w-[342px]"  src="{{episode.still_path | ImageUrlPipe: 0}}" />
         <p class="m-0 mb-2" [innerHTML]="(episode.overview || '') | lineBreak"></p>
         <div class="ep-info-wrapper text-sm text-surface-500 dark:text-surface-400">
           <div class="additional-episode-info flex flex-col ">

@@ -62,7 +62,7 @@
             </td>
             <td style="width: 15%">
               <img
-                src="{{(item.poster_path | posterUrl: 0) || 'assets/placeholder-images/poster-md.jpg'}}"
+                src="{{(item.poster_path | ImageUrlPipe: 0) || 'assets/placeholder-images/poster-md.jpg'}}"
                 [alt]="item.title"
                 class="w-48 lg:w-24 rounded"
               />

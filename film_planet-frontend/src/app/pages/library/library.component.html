@@ -30,7 +30,7 @@
                 <div class="relative mx-auto">
                   <a [routerLink]="item | itemUrl">
                     <img
-                      src="{{(item.poster_path | posterUrl) || 'assets/placeholder-images/poster-md.jpg'}}"
+                      src="{{(item.poster_path | ImageUrlPipe) || 'assets/placeholder-images/poster-md.jpg'}}"
                       [alt]="item.title || item.name"
                       class="img-poster rounded-border" />
                   </a>
@@ -86,7 +86,7 @@
                     <a [routerLink]="item | itemUrl">
                       <img
                         class="block xl:block mx-auto rounded-border w-full"
-                        src="{{item.poster_path | posterUrl: 1}}"
+                        src="{{item.poster_path | ImageUrlPipe: 1}}"
                         [alt]="item.title || item.name"
                       />
                     </a>

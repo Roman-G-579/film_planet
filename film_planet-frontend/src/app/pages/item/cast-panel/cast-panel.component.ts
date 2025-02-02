@@ -1,7 +1,7 @@
 import {ChangeDetectionStrategy, Component, input, InputSignal} from '@angular/core';
 import {CarouselModule, CarouselResponsiveOptions} from 'primeng/carousel';
 import {CastCrewMember} from '../../../core/interfaces/cast-crew-member.interface';
-import {PosterUrlPipePipe} from '../../../core/pipes/poster-url-pipe.pipe';
+import {ImageUrlPipePipe} from '../../../core/pipes/image-url.pipe';
 import {Credits} from '../../../core/interfaces/credits.interface';
 import {RouterLink} from '@angular/router';
 import {PersonUrlPipe} from '../../../core/pipes/person-url.pipe';
@@ -11,7 +11,7 @@ import {PersonUrlPipe} from '../../../core/pipes/person-url.pipe';
   standalone: true,
   imports: [
     CarouselModule,
-    PosterUrlPipePipe,
+    ImageUrlPipePipe,
     RouterLink,
     PersonUrlPipe
   ],

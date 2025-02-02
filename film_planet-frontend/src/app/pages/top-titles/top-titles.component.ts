@@ -23,7 +23,7 @@ import {ItemUrlPipe} from '../../core/pipes/item-url.pipe';
 import {DatePipe, DecimalPipe, NgIf} from '@angular/common';
 import {Drawer} from 'primeng/drawer';
 import {TitlesFilterComponent} from './titles-filter/titles-filter.component';
-import {PosterUrlPipePipe} from '../../core/pipes/poster-url-pipe.pipe';
+import {ImageUrlPipePipe} from '../../core/pipes/image-url.pipe';
 import {SkeletonModule} from 'primeng/skeleton';
 import {TopTitlesTableSkeletonComponent} from './top-titles-table-skeleton/top-titles-table-skeleton.component';
 import {MiscUtils} from '../../core/utils/misc.utils';
@@ -50,7 +50,7 @@ import {TooltipModule} from "primeng/tooltip";
         DecimalPipe,
         Drawer,
         TitlesFilterComponent,
-        PosterUrlPipePipe,
+        ImageUrlPipePipe,
         SkeletonModule,
         TopTitlesTableSkeletonComponent,
         NgIf,

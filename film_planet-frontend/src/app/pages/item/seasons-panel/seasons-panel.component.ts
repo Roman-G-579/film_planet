@@ -10,7 +10,7 @@ import {
 import {Accordion} from "primeng/accordion";
 import {DatePipe, DecimalPipe, NgClass, NgIf} from "@angular/common";
 import {FieldsetModule} from "primeng/fieldset";
-import {PosterUrlPipePipe} from "../../../core/pipes/poster-url-pipe.pipe";
+import {ImageUrlPipePipe} from "../../../core/pipes/image-url.pipe";
 import {Tab, TabList, TabPanel, TabPanels, Tabs} from "primeng/tabs";
 import {LibraryItem} from '../../../core/interfaces/library-item.interface';
 import {MediaType} from '../../../core/enums/media-type.enum';
@@ -26,7 +26,7 @@ import {DetailsService} from '../../../core/services/details.service';
     DecimalPipe,
     FieldsetModule,
     NgIf,
-    PosterUrlPipePipe,
+    ImageUrlPipePipe,
     Tab,
     TabList,
     TabPanel,
