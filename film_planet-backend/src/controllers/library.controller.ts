@@ -181,6 +181,18 @@ export async function getTVSearchResultsMiddleware(req: Request, res: Response, 
     }
 }
 
+export async function getPeopleSearchResultsMiddleware(req: Request, res: Response, next: NextFunction) {
+    try {
+        const query = req.params.query;
+
+        const response = await fetch(`https://api.themoviedb.org/3/search/person?query=${query}`, options);
+        const data = await response.json();
+
+        return res.status(httpStatus.OK).send(data);
+    } catch (err) {
+        next(err);
+    }
+}
 /**
  * Fetches multiple pages of data from the TMDB API at once
  * @param baseUrl the url of the API request

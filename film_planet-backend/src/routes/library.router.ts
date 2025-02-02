@@ -9,7 +9,7 @@ import {
     getFilmSearchResultsMiddleware,
     getTopFilmsMiddleware,
     getTopTVMiddleware,
-    getTVByGenreMiddleware, getTVSearchResultsMiddleware
+    getTVByGenreMiddleware, getTVSearchResultsMiddleware, getPeopleSearchResultsMiddleware
 } from "../controllers/library.controller";
 
 const router = Router();
@@ -33,5 +33,7 @@ router.get('/tv/top', getTopTVMiddleware);
 router.get('/tv/genre/:id', getTVByGenreMiddleware);
 
 router.get('/search/tv/:query', getTVSearchResultsMiddleware);
+
+router.get('/search/person/:query', getPeopleSearchResultsMiddleware);
 
 export default router;
