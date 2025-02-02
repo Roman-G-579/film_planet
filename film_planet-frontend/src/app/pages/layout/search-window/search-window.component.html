@@ -9,16 +9,16 @@
     <div class="flex justify-center gap-4 mb-4">
       <p-inputgroup styleClass="lg:!w-[60%]">
         <ng-container *ngIf="!isSmallScreen(); else mobileSelectMenu">
-          @for (option of mediaOptions; track option) {
+          @for (option of searchOptions; track option) {
             <p-inputgroup-addon class="gap-1">
-              <p-radioButton class="mb-1" name="mediaType" value="{{option.mediaType}}" [(ngModel)]="selectedOption" inputId="{{option}}" (click)="searchItem(searchInput.value, option.mediaType)"/>
+              <p-radioButton class="mb-1" name="mediaType" value="{{option.searchType}}" [(ngModel)]="selectedOption" inputId="{{option}}" (click)="search(searchInput.value, option.searchType)"/>
               <label for="{{option}}" class="ml-2">{{option.name}}</label>
             </p-inputgroup-addon>
           }
         </ng-container>
 
         <ng-template #mobileSelectMenu>
-          <p-select styleClass="max-w-36" class="media-select-wrapper" [(ngModel)]="selectedOption" [options]="mediaOptions" optionLabel="name" placeholder="Everything" (onChange)="searchItem(searchInput.value, selectedOption.mediaType)"/>
+          <p-select styleClass="max-w-36" class="media-select-wrapper" [(ngModel)]="selectedOption" [options]="searchOptions" optionLabel="name" placeholder="Everything" (onChange)="search(searchInput.value, selectedOption.searchType)"/>
         </ng-template>
 
         <input
@@ -56,7 +56,11 @@
                       <a [routerLink]="item | itemUrl" (click)="isSearchVisible.set(false)">
                         <img
                           class="block xl:block mx-auto rounded-border w-full"
-                          src="{{(item.poster_path | posterUrl: 0) || 'assets/placeholder-images/poster-md.jpg'}}"
+                          src="{{
+                          (item.poster_path | ImageUrlPipe: 0) ||
+                          (item.profile_path | ImageUrlPipe: 0) ||
+                           'assets/placeholder-images/poster-md.jpg'
+                          }}"
                           [alt]="item.title || item.name"
                         />
                       </a>
@@ -80,8 +84,11 @@
                         <span class="font-semibold text-sm capitalize w-[60px]" style="color: var(--p-surface-400)">
                           @if (item.mediaType === MediaType.Film) {
                             <span i18n="@@search.FilmLabel">Film</span>
-                          } @else {
+                          } @else if (item.mediaType === MediaType.TV) {
                             <span i18n="@@search.TvShowLabel">TV Show</span>
+                          }
+                          @else {
+                            <span i18n="@@search.PersonLabel">Person</span>
                           }
                         </span>
                       </div>

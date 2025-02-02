@@ -13,8 +13,7 @@ import {RouterLink} from '@angular/router';
 import {DataViewModule} from 'primeng/dataview';
 import {DatePipe, NgClass, NgForOf, NgIf} from '@angular/common';
 import {ItemUrlPipe} from '../../../core/pipes/item-url.pipe';
-import {PosterUrlPipePipe} from '../../../core/pipes/poster-url-pipe.pipe';
-import {LibraryItem} from '../../../core/interfaces/library-item.interface';
+import {ImageUrlPipePipe} from '../../../core/pipes/image-url.pipe';
 import {DividerModule} from 'primeng/divider';
 import {MediaType} from '../../../core/enums/media-type.enum';
 import {debounceTime, distinctUntilChanged, Subject, takeUntil} from 'rxjs';
@@ -26,8 +25,12 @@ import {RadioButtonModule} from 'primeng/radiobutton';
 import {FormsModule} from '@angular/forms';
 import {CheckboxModule} from 'primeng/checkbox';
 import {Select} from 'primeng/select';
+import {MultiSearchItem} from '../../../core/interfaces/multi-search-item.interface';
+import {PersonUrlPipe} from '../../../core/pipes/person-url.pipe';
 
-interface MediaOption {name: string, mediaType: (MediaType | undefined)}
+interface MediaOption {
+  name: string,
+  searchType: (MediaType | undefined)}
 
 @Component({
   selector: 'app-search-window',
@@ -39,7 +42,7 @@ interface MediaOption {name: string, mediaType: (MediaType | undefined)}
     DataViewModule,
     ItemUrlPipe,
     NgForOf,
-    PosterUrlPipePipe,
+    ImageUrlPipePipe,
     NgClass,
     DividerModule,
     DatePipe,
@@ -50,7 +53,7 @@ interface MediaOption {name: string, mediaType: (MediaType | undefined)}
     RadioButtonModule,
     FormsModule,
     CheckboxModule,
-    Select
+    Select,
   ],
   templateUrl: './search-window.component.html',
   styleUrl: './search-window.component.scss',
@@ -65,7 +68,7 @@ export class SearchWindowComponent implements OnInit, OnDestroy {
 
   isSearchVisible: ModelSignal<boolean> = model<boolean>(false);
 
-  searchResults: WritableSignal<LibraryItem[]> = this.lib.searchResults;
+  searchResults: WritableSignal<MultiSearchItem[]> = this.lib.searchResults;
 
   // The height of a row in the table (used for the virtualScroll functionality)
   isSmallScreen = computed(() => {
@@ -73,14 +76,14 @@ export class SearchWindowComponent implements OnInit, OnDestroy {
     return (screenWidth < 1024);
   })
 
-  //TODO: add option to search people
-  mediaOptions: MediaOption[] = [
-    { name: $localize`:@@search.filterAll:All`, mediaType: undefined },
-    { name: $localize`:@@search.filterFilms:Films`, mediaType: MediaType.Film },
-    { name: $localize`:@@search.filterTV:TV`, mediaType: MediaType.TV }
+  searchOptions: MediaOption[] = [
+    { name: $localize`:@@search.filterAll:All`, searchType: undefined },
+    { name: $localize`:@@search.filterFilms:Films`, searchType: MediaType.Film },
+    { name: $localize`:@@search.filterTV:TV`, searchType: MediaType.TV },
+    { name: $localize`:@@search.filterPeople:People`, searchType: MediaType.Person}
   ];
 
-  selectedOption: MediaOption = this.mediaOptions[0];
+  selectedOption: MediaOption = this.searchOptions[0];
 
   ngOnInit(): void {
     // Subscribe to the search subject with debounce logic
@@ -91,7 +94,7 @@ export class SearchWindowComponent implements OnInit, OnDestroy {
         takeUntil(this.destroy$) // Unsubscribe when the component is destroyed
       )
       .subscribe((query) => {
-        this.searchItem(query, this.selectedOption.mediaType);
+        this.search(query, this.selectedOption.searchType);
       });
   }
 
@@ -107,8 +110,9 @@ export class SearchWindowComponent implements OnInit, OnDestroy {
    * Calls the search function to get new results matching the given query,
    * after clearing the current search results
    * @param query the search string, equal to the text in the input element
+   * @param mediaType
    */
-  searchItem(query: string, mediaType?: MediaType) {
+  search(query: string, mediaType?: MediaType) {
     if (!query) {
       return;
     }

@@ -8,9 +8,9 @@ import {REVIEWS} from '../mock-data/reviews';
 import {DataUtils} from '../utils/data.utils';
 import {environment} from '../../../environments/environment';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {MultiSearchItem} from '../interfaces/multi-search-item.interface';
+import {MultiSearchResponse} from '../interfaces/api-responses/multi-search-response.interface';
 import {ItemListResponse} from '../interfaces/api-responses/item-list-response.interface';
-import {Credits} from '../interfaces/credits.interface';
-import {CastCrewMember} from '../interfaces/cast-crew-member.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -27,7 +27,7 @@ export class LibraryService {
   isLoading = signal<boolean>(true);
 
   libraryItems: WritableSignal<LibraryItem[]> = signal<LibraryItem[]>([]);
-  searchResults: WritableSignal<LibraryItem[]> = signal<LibraryItem[]>([]);
+  searchResults: WritableSignal<MultiSearchItem[]> = signal<MultiSearchItem[]>([]);
 
   // Backup copy of original items list
   unfilteredItems: WritableSignal<LibraryItem[]> = signal<LibraryItem[]>([]);
@@ -152,7 +152,7 @@ export class LibraryService {
   /**
    * Fetches a list of items from the API based on the given search query
    * @param query the name of the film or TV show that is being searched
-   * @param mediaType (optional) the item's media type
+   * @param mediaType (optional) the item's search category (Film TV or Person)
    */
   getSearchResultsFromApi(query: string, mediaType?: MediaType) {
     query = query.toLowerCase().replace(/\s/g, '-');
@@ -160,9 +160,10 @@ export class LibraryService {
     if (mediaType) {
       this.search(query, mediaType);
     } else {
-      // Search both TV and Film if no mediaType is specified
+      // Search everything if no mediaType is specified
       this.search(query, MediaType.Film);
       this.search(query, MediaType.TV);
+      this.search(query, MediaType.Person);
     }
 
     this.isLoading.set(false);
@@ -172,7 +173,7 @@ export class LibraryService {
   /**
    * Searches the TMDB database using the given query and media type
    * @param query the search query
-   * @param mediaType film or TV
+   * @param mediaType Film / TV / Person
    */
   private search(query: string, mediaType: MediaType) {
     const pageUrl = `library/search/${mediaType.toLowerCase()}/${query}`;
@@ -180,16 +181,16 @@ export class LibraryService {
 
     this.http.get(href).subscribe({
       next: (data) => {
-        const resultsObject = data as ItemListResponse;
-        const resultItems: LibraryItem[] = resultsObject.results;
+        const resultsObject = data as MultiSearchResponse;
+        const results: MultiSearchItem[] = resultsObject.results;
 
         // Assign mediaType to all result items
-        resultItems.forEach((item) => (item.mediaType = mediaType));
+        results.forEach((item) => (item.mediaType = mediaType));
 
         // Update library items and sort them by popularity
         this.searchResults.set(
-          [...this.searchResults(), ...resultItems].sort(
-            (a: LibraryItem, b: LibraryItem) => {
+          [...this.searchResults(), ...results].sort(
+            (a: MultiSearchItem, b: MultiSearchItem) => {
               const popularityA = a.popularity ?? 0;
               const popularityB = b.popularity ?? 0;
               return popularityB - popularityA;
