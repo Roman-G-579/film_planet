@@ -47,17 +47,17 @@ export class MenuBarComponent implements OnInit {
     {
       language: Language.English,
       name: 'EN',
-      flag_img: 'assets/language-flags/english.png'
+      flag_img: '/assets/language-flags/english.png'
     },
     {
       language: Language.Hebrew,
       name: 'HE',
-      flag_img: 'assets/language-flags/hebrew.png'
+      flag_img: '/assets/language-flags/hebrew.png'
     },
     {
       language: Language.Russian,
       name: 'RU',
-      flag_img: 'assets/language-flags/russian.png'
+      flag_img: '/assets/language-flags/russian.png'
     }
   ];
 
