@@ -17,7 +17,7 @@
   </div>
 
   <h2 i18n="@@person.links" class="leading-9">Links and Social Media:</h2>
-  @for (link of externalLinks(); track link) {
+  @for (link of externalLinks(); track $index) {
     <p>
       <a *ngIf="link.id"
          class="no-underline text-surface-300 font-bold hover:text-primary transition"
@@ -27,7 +27,7 @@
     </p>
   }
   <div>
-    @for (social of socialLinks(); track social) {
+    @for (social of socialLinks(); track $index) {
       <a *ngIf="social.id"
          class="no-underline text-surface-300 hover:text-primary transition"
          [href]="social.url">

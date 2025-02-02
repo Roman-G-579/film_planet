@@ -13,7 +13,7 @@
   <ng-template pTemplate="body" let-credit>
     <tr>
       <td>{{ (credit.release_date | date: 'yyyy') || credit.first_air_date | date: 'yyyy' || '' }}</td>
-      <td><img class="w-[48px] rounded" src="{{ ( credit.poster_path | posterUrl: 0 ) || 'assets/placeholder-images/poster-md.jpg'}}"/></td>
+      <td><img class="w-[48px] rounded" src="{{ ( credit.poster_path | ImageUrlPipe: 0 ) || 'assets/placeholder-images/poster-md.jpg'}}"/></td>
       <td>
         <a [routerLink]="credit | itemCreditUrl">
           <p-button class="title-link" styleClass="text-left" [label]="credit.title || credit.name || ''" [link]="true"/>
@@ -21,7 +21,7 @@
         <div class="mt-0 ml-3">
           <div class=" flex items-center gap-1.5" *ngIf="credit.vote_average">
             <i class="pi pi-star-fill text-yellow-500"></i>
-            <span class="font-semibold">{{credit.vote_average  | number:'1.0-1' || ''}}</span>
+            <span class="font-semibold">{{credit.vote_average  | number:'1.1-1' || ''}}</span>
           </div>
           <!--suppress CssUnresolvedCustomProperty -->
           <p style="color: var(--p-surface-400)" *ngIf="credit.character || credit.job">{{ credit.character || credit.job || '' }}</p>
@@ -33,8 +33,8 @@
               {{credit.episode_count }}
             </span>
             {credit.episode_count, select,
-              1 {episodes}
-              other {episode}
+              1 {episode}
+              other {episodes}
               }
           </span>
       </td>

@@ -2,7 +2,7 @@
   <div class="person-wrapper flex flex-col w-10/12 m-auto mt-6">
     <section class="main-details-wrapper grid lg:grid-flow-col gap-x-4">
       <div class="image-wrapper row-span-4">
-        <img alt="Picture of {{person().name}}" class="w-3/5 lg:w-full min-w-64" src="{{(person().profile_path | posterUrl: 4) || 'assets/placeholder-images/person-md.jpg'}}" />
+        <img alt="Picture of {{person().name}}" class="w-3/5 lg:w-full min-w-64" src="{{(person().profile_path | ImageUrlPipe: 4) || 'assets/placeholder-images/person-md.jpg'}}" />
         <app-details-panel
           [creditsCnt]="castCredits().length + crewCredits().length"
           [external_ids]="person().external_ids"
@@ -47,7 +47,7 @@
                   Directing {Directing}
                   Writing {Writing}
                   Creator {Creator}
-                  other {departmentCredits[0].department}
+                  other { {{departmentCredits[0].department}} }
                 }:
               </p-accordion-header>
               <p-accordion-content>

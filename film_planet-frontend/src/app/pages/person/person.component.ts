@@ -8,7 +8,7 @@ import {
   WritableSignal
 } from '@angular/core';
 import {CastCrewMember} from '../../core/interfaces/cast-crew-member.interface';
-import {PosterUrlPipePipe} from '../../core/pipes/poster-url-pipe.pipe';
+import {ImageUrlPipePipe} from '../../core/pipes/image-url.pipe';
 import {DetailsService} from '../../core/services/details.service';
 import {ActivatedRoute} from '@angular/router';
 import {DataUtils} from '../../core/utils/data.utils';
@@ -39,7 +39,7 @@ export interface SocialLink {
   selector: 'app-person',
   standalone: true,
   imports: [
-    PosterUrlPipePipe,
+    ImageUrlPipePipe,
     NgIf,
     DatePipe,
     TableModule,
