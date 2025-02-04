@@ -15,7 +15,7 @@ const options = {
     }
 };
 
-export async function getRecentFilmsMiddleware(req: Request, res: Response, next: NextFunction) {
+export async function getRecentFilms(req: Request, res: Response, next: NextFunction) {
     try {
         const pageNum = req.headers['page-num'];
 
@@ -39,7 +39,7 @@ export async function getRecentFilmsMiddleware(req: Request, res: Response, next
     }
 }
 
-export async function getPopularFilmsMiddleware(req: Request, res: Response, next: NextFunction) {
+export async function getPopularFilms(req: Request, res: Response, next: NextFunction) {
     try {
         const pageNum = req.headers['page-num'];
 
@@ -60,7 +60,7 @@ export async function getPopularFilmsMiddleware(req: Request, res: Response, nex
     }
 }
 
-export async function getTopFilmsMiddleware(req: Request, res: Response, next: NextFunction) {
+export async function getTopFilms(req: Request, res: Response, next: NextFunction) {
     try {
         const baseUrl = `https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=`
         const results = await fetchMultiplePages(baseUrl, 10);
@@ -71,7 +71,7 @@ export async function getTopFilmsMiddleware(req: Request, res: Response, next: N
     }
 }
 
-export async function getFilmsByGenreMiddleware(req: Request, res: Response, next: NextFunction) {
+export async function getFilmsByGenre(req: Request, res: Response, next: NextFunction) {
     try {
         const pageNum = req.headers['page-num'];
         const genre = req.headers['genre'];
@@ -85,7 +85,7 @@ export async function getFilmsByGenreMiddleware(req: Request, res: Response, nex
     }
 }
 
-export async function getFilmSearchResultsMiddleware(req: Request, res: Response, next: NextFunction) {
+export async function getFilmSearchResults(req: Request, res: Response, next: NextFunction) {
     try {
         const query = req.params.query;
 
@@ -98,7 +98,7 @@ export async function getFilmSearchResultsMiddleware(req: Request, res: Response
     }
 }
 
-export async function getRecentTVMiddleware(req: Request, res: Response, next: NextFunction) {
+export async function getRecentTV(req: Request, res: Response, next: NextFunction) {
     try {
         const pageNum = req.headers['page-num'];
         const currentDate = new Date();
@@ -121,7 +121,7 @@ export async function getRecentTVMiddleware(req: Request, res: Response, next: N
     }
 }
 
-export async function getPopularTVMiddleware(req: Request, res: Response, next: NextFunction) {
+export async function getPopularTV(req: Request, res: Response, next: NextFunction) {
     try {
         const pageNum = req.headers['page-num'];
 
@@ -143,7 +143,7 @@ export async function getPopularTVMiddleware(req: Request, res: Response, next: 
     }
 }
 
-export async function getTopTVMiddleware(req: Request, res: Response, next: NextFunction) {
+export async function getTopTV(req: Request, res: Response, next: NextFunction) {
     try {
         const baseUrl = `https://api.themoviedb.org/3/tv/top_rated?language=en-US&page=`
         const results = await fetchMultiplePages(baseUrl, 10);
@@ -154,7 +154,7 @@ export async function getTopTVMiddleware(req: Request, res: Response, next: Next
     }
 }
 
-export async function getTVByGenreMiddleware(req: Request, res: Response, next: NextFunction) {
+export async function getTVByGenre(req: Request, res: Response, next: NextFunction) {
     try {
         const pageNum = req.headers['page-num'];
         const genre = req.headers['genre'];
@@ -168,7 +168,7 @@ export async function getTVByGenreMiddleware(req: Request, res: Response, next: 
     }
 }
 
-export async function getTVSearchResultsMiddleware(req: Request, res: Response, next: NextFunction) {
+export async function getTVSearchResults(req: Request, res: Response, next: NextFunction) {
     try {
         const query = req.params.query;
 
@@ -181,7 +181,7 @@ export async function getTVSearchResultsMiddleware(req: Request, res: Response, 
     }
 }
 
-export async function getPeopleSearchResultsMiddleware(req: Request, res: Response, next: NextFunction) {
+export async function getPeopleSearchResults(req: Request, res: Response, next: NextFunction) {
     try {
         const query = req.params.query;
 

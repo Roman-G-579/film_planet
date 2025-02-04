@@ -21,7 +21,7 @@ const options = {
  * @mediaType - movie (converted from 'film' in the frontend service) or TV
  * @id - the film or TV show's TMDB ID
  */
-export async function getItemMiddleware(req: Request, res: Response, next: NextFunction) {
+export async function getItem(req: Request, res: Response, next: NextFunction) {
     try {
         const  mediaType = req.headers['media-type'];
         const  id = req.headers['id'];
@@ -35,7 +35,7 @@ export async function getItemMiddleware(req: Request, res: Response, next: NextF
     }
 }
 
-export async function getSeasonDetailsMiddleware(req: Request, res: Response, next: NextFunction) {
+export async function getSeasonDetails(req: Request, res: Response, next: NextFunction) {
     try {
         const series_id = req.headers['series-id'];
         const season_number = req.headers['season-number'];
@@ -49,7 +49,7 @@ export async function getSeasonDetailsMiddleware(req: Request, res: Response, ne
     }
 }
 
-export async function getPersonDetailsMiddleware(req: Request, res: Response, next: NextFunction) {
+export async function getPersonDetails(req: Request, res: Response, next: NextFunction) {
     try {
         const id = req.headers['id'];
         const response = await fetch(`https://api.themoviedb.org/3/person/${id}?append_to_response=combined_credits%2Cexternal_ids&language=en-US`, options);

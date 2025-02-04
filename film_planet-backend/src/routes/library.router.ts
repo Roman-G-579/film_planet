@@ -1,39 +1,39 @@
 import {Router} from "express";
 
 import {
-    getFilmsByGenreMiddleware,
-    getPopularFilmsMiddleware,
-    getPopularTVMiddleware,
-    getRecentFilmsMiddleware,
-    getRecentTVMiddleware,
-    getFilmSearchResultsMiddleware,
-    getTopFilmsMiddleware,
-    getTopTVMiddleware,
-    getTVByGenreMiddleware, getTVSearchResultsMiddleware, getPeopleSearchResultsMiddleware
+    getFilmsByGenre,
+    getPopularFilms,
+    getPopularTV,
+    getRecentFilms,
+    getRecentTV,
+    getFilmSearchResults,
+    getTopFilms,
+    getTopTV,
+    getTVByGenre, getTVSearchResults, getPeopleSearchResults
 } from "../controllers/library.controller";
 
 const router = Router();
 
-router.get('/film/recent', getRecentFilmsMiddleware);
+router.get('/film/recent', getRecentFilms);
 
-router.get('/film/popular', getPopularFilmsMiddleware);
+router.get('/film/popular', getPopularFilms);
 
-router.get('/film/top', getTopFilmsMiddleware);
+router.get('/film/top', getTopFilms);
 
-router.get('/film/genre/:id', getFilmsByGenreMiddleware)
+router.get('/film/genre/:id', getFilmsByGenre)
 
-router.get('/search/film/:query', getFilmSearchResultsMiddleware);
+router.get('/search/film/:query', getFilmSearchResults);
 
-router.get('/tv/recent', getRecentTVMiddleware);
+router.get('/tv/recent', getRecentTV);
 
-router.get('/tv/popular', getPopularTVMiddleware);
+router.get('/tv/popular', getPopularTV);
 
-router.get('/tv/top', getTopTVMiddleware);
+router.get('/tv/top', getTopTV);
 
-router.get('/tv/genre/:id', getTVByGenreMiddleware);
+router.get('/tv/genre/:id', getTVByGenre);
 
-router.get('/search/tv/:query', getTVSearchResultsMiddleware);
+router.get('/search/tv/:query', getTVSearchResults);
 
-router.get('/search/person/:query', getPeopleSearchResultsMiddleware);
+router.get('/search/person/:query', getPeopleSearchResults);
 
 export default router;

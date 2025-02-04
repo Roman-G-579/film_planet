@@ -1,18 +1,18 @@
 import { Router } from "express";
 import {
-    getItemMiddleware,
-    getPersonDetailsMiddleware,
-    getSeasonDetailsMiddleware
+    getItem,
+    getPersonDetails,
+    getSeasonDetails
 } from "../controllers/details.controller";
 
 const router = Router();
 
-router.get('/film/:id', getItemMiddleware);
+router.get('/film/:id', getItem);
 
-router.get('/tv/:id', getItemMiddleware);
+router.get('/tv/:id', getItem);
 
-router.get('/tv/:series_id/season/:season_number', getSeasonDetailsMiddleware);
+router.get('/tv/:series_id/season/:season_number', getSeasonDetails);
 
-router.get('/person/:id', getPersonDetailsMiddleware);
+router.get('/person/:id', getPersonDetails);
 
 export default router;
