@@ -1,7 +1,7 @@
-import {validateProfile, validateUser} from "../pipes/validator.pipe";
+import { validateProfile } from "../pipes/validator.pipe";
 import {validator} from "../middlewares/validator.middleware";
 import { Router } from "express";
-import {getUserProfile, registerUser} from "../controllers/user.controller";
+import {getUserProfile} from "../controllers/user.controller";
 import {authMiddleware} from "../middlewares/auth.middleware";
 
 const router = Router();
@@ -13,11 +13,6 @@ const router = Router();
  */
 router.get('/:email', validateProfile, validator, authMiddleware, getUserProfile);
 
-/**
- * @route POST /api/register
- * @description register a user to the website
- * @access public
- */
-router.post('/', validateUser, validator, registerUser);
+
 
 export default router;

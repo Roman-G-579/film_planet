@@ -8,7 +8,8 @@ import {connectToDb} from "./config/db";
 import {Config} from "./config/config";
 import libraryRouter from "./routes/library.router";
 import detailsRouter from "./routes/details.router";
-import userRouter from "./routes/user.router";
+import userRouter from "./routes/user-profile.router";
+import authRouter from "./routes/auth.router";
 
 const app = express();
 const httpServer = createServer(app);
@@ -34,6 +35,7 @@ app.get('/api/ping', (req, res) => {
 app.use('/api/library', libraryRouter);
 app.use('/api/details', detailsRouter);
 app.use('/api/user', userRouter);
+app.use('/api/auth', authRouter);
 
 // error handler
 app.use(errorHandler);

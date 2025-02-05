@@ -2,7 +2,7 @@ import { param, body } from 'express-validator';
 
 export const validateMongoId = [param('id').exists().bail().isMongoId()];
 
-export const validateUser = [
+export const validateUserRegistration = [
     body('username').exists().isString().notEmpty(),
     body('password').exists().isString().notEmpty(),
     body('firstName').exists().isString().notEmpty(),
