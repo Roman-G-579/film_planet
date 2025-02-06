@@ -1,6 +1,9 @@
 import {NextFunction, Request, Response} from "express";
 import {User, UserModel} from "../models/user.interface";
 import httpStatus from "http-status";
+import {Schema} from "mongoose";
+import {UserRating, UserRatingModel} from "../models/user-rating.interface";
+import {UserReview, UserReviewModel, userReviewSchema} from "../models/user-review.interface";
 
 export async function getUserProfile(req: Request, res: Response, next: NextFunction) {
     try {
@@ -11,10 +14,14 @@ export async function getUserProfile(req: Request, res: Response, next: NextFunc
             return res.status(httpStatus.NOT_FOUND).json({ message: 'User not found'});
         }
 
+        const ratings = await fetchUserRatings(user._id);
+        const reviews = await fetchUserReviews(user._id);
+
         const userProfile: User = {
             ...user.toObject(),
             password: undefined,
-
+            ratings: ratings as UserRating[],
+            reviews: reviews as UserReview[]
         };
 
         return res.status(httpStatus.OK).send(userProfile);
@@ -23,6 +30,13 @@ export async function getUserProfile(req: Request, res: Response, next: NextFunc
     }
 }
 
+async function fetchUserRatings(userId: Schema.Types.ObjectId) {
+    return UserRatingModel.find({ user: userId }).sort({ date: -1});
+}
+
+async function fetchUserReviews(userId: Schema.Types.ObjectId) {
+    return UserReviewModel.find({ user: userId }).sort({ date: -1});
+}
 
 
 

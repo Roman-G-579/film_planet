@@ -1,7 +1,7 @@
 import { validateProfile } from "../pipes/validator.pipe";
 import {validator} from "../middlewares/validator.middleware";
 import { Router } from "express";
-import {getUserProfile} from "../controllers/user.controller";
+import {getUserProfile} from "../controllers/user-profile.controller";
 import {authMiddleware} from "../middlewares/auth.middleware";
 
 const router = Router();
