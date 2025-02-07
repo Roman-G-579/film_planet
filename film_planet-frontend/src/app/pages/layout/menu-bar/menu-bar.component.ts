@@ -17,6 +17,8 @@ import {SplitButtonModule} from 'primeng/splitbutton';
 import {DialogModule} from 'primeng/dialog';
 import {SearchWindowComponent} from '../search-window/search-window.component';
 import {NgIf} from '@angular/common';
+import {InputTextModule} from 'primeng/inputtext';
+import {LoginWindowComponent} from './login-window/login-window.component';
 
 @Component({
   selector: 'app-menu-bar',
@@ -32,7 +34,9 @@ import {NgIf} from '@angular/common';
     SplitButtonModule,
     DialogModule,
     SearchWindowComponent,
-    NgIf
+    NgIf,
+    InputTextModule,
+    LoginWindowComponent
   ],
   templateUrl: './menu-bar.component.html',
   styleUrl: './menu-bar.component.scss',
