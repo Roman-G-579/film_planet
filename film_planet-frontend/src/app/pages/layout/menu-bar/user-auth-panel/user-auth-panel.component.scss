@@ -1,0 +1,12 @@
+// Disables the arrow at the top of the login popover
+::ng-deep .p-popover {
+  &:before {
+    content: none;
+    display: none;
+  }
+
+  &:after {
+    content: none;
+    display: none;
+  }
+}

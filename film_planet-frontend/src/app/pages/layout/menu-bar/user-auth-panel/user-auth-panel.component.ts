@@ -4,22 +4,28 @@ import {InputTextModule} from "primeng/inputtext";
 import {PopoverModule} from "primeng/popover";
 import {FormBuilder, ReactiveFormsModule, Validators} from '@angular/forms';
 import {AuthService} from '../../../../core/services/auth.service';
-import {Router} from '@angular/router';
+import {Router, RouterLink} from '@angular/router';
+import {AutoFocus} from 'primeng/autofocus';
+import {NgIf} from '@angular/common';
 
+// Contains links related to user login and registration
 @Component({
-  selector: 'app-login-window',
+  selector: 'app-user-auth-panel',
   standalone: true,
   imports: [
     ButtonModule,
     InputTextModule,
     PopoverModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    AutoFocus,
+    NgIf,
+    RouterLink
   ],
-  templateUrl: './login-window.component.html',
-  styleUrl: './login-window.component.scss',
+  templateUrl: './user-auth-panel.component.html',
+  styleUrl: './user-auth-panel.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class LoginWindowComponent {
+export class UserAuthPanelComponent {
   private readonly fb = inject(FormBuilder);
   private readonly authService = inject(AuthService);
   private readonly router = inject(Router);
@@ -30,11 +36,14 @@ export class LoginWindowComponent {
   });
 
   login() {
+    console.log("login called")
     if (this.loginForm.valid) {
       const { email, password } = this.loginForm.value;
       if (!email || !password) {
         return;
       }
+      console.log(email)
+      console.log(password)
       this.authService.login(email, password).subscribe({
         next: (res) => {
           localStorage.setItem('token', res.token);
@@ -47,4 +56,6 @@ export class LoginWindowComponent {
       });
     }
   }
+
+  protected readonly localStorage = localStorage;
 }

@@ -30,6 +30,10 @@ export default [
     loadComponent: () => import ('./home/home.component').then((c) => c.HomeComponent),
   },
   {
+    path: 'register',
+    loadComponent: () => import ('./register/register.component').then((c) => c.RegisterComponent),
+  },
+  {
     path: 'library',
     loadChildren: () => import('./library/library-categories.routes'),
   },

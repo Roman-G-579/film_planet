@@ -18,7 +18,7 @@ import {DialogModule} from 'primeng/dialog';
 import {SearchWindowComponent} from '../search-window/search-window.component';
 import {NgIf} from '@angular/common';
 import {InputTextModule} from 'primeng/inputtext';
-import {LoginWindowComponent} from './login-window/login-window.component';
+import {UserAuthPanelComponent} from './user-auth-panel/user-auth-panel.component';
 
 @Component({
   selector: 'app-menu-bar',
@@ -36,7 +36,7 @@ import {LoginWindowComponent} from './login-window/login-window.component';
     SearchWindowComponent,
     NgIf,
     InputTextModule,
-    LoginWindowComponent
+    UserAuthPanelComponent
   ],
   templateUrl: './menu-bar.component.html',
   styleUrl: './menu-bar.component.scss',

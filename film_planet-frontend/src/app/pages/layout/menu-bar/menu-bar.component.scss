@@ -28,11 +28,6 @@
     text-decoration: none;
   }
 
-  // Disables the arrow at the top of the login popover
-  .p-popover::after, .p-popover::before {
-    content: none;
-  }
-
   i, .signup-login-link, .p-button-text.p-button-secondary {
     color: var(--p-button-text-color);
   }
