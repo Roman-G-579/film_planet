@@ -1,6 +1,6 @@
 <div class="user-auth-wrapper" dir="rtl">
-  <p-button *ngIf="!localStorage.getItem('token')" class="signup-link" styleClass="!text-[1.4rem]" [routerLink]="['/','pages','register']" label="Create Account" [text]="true" size="large" />
-  <p-button class="signup-login-link" styleClass="!text-[1.4rem]" (click)="loginPopover.toggle($event)" label="Sign In" [text]="true" size="large" />
+  <p-button *ngIf="!authService.isLoggedIn()" class="signup-link" styleClass="!text-[1.4rem]" [routerLink]="['/','pages','register']" label="Create Account" [text]="true" size="large" />
+  <p-button *ngIf="!authService.isLoggedIn()" class="signup-login-link" styleClass="!text-[1.4rem]" (click)="loginPopover.toggle($event)" label="Sign In" [text]="true" size="large" />
   <p-popover #loginPopover>
     <div class="flex flex-col gap-4 w-[25rem]">
       <form [formGroup]="loginForm" (ngSubmit)="login()">

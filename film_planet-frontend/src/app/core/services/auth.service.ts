@@ -1,4 +1,4 @@
-import {inject, Injectable, signal} from '@angular/core';
+import {computed, inject, Injectable, Signal, signal} from '@angular/core';
 import {environment} from '../../../environments/environment';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable, tap} from 'rxjs';
@@ -11,6 +11,8 @@ import {UserResponse} from '../interfaces/db-responses/user-response.interface';
 export class AuthService {
   private readonly apiUrl = `${environment.apiUrl}auth`;
   private readonly http = inject(HttpClient);
+
+  isLoggedIn: Signal<string | null> = computed(() => localStorage.getItem('token'));
 
   userData = signal<UserResponse>({
     __v: 0,

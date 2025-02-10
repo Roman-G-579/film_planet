@@ -5,8 +5,8 @@ import {UserReview, userReviewSchema} from "./user-review.interface";
 export interface User {
     _id: Schema.Types.ObjectId;
     username: string;
-    firstName: string;
-    lastName: string;
+    firstName?: string;
+    lastName?: string;
     email: string;
     password: string;
     ratings: UserRating[];
@@ -21,11 +21,11 @@ const userSchema = new Schema<User>(
         },
         firstName: {
             type: String,
-            required: true
+            required: false
         },
         lastName: {
             type: String,
-            required: true
+            required: false
         },
         email: {
             type: String,

@@ -27,7 +27,7 @@ import {NgIf} from '@angular/common';
 })
 export class UserAuthPanelComponent {
   private readonly fb = inject(FormBuilder);
-  private readonly authService = inject(AuthService);
+  protected readonly authService = inject(AuthService);
   private readonly router = inject(Router);
 
   loginForm = this.fb.group({
@@ -46,7 +46,9 @@ export class UserAuthPanelComponent {
       console.log(password)
       this.authService.login(email, password).subscribe({
         next: (res) => {
-          localStorage.setItem('token', res.token);
+          if (res.token) {
+            localStorage.setItem('token', res.token);
+          }
         },
         error: (err) => {
           //TODO: use errorMessage in toastr popup

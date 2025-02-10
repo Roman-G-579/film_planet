@@ -1,8 +1,11 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import {ChangeDetectionStrategy, Component, inject} from '@angular/core';
 import {AutoFocus} from 'primeng/autofocus';
 import {ButtonModule} from 'primeng/button';
 import {InputTextModule} from 'primeng/inputtext';
-import {ReactiveFormsModule} from '@angular/forms';
+import {FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
+import {ConfirmPasswordValidator} from '../../core/validators/confirm-password.validator';
+import {RegisterService} from './register.service';
+import {RegistrationDetails} from './registration-details.interface';
 
 @Component({
   selector: 'app-register',
@@ -18,5 +21,48 @@ import {ReactiveFormsModule} from '@angular/forms';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class RegisterComponent {
+  private readonly fb = inject(FormBuilder);
+  private readonly registerService = inject(RegisterService);
 
+  registerForm = this.fb.group({
+    usernameAndEmail: new FormGroup({
+      username: new FormControl('', [Validators.required]),
+      email: new FormControl('', [Validators.required, Validators.email]),
+    }),
+    fullName: new FormGroup({
+      firstName: new FormControl(''),
+      lastName: new FormControl(''),
+    }),
+
+    passwordAndConfirmation: new FormGroup({
+      password: new FormControl('', [
+        Validators.required,
+        Validators.minLength(6),
+        Validators.maxLength(100),
+        Validators.pattern('^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).*$'),
+      ]),
+      confirmPassword: new FormControl('', Validators.required)
+      },
+      {
+        validators: ConfirmPasswordValidator.match('password', 'confirmPassword')
+      }
+    )
+  });
+
+  register() {
+    const formData: RegistrationDetails = Object.assign({}, ...Object.values(this.registerForm.value));
+
+    this.registerService.registerUser(formData).subscribe({
+      next: () => {
+        //TODO: Add success message
+      },
+      error: (err) => {
+        if(err.error.message && err.error.message.includes('Account with this Email already exists')) {
+          //TODO: Add error message
+        } else {
+          //TODO: Add error message
+        }
+      }
+    })
+  }
 }

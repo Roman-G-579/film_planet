@@ -5,8 +5,8 @@ export const validateMongoId = [param('id').exists().bail().isMongoId()];
 export const validateUserRegistration = [
     body('username').exists().isString().notEmpty(),
     body('password').exists().isString().notEmpty(),
-    body('firstName').exists().isString().notEmpty(),
-    body('lastName').exists().isString().notEmpty(),
+    body('firstName').exists().isString(),
+    body('lastName').exists().isString(),
     body('email').exists().isEmail(),
 ];
 
