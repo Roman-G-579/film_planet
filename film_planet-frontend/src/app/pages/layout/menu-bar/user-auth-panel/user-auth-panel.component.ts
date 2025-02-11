@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, inject} from '@angular/core';
+import {ChangeDetectionStrategy, Component, inject, OnInit} from '@angular/core';
 import {ButtonModule} from "primeng/button";
 import {InputTextModule} from "primeng/inputtext";
 import {PopoverModule} from "primeng/popover";
@@ -25,29 +25,36 @@ import {NgIf} from '@angular/common';
   styleUrl: './user-auth-panel.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class UserAuthPanelComponent {
+export class UserAuthPanelComponent implements OnInit {
   private readonly fb = inject(FormBuilder);
   protected readonly authService = inject(AuthService);
   private readonly router = inject(Router);
 
   loginForm = this.fb.group({
-    email: ['', [Validators.required, Validators.email]],
+    username: ['', Validators.required],
     password: ['', Validators.required],
   });
 
+  ngOnInit() {
+    let data = localStorage.getItem('userData');
+    console.log(data);
+  }
+
   login() {
-    console.log("login called")
+
     if (this.loginForm.valid) {
-      const { email, password } = this.loginForm.value;
-      if (!email || !password) {
+      const { username, password } = this.loginForm.value;
+      if (!username || !password) {
         return;
       }
-      console.log(email)
+      console.log(username)
       console.log(password)
-      this.authService.login(email, password).subscribe({
+      this.authService.login(username, password).subscribe({
         next: (res) => {
           if (res.token) {
             localStorage.setItem('token', res.token);
+            this.router.navigate(['/','pages','home']).then();
+            console.log("logged in")
           }
         },
         error: (err) => {

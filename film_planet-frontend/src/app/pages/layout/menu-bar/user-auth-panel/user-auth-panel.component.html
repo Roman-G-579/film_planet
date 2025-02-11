@@ -1,4 +1,8 @@
-<div class="user-auth-wrapper" dir="rtl">
+<div class="user-auth-wrapper flex items-center" dir="rtl">
+  <span *ngIf="authService.isLoggedIn()" class="bg-primary text-primary-contrast rounded-full w-8 h-8 flex items-center justify-center">
+    {{authService.userData().username[0]}}
+  </span>
+  <p-button *ngIf="authService.isLoggedIn()" styleClass="!text-[1.4rem]" (click)="authService.logout()" label="Logout" [text]="true" size="large"/>
   <p-button *ngIf="!authService.isLoggedIn()" class="signup-link" styleClass="!text-[1.4rem]" [routerLink]="['/','pages','register']" label="Create Account" [text]="true" size="large" />
   <p-button *ngIf="!authService.isLoggedIn()" class="signup-login-link" styleClass="!text-[1.4rem]" (click)="loginPopover.toggle($event)" label="Sign In" [text]="true" size="large" />
   <p-popover #loginPopover>
@@ -9,7 +13,7 @@
             <p-button icon="pi pi-times" [rounded]="true" [text]="true" (click)="loginPopover.hide()"/>
           </div>
           <span class="mb-2">Username</span>
-          <input pInputText class="w-[25rem] mb-4" formControlName="email" pAutoFocus="true" />
+          <input pInputText class="w-[25rem] mb-4" formControlName="username" pAutoFocus="true" />
           <span class="mb-2">Password</span>
           <input pInputText type="password" class="w-[25rem] mb-4" formControlName="password" />
           <div class="flex justify-end">

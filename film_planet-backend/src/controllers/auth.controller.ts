@@ -9,6 +9,9 @@ import {sendMail} from "./mail.controller";
 export async function registerUser(req: Request, res: Response, next: NextFunction) {
     try {
         const { username, password, firstName, lastName, email } = req.body;
+        console.log(username);
+        console.log(firstName);
+        console.log(lastName);
 
         if (await emailExists(email)) {
             throw new Error('Account with this Email already exists');
@@ -33,11 +36,11 @@ export async function registerUser(req: Request, res: Response, next: NextFuncti
             email: email.toLowerCase()
         });
 
-        const result = await sendMail(mailOptions);
+        //const result = await sendMail(mailOptions);
 
-        if (!result) {
-            throw new Error('Could not send mail');
-        }
+        // if (!result) {
+        //     throw new Error('Could not send mail');
+        // }
 
         return res.send({ response: 'success', email: email.toLowerCase(), firstName, lastName});
 
@@ -48,23 +51,24 @@ export async function registerUser(req: Request, res: Response, next: NextFuncti
 
 export async function login(req: Request, res: Response, next: NextFunction) {
     try {
-        const { email, password } = req.body;
-
-        if (!email || !password ) {
-            return res.status(httpStatus.BAD_REQUEST).json({ message: 'Email and password are required' });
+        const { username, password } = req.body;
+        console.log(username);
+        console.log(password);
+        if (!username || !password ) {
+            return res.status(httpStatus.BAD_REQUEST).json({ message: 'Username and password are required' });
         }
 
-        const user = await UserModel.findOne({ email });
+        const user = await UserModel.findOne({ username });
         if (!user) {
-            return res.status(httpStatus.UNAUTHORIZED).json({ message: 'Invalid email or password' });
+            return res.status(httpStatus.UNAUTHORIZED).json({ message: 'Invalid username or password' });
         }
 
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) {
-            return res.status(httpStatus.UNAUTHORIZED).json({ message: 'Invalid email or password' });
+            return res.status(httpStatus.UNAUTHORIZED).json({ message: 'Invalid username or password' });
         }
 
-        const token = jwt.sign({ email: user.email}, Config.JWT_SECRET, { expiresIn: '3h' });
+        const token = jwt.sign({ username: user.username}, Config.JWT_SECRET, { expiresIn: '3h' });
 
         user.password = undefined;
 

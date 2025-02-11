@@ -24,17 +24,19 @@ export class AuthService {
     username: '',
   });
 
-  login(email: string, password: string): Observable<{ token: string, user: UserResponse }> {
+  login(username: string, password: string): Observable<{ token: string, user: UserResponse }> {
     const pageUrl = `auth/login`;
     const { href } = new URL(pageUrl, this.apiUrl);
 
     return this.http
-      .post<{ token: string, user: UserResponse }>(href, { email, password } )
+      .post<{ token: string, user: UserResponse }>(href, { username, password } )
       .pipe(
         tap({
           next: (data: { token: string, user: UserResponse}) => {
-            const protectedData = data.user as UserResponse;
-            this.userData.set(protectedData);
+            const userData = data.user as UserResponse;
+            this.userData.set(userData);
+            localStorage.setItem('userData', JSON.stringify(userData));
+            console.log(this.userData())
           },
           error: (err: unknown) => {
             console.error('Error fetching protected data', err);
@@ -55,5 +57,18 @@ export class AuthService {
         },
       }),
     );
+  }
+
+  logout() {
+    this.userData.set({
+      __v: 0,
+      _id: '',
+      createdAt: new Date(),
+      email: '',
+      firstName: '',
+      lastName: '',
+      username: '',
+    });
+    localStorage.removeItem('token');
   }
 }
