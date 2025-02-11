@@ -6,6 +6,10 @@ import {FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators} fr
 import {ConfirmPasswordValidator} from '../../core/validators/confirm-password.validator';
 import {RegisterService} from './register.service';
 import {RegistrationDetails} from './registration-details.interface';
+import {PasswordModule} from 'primeng/password';
+import {CardModule} from 'primeng/card';
+import {FloatLabelModule} from 'primeng/floatlabel';
+import {StyleClassModule} from 'primeng/styleclass';
 
 @Component({
   selector: 'app-register',
@@ -14,7 +18,11 @@ import {RegistrationDetails} from './registration-details.interface';
     AutoFocus,
     ButtonModule,
     InputTextModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    PasswordModule,
+    CardModule,
+    FloatLabelModule,
+    StyleClassModule
   ],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss',
@@ -39,7 +47,6 @@ export class RegisterComponent {
         Validators.required,
         Validators.minLength(6),
         Validators.maxLength(100),
-        Validators.pattern('^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).*$'),
       ]),
       confirmPassword: new FormControl('', Validators.required)
       },

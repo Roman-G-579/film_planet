@@ -1,34 +1,54 @@
 <main>
-  <div class="flex flex-col m-auto gap-4  mt-6 w-[25rem]">
-    <form [formGroup]="registerForm" (ngSubmit)="register()">
-      <div class="font-medium block">
-        <div formGroupName="usernameAndEmail">
-          <span class="mb-2">Username</span>
-          <input pInputText class="w-[25rem] mb-4"  pAutoFocus="true" formControlName="username" />
-          <span class="mb-2">Email</span>
-          <input pInputText type="email" class="w-[25rem] mb-10" formControlName="email" />
-        </div>
+  <div class="flex flex-col m-auto gap-4  mt-[5rem] w-[25rem]">
+    <p-card>
+      <h1 class="text-center">Create Account</h1>
+      <form [formGroup]="registerForm" (ngSubmit)="register()" class="flex flex-col gap-12" >
+          <div formGroupName="usernameAndEmail" class="flex flex-col gap-8">
+            <p-floatlabel >
+              <input id="username" pInputText fluid pAutoFocus="true" formControlName="username" />
+              <label for="username">Username</label>
+            </p-floatlabel>
 
-        <div formGroupName="fullName">
-          <span class="mb-2">First Name (optional)</span>
-          <input pInputText class="w-[25rem] mb-4"  pAutoFocus="true" formControlName="firstName" />
-          <span class="mb-2">Last Name (optional)</span>
-          <input pInputText  class="w-[25rem] mb-10" formControlName="lastName" />
-        </div>
+            <p-floatlabel >
+              <input id="email" pInputText fluid  formControlName="email" />
+              <label for="email">Email</label>
+            </p-floatlabel>
+          </div>
 
-        <div formGroupName="passwordAndConfirmation">
-          <span class="mb-2">Password</span>
-          <input pInputText type="password" class="w-[25rem] mb-4"  pAutoFocus="true" formControlName="password" />
-          <span class="mb-2">Confirm Password</span>
-          <input pInputText type="password" class="w-[25rem] mb-4" formControlName="confirmPassword" />
-        </div>
+          <div formGroupName="passwordAndConfirmation" class="flex flex-col" >
+            <p-floatlabel>
+              <p-password id="password" pInputText fluid feedback="false" [toggleMask]="true" formControlName="password" />
+              <label for="password">Password (6 characters minimum)</label>
+            </p-floatlabel>
 
 
-        <div class="flex justify-end">
-          <p-button type="submit" label="Create Account"></p-button>
-        </div>
-      </div>
-    </form>
+            <!--            <p-floatlabel>-->
+<!--              <input id="password" pInputText fluid type="password" formControlName="password" />-->
+<!--              <label for="password">Password</label>-->
+<!--            </p-floatlabel>-->
 
+            <p-floatlabel>
+              <input id="confirmPassword" pInputText fluid type="password" formControlName="confirmPassword" />
+              <label for="confirmPassword">Confirm Password</label>
+            </p-floatlabel>
+          </div>
+
+          <div formGroupName="fullName" class="flex flex-col gap-8">
+            <p-floatlabel >
+              <input id="firstName" pInputText fluid formControlName="firstName" />
+              <label for="username">First Name</label>
+            </p-floatlabel>
+
+            <p-floatlabel >
+              <input id="lastName" pInputText fluid formControlName="lastName" />
+              <label for="username">Last Name</label>
+            </p-floatlabel>
+          </div>
+
+          <div class="flex justify-center">
+            <p-button type="submit" size="large" label="Create"></p-button>
+          </div>
+      </form>
+    </p-card>
   </div>
 </main>
