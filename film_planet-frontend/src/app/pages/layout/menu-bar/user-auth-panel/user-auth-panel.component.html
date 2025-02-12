@@ -1,4 +1,5 @@
 <div class="user-auth-wrapper flex items-center" dir="rtl">
+  <p-toast position="bottom-right" />
   <span *ngIf="authService.isLoggedIn()" class="bg-primary text-primary-contrast rounded-full w-8 h-8 flex items-center justify-center">
     {{authService.userData().username[0]}}
   </span>

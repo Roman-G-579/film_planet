@@ -1,12 +1,15 @@
-import {ChangeDetectionStrategy, Component, inject, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, inject, OnInit, ViewChild} from '@angular/core';
 import {ButtonModule} from "primeng/button";
 import {InputTextModule} from "primeng/inputtext";
-import {PopoverModule} from "primeng/popover";
+import {Popover, PopoverModule} from "primeng/popover";
 import {FormBuilder, ReactiveFormsModule, Validators} from '@angular/forms';
 import {AuthService} from '../../../../core/services/auth.service';
-import {Router, RouterLink} from '@angular/router';
+import {RouterLink} from '@angular/router';
 import {AutoFocus} from 'primeng/autofocus';
 import {NgIf} from '@angular/common';
+import {MessageService} from 'primeng/api';
+import {ToastModule} from 'primeng/toast';
+
 
 // Contains links related to user login and registration
 @Component({
@@ -19,8 +22,10 @@ import {NgIf} from '@angular/common';
     ReactiveFormsModule,
     AutoFocus,
     NgIf,
-    RouterLink
+    RouterLink,
+    ToastModule,
   ],
+  providers: [MessageService],
   templateUrl: './user-auth-panel.component.html',
   styleUrl: './user-auth-panel.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -28,7 +33,9 @@ import {NgIf} from '@angular/common';
 export class UserAuthPanelComponent implements OnInit {
   private readonly fb = inject(FormBuilder);
   protected readonly authService = inject(AuthService);
-  private readonly router = inject(Router);
+  private messageService = inject(MessageService);
+
+  @ViewChild('loginPopover') loginPopoverRef!: Popover;
 
   loginForm = this.fb.group({
     username: ['', Validators.required],
@@ -36,35 +43,30 @@ export class UserAuthPanelComponent implements OnInit {
   });
 
   ngOnInit() {
-    let data = localStorage.getItem('userData');
-    console.log(data);
+    this.authService.restoreSession();
   }
 
   login() {
-
-    if (this.loginForm.valid) {
-      const { username, password } = this.loginForm.value;
-      if (!username || !password) {
-        return;
-      }
-      console.log(username)
-      console.log(password)
-      this.authService.login(username, password).subscribe({
-        next: (res) => {
-          if (res.token) {
-            localStorage.setItem('token', res.token);
-            this.router.navigate(['/','pages','home']).then();
-            console.log("logged in")
-          }
-        },
-        error: (err) => {
-          //TODO: use errorMessage in toastr popup
-          const errorMessage = 'Invalid email or password';
-          console.error('Could not log in', err);
-        }
-      });
+    if (this.loginForm.invalid) {
+      return;
     }
-  }
 
-  protected readonly localStorage = localStorage;
+    const username = this.loginForm.get('username')?.value?.trim() ?? '';
+    const password = this.loginForm.get('password')?.value ?? '';
+
+    this.authService.login(username, password).subscribe({
+      next: (res) => {
+        if (res.token) {
+          //TODO: add loading spinner while logging in
+          this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Login successful', life: 3000 })
+          this.loginPopoverRef.hide();
+        }
+      },
+      error: (err) => {
+        console.error(err.message);
+        //const errorMessage = 'Invalid email or password';
+        //TODO: use errorMessage in toastr popup
+      }
+    })
+  }
 }
