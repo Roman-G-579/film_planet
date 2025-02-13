@@ -16,7 +16,7 @@
           <span class="mb-2">Username</span>
           <input pInputText class="w-[25rem] mb-4" formControlName="username" pAutoFocus="true" />
           <span class="mb-2">Password</span>
-          <input pInputText type="password" class="w-[25rem] mb-4" formControlName="password" />
+          <p-password [toggleMask]="true" fluid styleClass="!mb-4" feedback="false" formControlName="password" />
           <div class="flex justify-end">
             <p-button type="submit" label="Login"></p-button>
           </div>

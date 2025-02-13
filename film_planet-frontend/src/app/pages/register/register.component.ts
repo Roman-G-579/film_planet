@@ -10,6 +10,9 @@ import {PasswordModule} from 'primeng/password';
 import {CardModule} from 'primeng/card';
 import {FloatLabelModule} from 'primeng/floatlabel';
 import {StyleClassModule} from 'primeng/styleclass';
+import {MessageService} from 'primeng/api';
+import {ToastModule} from 'primeng/toast';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -22,8 +25,10 @@ import {StyleClassModule} from 'primeng/styleclass';
     PasswordModule,
     CardModule,
     FloatLabelModule,
-    StyleClassModule
+    StyleClassModule,
+    ToastModule
   ],
+  providers: [MessageService],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -31,6 +36,8 @@ import {StyleClassModule} from 'primeng/styleclass';
 export class RegisterComponent {
   private readonly fb = inject(FormBuilder);
   private readonly registerService = inject(RegisterService);
+  private readonly router = inject(Router);
+  private messageService = inject(MessageService);
 
   registerForm = this.fb.group({
     usernameAndEmail: new FormGroup({
@@ -59,15 +66,29 @@ export class RegisterComponent {
   register() {
     const formData: RegistrationDetails = Object.assign({}, ...Object.values(this.registerForm.value));
 
+    if (formData.password !== formData.confirmPassword) {
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Password and confirmation do not match', life: 3000 });
+      return;
+    }
+
+    if (!formData.username || !formData.email || !formData.password || !formData.confirmPassword ) {
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Fill all required fields to proceed', life: 3000 });
+      return;
+    }
+
     this.registerService.registerUser(formData).subscribe({
       next: () => {
-        //TODO: Add success message
+        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Account successfully created', life: 3000 });
+        this.router.navigate(['/', '/pages', 'home']).then();
       },
       error: (err) => {
-        if(err.error.message && err.error.message.includes('Account with this Email already exists')) {
-          //TODO: Add error message
+        const errorMessage = err.error?.message || "Registration failed";
+        if(errorMessage.includes('Account with this Email already exists')) {
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Account with this Email already exists', life: 3000 });
+        } else if (errorMessage.incluldes('Username already taken')) {
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Username already taken. Please select another', life: 3000 });
         } else {
-          //TODO: Add error message
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Registration failed', life: 3000 });
         }
       }
     })

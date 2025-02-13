@@ -9,6 +9,7 @@ import {AutoFocus} from 'primeng/autofocus';
 import {NgIf} from '@angular/common';
 import {MessageService} from 'primeng/api';
 import {ToastModule} from 'primeng/toast';
+import {PasswordModule} from 'primeng/password';
 
 
 // Contains links related to user login and registration
@@ -24,6 +25,7 @@ import {ToastModule} from 'primeng/toast';
     NgIf,
     RouterLink,
     ToastModule,
+    PasswordModule,
   ],
   providers: [MessageService],
   templateUrl: './user-auth-panel.component.html',
@@ -48,6 +50,7 @@ export class UserAuthPanelComponent implements OnInit {
 
   login() {
     if (this.loginForm.invalid) {
+      this.messageService.add({ severity: 'warn', summary: 'Error', detail: 'Both fields are required', life: 3000 });
       return;
     }
 
@@ -58,13 +61,13 @@ export class UserAuthPanelComponent implements OnInit {
       next: (res) => {
         if (res.token) {
           //TODO: add loading spinner while logging in
-          this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Login successful', life: 3000 })
+          this.messageService.add({ severity: 'success', summary: 'Welcome', detail: 'Login successful', life: 3000 });
           this.loginPopoverRef.hide();
         }
       },
       error: (err) => {
         console.error(err.message);
-        //const errorMessage = 'Invalid email or password';
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Wrong username or password', life: 3000 });
         //TODO: use errorMessage in toastr popup
       }
     })

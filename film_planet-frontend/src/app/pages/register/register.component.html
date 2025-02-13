@@ -1,5 +1,6 @@
 <main>
   <div class="flex flex-col m-auto gap-4  mt-[5rem] w-[25rem]">
+    <p-toast position="bottom-right" />
     <p-card>
       <h1 class="text-center">Create Account</h1>
       <form [formGroup]="registerForm" (ngSubmit)="register()" class="flex flex-col gap-12" >
@@ -21,12 +22,6 @@
               <label for="password">Password (6 characters minimum)</label>
             </p-floatlabel>
 
-
-            <!--            <p-floatlabel>-->
-<!--              <input id="password" pInputText fluid type="password" formControlName="password" />-->
-<!--              <label for="password">Password</label>-->
-<!--            </p-floatlabel>-->
-
             <p-floatlabel>
               <input id="confirmPassword" pInputText fluid type="password" formControlName="confirmPassword" />
               <label for="confirmPassword">Confirm Password</label>
@@ -36,12 +31,12 @@
           <div formGroupName="fullName" class="flex flex-col gap-8">
             <p-floatlabel >
               <input id="firstName" pInputText fluid formControlName="firstName" />
-              <label for="username">First Name</label>
+              <label for="username">First Name (optional)</label>
             </p-floatlabel>
 
             <p-floatlabel >
               <input id="lastName" pInputText fluid formControlName="lastName" />
-              <label for="username">Last Name</label>
+              <label for="username">Last Name (optional)</label>
             </p-floatlabel>
           </div>
 

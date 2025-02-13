@@ -14,7 +14,6 @@ export class RegisterService {
 
   registerUser(registrationDetails: RegistrationDetails): Observable<object> {
     const { href } = new URL('auth/register', this.apiUrl);
-    console.log(registrationDetails)
     return this.http.post(href, registrationDetails);
   }
 }
