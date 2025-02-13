@@ -9,12 +9,13 @@ import {sendMail} from "./mail.controller";
 export async function registerUser(req: Request, res: Response, next: NextFunction) {
     try {
         const { username, password, firstName, lastName, email } = req.body;
-        console.log(username);
-        console.log(firstName);
-        console.log(lastName);
 
         if (await emailExists(email)) {
-            throw new Error('Account with this Email already exists');
+            return next(new Error('Account with this Email already exists'));
+        }
+
+        if (await usernameExists(username)) {
+            return next(new Error('Username already taken'));
         }
 
         // The details of the registration email
@@ -95,6 +96,12 @@ export async function getUserByToken(req: Request, res: Response, next: NextFunc
  */
 async function emailExists(email: string): Promise<boolean> {
     const exists = await UserModel.findOne({ email });
+
+    return !!exists;
+}
+
+async function usernameExists(username: string): Promise<boolean> {
+    const exists = await UserModel.findOne({ username });
 
     return !!exists;
 }
