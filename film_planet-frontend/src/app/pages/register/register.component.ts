@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, inject} from '@angular/core';
+import {ChangeDetectionStrategy, Component, inject, signal, WritableSignal} from '@angular/core';
 import {AutoFocus} from 'primeng/autofocus';
 import {ButtonModule} from 'primeng/button';
 import {InputTextModule} from 'primeng/inputtext';
@@ -39,6 +39,8 @@ export class RegisterComponent {
   private readonly router = inject(Router);
   private messageService = inject(MessageService);
 
+  isLoading: WritableSignal<boolean> = signal<boolean>(false);
+
   registerForm = this.fb.group({
     usernameAndEmail: new FormGroup({
       username: new FormControl('', [Validators.required]),
@@ -64,15 +66,18 @@ export class RegisterComponent {
   });
 
   register() {
+    this.isLoading.set(true);
     const formData: RegistrationDetails = Object.assign({}, ...Object.values(this.registerForm.value));
 
     if (formData.password !== formData.confirmPassword) {
       this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Password and confirmation do not match', life: 3000 });
+      this.isLoading.set(false);
       return;
     }
 
     if (!formData.username || !formData.email || !formData.password || !formData.confirmPassword ) {
       this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Fill all required fields to proceed', life: 3000 });
+      this.isLoading.set(false);
       return;
     }
 
@@ -82,6 +87,7 @@ export class RegisterComponent {
         this.router.navigate(['/', '/pages', 'home']).then();
       },
       error: (err) => {
+        this.isLoading.set(false);
         const errorMessage = err.error?.message || "Registration failed";
         if(errorMessage.includes('Account with this Email already exists')) {
           this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Account with this Email already exists', life: 3000 });

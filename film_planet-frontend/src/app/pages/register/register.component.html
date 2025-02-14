@@ -41,7 +41,7 @@
           </div>
 
           <div class="flex justify-center">
-            <p-button type="submit" size="large" label="Create"></p-button>
+            <p-button type="submit" size="large" label="Create" [icon]="isLoading() ? 'pi pi-spin pi-spinner' : 'pi pi-check'" iconPos="right"></p-button>
           </div>
       </form>
     </p-card>

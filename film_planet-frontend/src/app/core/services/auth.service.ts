@@ -1,4 +1,4 @@
-import {computed, inject, Injectable, Signal, signal} from '@angular/core';
+import {computed, inject, Injectable, Signal, signal, WritableSignal} from '@angular/core';
 import {environment} from '../../../environments/environment';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {catchError, Observable, tap, throwError} from 'rxjs';
@@ -15,9 +15,9 @@ export class AuthService {
   private readonly http = inject(HttpClient);
   private readonly router = inject(Router);
 
-  isLoggedIn = signal(false);
+  isLoggedIn: WritableSignal<boolean> = signal<boolean>(false);
 
-  userData = signal<UserResponse>({
+  userData: WritableSignal<UserResponse> = signal<UserResponse>({
     __v: 0,
     _id: '',
     createdAt: new Date(),

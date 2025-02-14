@@ -1,9 +1,25 @@
 <div class="user-auth-wrapper flex items-center" dir="rtl">
   <p-toast position="bottom-right" />
-  <span *ngIf="authService.isLoggedIn()" class="bg-primary text-primary-contrast rounded-full w-8 h-8 flex items-center justify-center">
-    {{authService.userData().username[0]}}
-  </span>
-  <p-button *ngIf="authService.isLoggedIn()" styleClass="!text-[1.4rem]" (click)="authService.logout()" label="Logout" [text]="true" size="large"/>
+
+<!--  TODO: fix link templates-->
+  <div class="card flex justify-center" dir="auto">
+    <p-menu #menu [model]="profileMenuItems" [popup]="true">
+      <ng-template #item let-item>
+        <a [routerLink]="item.route"></a>
+      </ng-template>
+    </p-menu>
+
+
+
+    <p-button (click)="menu.toggle($event)" styleClass="!w-[115%]" [rounded]="true" [label]="authService.userData().firstName || authService.userData().username[0]"/>
+  </div>
+
+<!--  <a [routerLink]="['/','pages','profile']" class="no-underline">-->
+<!--    <span *ngIf="authService.isLoggedIn()" class="bg-primary hover:bg-primary-300 transition text-primary-contrast rounded-full w-8 h-8 flex items-center justify-center">-->
+<!--      {{authService.userData().username[0]}}-->
+<!--    </span>-->
+<!--  </a>-->
+<!--  <p-button *ngIf="authService.isLoggedIn()" styleClass="!text-[1.4rem]" (click)="authService.logout()" label="Logout" [text]="true" size="large"/>-->
   <p-button *ngIf="!authService.isLoggedIn()" class="signup-link" styleClass="!text-[1.4rem]" [routerLink]="['/','pages','register']" label="Create Account" [text]="true" size="large" />
   <p-button *ngIf="!authService.isLoggedIn()" class="signup-login-link" styleClass="!text-[1.4rem]" (click)="loginPopover.toggle($event)" label="Sign In" [text]="true" size="large" />
   <p-popover #loginPopover>
@@ -18,7 +34,7 @@
           <span class="mb-2">Password</span>
           <p-password [toggleMask]="true" fluid styleClass="!mb-4" feedback="false" formControlName="password" />
           <div class="flex justify-end">
-            <p-button type="submit" label="Login"></p-button>
+            <p-button type="submit" [label]="isLoading() ? '' : 'Login'" [icon]="isLoading() ? 'pi pi-spin pi-spinner' : ''"></p-button>
           </div>
         </div>
       </form>

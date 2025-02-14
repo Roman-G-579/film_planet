@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, inject, OnInit, ViewChild} from '@angular/core';
+import {ChangeDetectionStrategy, Component, inject, OnInit, signal, ViewChild, WritableSignal} from '@angular/core';
 import {ButtonModule} from "primeng/button";
 import {InputTextModule} from "primeng/inputtext";
 import {Popover, PopoverModule} from "primeng/popover";
@@ -10,6 +10,7 @@ import {NgIf} from '@angular/common';
 import {MessageService} from 'primeng/api';
 import {ToastModule} from 'primeng/toast';
 import {PasswordModule} from 'primeng/password';
+import {MenuModule} from 'primeng/menu';
 
 
 // Contains links related to user login and registration
@@ -26,6 +27,7 @@ import {PasswordModule} from 'primeng/password';
     RouterLink,
     ToastModule,
     PasswordModule,
+    MenuModule,
   ],
   providers: [MessageService],
   templateUrl: './user-auth-panel.component.html',
@@ -37,6 +39,8 @@ export class UserAuthPanelComponent implements OnInit {
   protected readonly authService = inject(AuthService);
   private messageService = inject(MessageService);
 
+  isLoading: WritableSignal<boolean> = signal<boolean>(false);
+
   @ViewChild('loginPopover') loginPopoverRef!: Popover;
 
   loginForm = this.fb.group({
@@ -44,13 +48,33 @@ export class UserAuthPanelComponent implements OnInit {
     password: ['', Validators.required],
   });
 
+  profileMenuItems = [
+    {
+      label: `Welcome, ${this.authService.userData().username}!`,
+      items: [
+        {
+          label: 'Profile',
+          icon: 'pi pi-user',
+          route: '/pages/profile'
+        },
+        {
+          label: 'Logout',
+          icon: 'pi pi-sign-out',
+          route: '/pages/profile'
+        }
+      ]
+    }
+  ];
+
   ngOnInit() {
     this.authService.restoreSession();
   }
 
   login() {
+    this.isLoading.set(true);
     if (this.loginForm.invalid) {
       this.messageService.add({ severity: 'warn', summary: 'Error', detail: 'Both fields are required', life: 3000 });
+      this.isLoading.set(false);
       return;
     }
 
@@ -60,15 +84,14 @@ export class UserAuthPanelComponent implements OnInit {
     this.authService.login(username, password).subscribe({
       next: (res) => {
         if (res.token) {
-          //TODO: add loading spinner while logging in
+          this.isLoading.set(false);
           this.messageService.add({ severity: 'success', summary: 'Welcome', detail: 'Login successful', life: 3000 });
           this.loginPopoverRef.hide();
         }
       },
       error: (err) => {
-        console.error(err.message);
+        this.isLoading.set(false);
         this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Wrong username or password', life: 3000 });
-        //TODO: use errorMessage in toastr popup
       }
     })
   }
