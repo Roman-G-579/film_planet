@@ -30,7 +30,7 @@ export async function registerUser(req: Request, res: Response, next: NextFuncti
         const hashedPassword = await bcrypt.hash(password, Config.SALT_ROUNDS);
 
         await UserModel.create({
-            username,
+            username: username.toLowerCase(),
             password: hashedPassword,
             firstName,
             lastName,
@@ -52,14 +52,15 @@ export async function registerUser(req: Request, res: Response, next: NextFuncti
 
 export async function login(req: Request, res: Response, next: NextFunction) {
     try {
-        const { username, password } = req.body;
-        console.log(username);
-        console.log(password);
+        let { username, password } = req.body;
+
         if (!username || !password ) {
             return res.status(httpStatus.BAD_REQUEST).json({ message: 'Username and password are required' });
         }
 
+        username = username.toLowerCase();
         const user = await UserModel.findOne({ username });
+
         if (!user) {
             return res.status(httpStatus.UNAUTHORIZED).json({ message: 'Invalid username or password' });
         }
