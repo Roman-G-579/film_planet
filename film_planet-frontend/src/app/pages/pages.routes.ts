@@ -1,4 +1,5 @@
 import {Route, UrlMatchResult, UrlSegment} from '@angular/router';
+import {AuthGuard} from '../core/guards/auth.guard';
 
 /**
  * Matches a route against a URL containing 'film' or 'tv' in its segments array
@@ -32,6 +33,11 @@ export default [
   {
     path: 'register',
     loadComponent: () => import ('./register/register.component').then((c) => c.RegisterComponent),
+  },
+  {
+    path: 'profile',
+    canActivate: [AuthGuard],
+    loadComponent: () => import ('./user-profile/user-profile.component').then((c) => c.UserProfileComponent),
   },
   {
     path: 'library',
