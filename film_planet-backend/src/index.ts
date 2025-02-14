@@ -10,6 +10,8 @@ import libraryRouter from "./routes/library.router";
 import detailsRouter from "./routes/details.router";
 import userRouter from "./routes/user-profile.router";
 import authRouter from "./routes/auth.router";
+import passport from "passport";
+import {jwtStrategy} from "./config/passport.config";
 
 const app = express();
 const httpServer = createServer(app);
@@ -26,6 +28,9 @@ app.use(expressLogger);
 // body parser
 app.use(express.json());
 
+// JWT
+passport.use(jwtStrategy);
+app.use(passport.initialize());
 
 // middlewares (routers etc.)
 app.get('/api/ping', (req, res) => {
