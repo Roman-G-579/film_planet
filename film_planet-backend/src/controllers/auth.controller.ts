@@ -1,6 +1,6 @@
 import {NextFunction, Request, Response} from "express";
 import httpStatus from "http-status";
-import {UserModel} from "../models/user.interface";
+import {User, UserModel} from "../models/user.interface";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import {Config} from "../config/config";
@@ -70,11 +70,12 @@ export async function login(req: Request, res: Response, next: NextFunction) {
             return res.status(httpStatus.UNAUTHORIZED).json({ message: 'Invalid username or password' });
         }
 
-        const token = jwt.sign({ username: user.username}, Config.JWT_SECRET, { expiresIn: '3h' });
+        const accessToken = generateAccessToken(user.username);
+        const refreshToken = generateRefreshToken(user.username);
 
         user.password = undefined;
 
-        return res.status(httpStatus.OK).json({ token, user});
+        return res.status(httpStatus.OK).json({ token: accessToken, refreshToken: refreshToken, user});
     } catch (err) {
         next(err);
     }
@@ -106,3 +107,13 @@ async function usernameExists(username: string): Promise<boolean> {
 
     return !!exists;
 }
+
+async function generateAccessToken(username: string) {
+    return jwt.sign({ username: username}, Config.JWT_SECRET, { expiresIn: '3m' });
+}
+
+async function generateRefreshToken(username: string) {
+    return jwt.sign({ username: username}, Config.REFRESH_SECRET);
+}
+
+

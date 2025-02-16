@@ -27,13 +27,13 @@ export class AuthService {
     username: '',
   });
 
-  login(username: string, password: string): Observable<{ token: string, user: UserResponse }> {
+  login(username: string, password: string): Observable<{ token: string, refreshToken: string, user: UserResponse }> {
     const { href } = new URL('auth/login', this.apiUrl);
 
     return this.http
-      .post<{ token: string, user: UserResponse }>(href, { username, password } )
+      .post<{ token: string, refreshToken: string, user: UserResponse }>(href, { username, password } )
       .pipe(
-        tap((data: { token: string, user: UserResponse }) => this.handleSuccessfulLogin(data)),
+        tap((data: { token: string, refreshToken: string, user: UserResponse }) => this.handleSuccessfulLogin(data)),
             catchError((err) => {
               console.error('Login error:', err);
               return throwError(() => new Error('Invalid email or password'));
@@ -41,6 +41,11 @@ export class AuthService {
       );
   }
 
+  /**
+   * Returns all available details for the user with the corresponding token,
+   * including their personal data, their ratings, and their reviews
+   * @param token the user's access token
+   */
   fetchUserProfile(token: string): Observable<UserResponse> {
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     return this.http.get<UserResponse>(`${this.apiUrl}/user`, { headers }).pipe(
@@ -58,6 +63,8 @@ export class AuthService {
   restoreSession() {
     const token: string | null = localStorage.getItem('token');
     const userDataString: string | null = localStorage.getItem('userData');
+
+
     if (token && userDataString) {
       try {
         const parsedData = JSON.parse(userDataString);
@@ -70,8 +77,11 @@ export class AuthService {
         this.userData.set(parsedUser);
         this.isLoggedIn.set(true);
       } catch (error) {
-        console.error('Error restoring session', error);
+        console.log("TEST")
         this.logout();
+        //TODO: alter function to work with refresh tokens
+
+        // return throwError(() => new Error('Error restoring session'));
       }
 
     }

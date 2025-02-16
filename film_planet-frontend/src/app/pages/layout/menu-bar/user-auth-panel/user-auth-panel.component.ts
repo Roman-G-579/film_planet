@@ -11,6 +11,7 @@ import {MessageService} from 'primeng/api';
 import {ToastModule} from 'primeng/toast';
 import {PasswordModule} from 'primeng/password';
 import {MenuModule} from 'primeng/menu';
+import {UserResponse} from '../../../../core/interfaces/db-responses/user-response.interface';
 
 
 // Contains links related to user login and registration
@@ -67,7 +68,7 @@ export class UserAuthPanelComponent implements OnInit {
   ];
 
   ngOnInit() {
-    this.authService.restoreSession();
+    this.restoreSession();
   }
 
   login() {
@@ -94,5 +95,16 @@ export class UserAuthPanelComponent implements OnInit {
         this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Wrong username or password', life: 3000 });
       }
     })
+  }
+
+  restoreSession() {
+    // this.authService.restoreSession()?.subscribe({
+    //   next: (res) => {
+    //     this.authService.isLoggedIn.set(true);
+    //   },
+    //   error: (err) => {
+    //     this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Unauthorized - Try logging in again.', life: 3000 });
+    //   }
+    // })
   }
 }

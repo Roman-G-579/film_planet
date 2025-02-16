@@ -14,11 +14,11 @@
     <p-button (click)="menu.toggle($event)" styleClass="!w-[115%]" [rounded]="true" [label]="authService.userData().firstName || authService.userData().username[0]"/>
   </div>
 
-<!--  <a [routerLink]="['/','pages','profile']" class="no-underline">-->
-<!--    <span *ngIf="authService.isLoggedIn()" class="bg-primary hover:bg-primary-300 transition text-primary-contrast rounded-full w-8 h-8 flex items-center justify-center">-->
-<!--      {{authService.userData().username[0]}}-->
-<!--    </span>-->
-<!--  </a>-->
+  <a [routerLink]="['/','pages','profile']" class="no-underline">
+    <span *ngIf="authService.isLoggedIn()" class="bg-primary hover:bg-primary-300 transition text-primary-contrast rounded-full w-8 h-8 flex items-center justify-center">
+      {{authService.userData().username[0]}}
+    </span>
+  </a>
 <!--  <p-button *ngIf="authService.isLoggedIn()" styleClass="!text-[1.4rem]" (click)="authService.logout()" label="Logout" [text]="true" size="large"/>-->
   <p-button *ngIf="!authService.isLoggedIn()" class="signup-link" styleClass="!text-[1.4rem]" [routerLink]="['/','pages','register']" label="Create Account" [text]="true" size="large" />
   <p-button *ngIf="!authService.isLoggedIn()" class="signup-login-link" styleClass="!text-[1.4rem]" (click)="loginPopover.toggle($event)" label="Sign In" [text]="true" size="large" />
