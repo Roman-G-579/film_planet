@@ -5,6 +5,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import {Config} from "../config/config";
 import {sendMail} from "./mail.controller";
+import {config} from "dotenv";
 
 export async function registerUser(req: Request, res: Response, next: NextFunction) {
     try {
@@ -70,15 +71,49 @@ export async function login(req: Request, res: Response, next: NextFunction) {
             return res.status(httpStatus.UNAUTHORIZED).json({ message: 'Invalid username or password' });
         }
 
-        const accessToken = generateAccessToken(user.username);
-        const refreshToken = generateRefreshToken(user.username);
+        const accessToken = await generateAccessToken(user.username);
+        const refreshToken = await generateRefreshToken(user.username);
+
+        // TODO: update 'secure' to true once app uses HTTPS
+        res.cookie('refreshToken', refreshToken, {
+            httpOnly: true,
+            secure: false,
+            sameSite: 'none',
+        });
 
         user.password = undefined;
 
-        return res.status(httpStatus.OK).json({ token: accessToken, refreshToken: refreshToken, user});
+        return res.status(httpStatus.OK).json({ token: accessToken, user});
     } catch (err) {
         next(err);
     }
+}
+
+export async function refreshToken(req: Request, res: Response, next: NextFunction) {
+    const refreshToken = req.cookies.refreshToken;
+
+    if (!refreshToken) {
+        return res.status(httpStatus.FORBIDDEN).json({ message: 'Refresh token missing' });
+    }
+
+    try {
+        const decodedToken = jwt.verify(refreshToken, Config.REFRESH_SECRET) as { id: string };
+        const user = await UserModel.findById(decodedToken.id);
+
+        if (!user) {
+            return res.status(httpStatus.FORBIDDEN).json({ message: 'Invalid refresh token'});
+        }
+
+        const newToken = generateAccessToken(user.username)
+        res.json({ token: newToken });
+    } catch (err) {
+        res.status(httpStatus.FORBIDDEN).json({ message: 'Invalid refresh token' });
+    }
+}
+
+export async function logout(req: Request, res: Response, next: NextFunction) {
+    res.clearCookie('refreshToken');
+    return res.status(httpStatus.OK).json({ message: 'Logged out'});
 }
 
 export async function getUserByToken(req: Request, res: Response, next: NextFunction) {

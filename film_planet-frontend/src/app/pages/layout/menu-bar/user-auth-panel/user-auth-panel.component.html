@@ -2,7 +2,7 @@
   <p-toast position="bottom-right" />
 
 <!--  TODO: fix link templates-->
-  <div class="card flex justify-center" dir="auto">
+  <div  *ngIf="authService.isLoggedIn()" class="card flex justify-center" dir="auto">
     <p-menu #menu [model]="profileMenuItems" [popup]="true">
       <ng-template #item let-item>
         <a [routerLink]="item.route"></a>

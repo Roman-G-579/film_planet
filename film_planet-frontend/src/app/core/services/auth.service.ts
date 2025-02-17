@@ -1,7 +1,7 @@
 import {computed, inject, Injectable, Signal, signal, WritableSignal} from '@angular/core';
 import {environment} from '../../../environments/environment';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {catchError, Observable, tap, throwError} from 'rxjs';
+import {catchError, Observable, of, tap, throwError} from 'rxjs';
 import {UserResponse} from '../interfaces/db-responses/user-response.interface';
 import {Router} from '@angular/router';
 import {MessageService} from 'primeng/api';
@@ -27,17 +27,33 @@ export class AuthService {
     username: '',
   });
 
-  login(username: string, password: string): Observable<{ token: string, refreshToken: string, user: UserResponse }> {
-    const { href } = new URL('auth/login', this.apiUrl);
+  login(username: string, password: string): Observable<{ token: string, user: UserResponse }> {
+    const { href } = new URL('auth/login', this.apiUrl); // localhost:3000/api/auth/login
 
     return this.http
-      .post<{ token: string, refreshToken: string, user: UserResponse }>(href, { username, password } )
+      .post<{ token: string, user: UserResponse }>(href, { username, password } )
       .pipe(
-        tap((data: { token: string, refreshToken: string, user: UserResponse }) => this.handleSuccessfulLogin(data)),
+        tap((data: { token: string, user: UserResponse }) => this.handleSuccessfulLogin(data)),
             catchError((err) => {
               console.error('Login error:', err);
               return throwError(() => new Error('Invalid email or password'));
             })
+      );
+  }
+
+  refreshToken(): Observable<{ token: string }> {
+    const { href } = new URL('auth/refresh-token', this.apiUrl); // localhost:3000/api/auth/refresh-token
+
+    return this.http
+      .get<{ token: string }>(href)
+      .pipe(
+        tap((res) => {
+          localStorage.setItem('token', res.token);
+        }),
+        catchError((err) => {
+          this.logout();
+          return throwError(() => new Error('Session expired'));
+        })
       );
   }
 
@@ -88,6 +104,8 @@ export class AuthService {
   }
 
   logout() {
+    const { href } = new URL('auth/logout', this.apiUrl); // localhost:3000/api/auth/logout
+
     this.userData.set({
       __v: 0,
       _id: '',
@@ -101,12 +119,19 @@ export class AuthService {
 
     localStorage.removeItem('token');
     localStorage.removeItem('userData');
+
+    this.http.post(href, {}).subscribe();
     this.router.navigate(['/','pages','home']).then();
   }
 
+  /**
+   * Saves the user data and the access token, and sets the isloggedIn signal's state to 'true'
+   * @param data the user's details and access token
+   */
   private handleSuccessfulLogin(data: { token: string, user: UserResponse }) {
     const { token, user } = data;
-
+    console.log(data);
+    console.log(token);
     // Stores the token and user data
     localStorage.setItem('token', token);
     localStorage.setItem('userData', JSON.stringify(user));

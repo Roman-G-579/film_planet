@@ -2,7 +2,6 @@ import {ApplicationConfig, ErrorHandler, importProvidersFrom, provideZoneChangeD
 import {
   provideRouter,
   withComponentInputBinding,
-  withHashLocation,
   withInMemoryScrolling
 } from '@angular/router';
 
@@ -14,7 +13,7 @@ import {
 } from '@angular/common/http';
 import {provideAnimations} from '@angular/platform-browser/animations';
 import {NgPipesModule} from 'ngx-pipes';
-import {authInterceptor} from './core/interceptors/auth.interceptor';
+import {authInterceptor} from './core/interceptors/authInterceptor';
 import {GlobalErrorHandler} from './core/interceptors/error.interceptor';
 
 export const appConfig: ApplicationConfig = {

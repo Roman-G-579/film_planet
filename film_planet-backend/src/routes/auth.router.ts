@@ -1,7 +1,7 @@
 import {Router} from "express";
 import {validateUserRegistration} from "../pipes/validator.pipe";
 import {validator} from "../middlewares/validator.middleware";
-import {getUserByToken, login, registerUser} from "../controllers/auth.controller";
+import {getUserByToken, login, logout, refreshToken, registerUser} from "../controllers/auth.controller";
 import {authMiddleware} from "../middlewares/auth.middleware";
 
 const router = Router();
@@ -19,6 +19,20 @@ router.post('/register', validateUserRegistration, validator, registerUser);
  * @access public
  */
 router.post('/login', login);
+
+/**
+ * @route GET /api/auth/refresh-token
+ * @description refresh the user's access tokens
+ * @access public
+ */
+router.get('/refresh-token', refreshToken);
+
+/**
+ * @route POST /api/auth/logout
+ * @description log a user out of the website
+ * @access public
+ */
+router.post('/logout', logout);
 
 /**
  * @route GET /api/auth/user
