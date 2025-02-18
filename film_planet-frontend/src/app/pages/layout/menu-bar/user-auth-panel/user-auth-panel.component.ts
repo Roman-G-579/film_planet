@@ -7,11 +7,10 @@ import {AuthService} from '../../../../core/services/auth.service';
 import {RouterLink} from '@angular/router';
 import {AutoFocus} from 'primeng/autofocus';
 import {NgIf} from '@angular/common';
-import {MessageService} from 'primeng/api';
+import {MenuItem, MessageService} from 'primeng/api';
 import {ToastModule} from 'primeng/toast';
 import {PasswordModule} from 'primeng/password';
 import {MenuModule} from 'primeng/menu';
-import {UserResponse} from '../../../../core/interfaces/db-responses/user-response.interface';
 
 
 // Contains links related to user login and registration
@@ -49,26 +48,13 @@ export class UserAuthPanelComponent implements OnInit {
     password: ['', Validators.required],
   });
 
-  profileMenuItems = [
-    {
-      label: `Welcome, ${this.authService.userData().username}!`,
-      items: [
-        {
-          label: 'Profile',
-          icon: 'pi pi-user',
-          route: '/pages/profile'
-        },
-        {
-          label: 'Logout',
-          icon: 'pi pi-sign-out',
-          route: '/pages/profile'
-        }
-      ]
-    }
-  ];
+  profileMenuItems: MenuItem[] | undefined;
+
 
   ngOnInit() {
     this.restoreSession();
+
+
   }
 
   login() {
@@ -87,6 +73,7 @@ export class UserAuthPanelComponent implements OnInit {
         if (res.token) {
           this.isLoading.set(false);
           this.messageService.add({ severity: 'success', summary: 'Welcome', detail: 'Login successful', life: 3000 });
+          this.setProfileMenuItems();
           this.loginPopoverRef.hide();
         }
       },
@@ -95,6 +82,42 @@ export class UserAuthPanelComponent implements OnInit {
         this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Wrong username or password', life: 3000 });
       }
     })
+  }
+
+  /**
+   * Sets the buttons and labels of the profile menu
+   */
+  setProfileMenuItems() {
+    this.profileMenuItems = [
+      {
+        label: `Welcome, ${this.authService.userData().firstName || this.authService.userData().username}!`,
+        items: [
+          {
+            label: 'Profile',
+            icon: 'pi pi-user',
+            route: '/pages/profile'
+
+          },
+          {
+            label: 'Ratings',
+            icon: 'pi pi-star',
+            route: '/pages/profile'
+
+          },
+          {
+            label: 'Reviews',
+            icon: 'pi pi-book',
+            route: '/pages/profile'
+
+          },
+          {
+            label: 'Logout',
+            icon: 'pi pi-sign-out',
+
+          }
+        ]
+      }
+    ];
   }
 
   restoreSession() {

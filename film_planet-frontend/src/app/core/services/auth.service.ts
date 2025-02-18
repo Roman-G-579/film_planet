@@ -11,7 +11,7 @@ import {MessageService} from 'primeng/api';
 })
 
 export class AuthService {
-  private readonly apiUrl = `${environment.apiUrl}auth`;
+  private readonly apiUrl = `${environment.apiUrl}`;
   private readonly http = inject(HttpClient);
   private readonly router = inject(Router);
 
@@ -63,8 +63,10 @@ export class AuthService {
    * @param token the user's access token
    */
   fetchUserProfile(token: string): Observable<UserResponse> {
+    const { href } = new URL('auth/user', this.apiUrl); // localhost:3000/api/auth/user
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    return this.http.get<UserResponse>(`${this.apiUrl}/user`, { headers }).pipe(
+
+    return this.http.get<UserResponse>(href, { headers }).pipe(
       tap({
         next: (data: UserResponse) => {
           this.userData.set(data);
@@ -130,8 +132,7 @@ export class AuthService {
    */
   private handleSuccessfulLogin(data: { token: string, user: UserResponse }) {
     const { token, user } = data;
-    console.log(data);
-    console.log(token);
+
     // Stores the token and user data
     localStorage.setItem('token', token);
     localStorage.setItem('userData', JSON.stringify(user));
