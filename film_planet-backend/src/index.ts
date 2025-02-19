@@ -12,9 +12,11 @@ import userRouter from "./routes/user-profile.router";
 import authRouter from "./routes/auth.router";
 import passport from "passport";
 import {jwtStrategy} from "./config/passport.config";
+import cookieParser from "cookie-parser";
 
 const app = express();
 const httpServer = createServer(app);
+
 
 // helmet
 app.use(helmet());
@@ -27,6 +29,9 @@ app.use(expressLogger);
 
 // body parser
 app.use(express.json());
+
+// cookie parser
+app.use(cookieParser());
 
 // JWT
 passport.use(jwtStrategy);

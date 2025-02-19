@@ -53,8 +53,6 @@ export class UserAuthPanelComponent implements OnInit {
 
   ngOnInit() {
     this.restoreSession();
-
-
   }
 
   login() {
@@ -82,6 +80,12 @@ export class UserAuthPanelComponent implements OnInit {
         this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Wrong username or password', life: 3000 });
       }
     })
+  }
+
+  restoreSession() {
+    //TODO: make function flow less convoluted
+    this.authService.checkToken();
+    this.setProfileMenuItems();
   }
 
   /**
@@ -118,16 +122,5 @@ export class UserAuthPanelComponent implements OnInit {
         ]
       }
     ];
-  }
-
-  restoreSession() {
-    // this.authService.restoreSession()?.subscribe({
-    //   next: (res) => {
-    //     this.authService.isLoggedIn.set(true);
-    //   },
-    //   error: (err) => {
-    //     this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Unauthorized - Try logging in again.', life: 3000 });
-    //   }
-    // })
   }
 }

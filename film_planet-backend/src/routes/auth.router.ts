@@ -1,7 +1,7 @@
 import {Router} from "express";
 import {validateUserRegistration} from "../pipes/validator.pipe";
 import {validator} from "../middlewares/validator.middleware";
-import {getUserByToken, login, logout, refreshToken, registerUser} from "../controllers/auth.controller";
+import {getUserByToken, login, logout, refreshToken, registerUser, validateToken} from "../controllers/auth.controller";
 import {authMiddleware} from "../middlewares/auth.middleware";
 
 const router = Router();
@@ -40,5 +40,12 @@ router.post('/logout', logout);
  * @access jwt
  */
 router.get('/user', authMiddleware, getUserByToken);
+
+/**
+ * @route GET /api/auth/validate-token
+ * @description validate the user's access token to determine whether he is already logged in
+ * @access jwt
+ */
+router.get('/validate-token', authMiddleware, validateToken);
 
 export default router;

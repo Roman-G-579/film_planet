@@ -8,7 +8,9 @@ import {inject} from '@angular/core';
 import {AuthService} from '../services/auth.service';
 import {catchError, Observable, switchMap, throwError} from 'rxjs';
 
-export const authInterceptor: HttpInterceptorFn = (req: HttpRequest<unknown>, next: HttpHandlerFn): Observable<HttpEvent<unknown>> => {
+export const authInterceptor: HttpInterceptorFn = (req: HttpRequest<unknown>, next: HttpHandlerFn, injector = inject): Observable<HttpEvent<unknown>> => {
+  const authService = injector(AuthService);
+
   // Get token from localStorage
   const token = localStorage.getItem('token');
 
@@ -20,8 +22,6 @@ export const authInterceptor: HttpInterceptorFn = (req: HttpRequest<unknown>, ne
   return next(req).pipe(
     catchError((error) => {
       if (error.status === 401) {
-        const authService = inject(AuthService);
-
         return authService.refreshToken().pipe(
           switchMap(() => {
             // Retrieve the new token from localStorage after refresh

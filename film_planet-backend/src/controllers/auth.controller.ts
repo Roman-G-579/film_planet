@@ -78,7 +78,7 @@ export async function login(req: Request, res: Response, next: NextFunction) {
         res.cookie('refreshToken', refreshToken, {
             httpOnly: true,
             secure: false,
-            sameSite: 'none',
+            sameSite: 'lax',
         });
 
         user.password = undefined;
@@ -97,18 +97,25 @@ export async function refreshToken(req: Request, res: Response, next: NextFuncti
     }
 
     try {
-        const decodedToken = jwt.verify(refreshToken, Config.REFRESH_SECRET) as { id: string };
-        const user = await UserModel.findById(decodedToken.id);
+        const decodedToken = jwt.verify(refreshToken, Config.REFRESH_SECRET) as { username: string };
 
+        const username = decodedToken.username;
+        const user = await UserModel.findOne({ username });
+        console.log(user)
         if (!user) {
             return res.status(httpStatus.FORBIDDEN).json({ message: 'Invalid refresh token'});
         }
 
-        const newToken = generateAccessToken(user.username)
-        res.json({ token: newToken });
+        const newToken = await generateAccessToken(user.username)
+        console.log(newToken)
+        return res.status(httpStatus.OK).json({ token: newToken });
     } catch (err) {
         res.status(httpStatus.FORBIDDEN).json({ message: 'Invalid refresh token' });
     }
+}
+
+export async function validateToken(req: Request, res: Response, next: NextFunction) {
+    res.status(httpStatus.OK).json({ message: 'Token is valid' });
 }
 
 export async function logout(req: Request, res: Response, next: NextFunction) {
@@ -144,7 +151,7 @@ async function usernameExists(username: string): Promise<boolean> {
 }
 
 async function generateAccessToken(username: string) {
-    return jwt.sign({ username: username}, Config.JWT_SECRET, { expiresIn: '3m' });
+    return jwt.sign({ username: username}, Config.JWT_SECRET, { expiresIn: '10s' });
 }
 
 async function generateRefreshToken(username: string) {

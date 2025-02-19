@@ -1,10 +1,9 @@
-import {computed, inject, Injectable, Signal, signal, WritableSignal} from '@angular/core';
+import {inject, Injectable, OnInit, signal, WritableSignal} from '@angular/core';
 import {environment} from '../../../environments/environment';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {catchError, Observable, of, tap, throwError} from 'rxjs';
+import {catchError, map, Observable, of, tap, throwError} from 'rxjs';
 import {UserResponse} from '../interfaces/db-responses/user-response.interface';
 import {Router} from '@angular/router';
-import {MessageService} from 'primeng/api';
 
 @Injectable({
   providedIn: 'root',
@@ -31,7 +30,7 @@ export class AuthService {
     const { href } = new URL('auth/login', this.apiUrl); // localhost:3000/api/auth/login
 
     return this.http
-      .post<{ token: string, user: UserResponse }>(href, { username, password } )
+      .post<{ token: string, user: UserResponse }>(href, { username, password }, {withCredentials: true} )
       .pipe(
         tap((data: { token: string, user: UserResponse }) => this.handleSuccessfulLogin(data)),
             catchError((err) => {
@@ -45,7 +44,7 @@ export class AuthService {
     const { href } = new URL('auth/refresh-token', this.apiUrl); // localhost:3000/api/auth/refresh-token
 
     return this.http
-      .get<{ token: string }>(href)
+      .get<{ token: string }>(href, {withCredentials: true})
       .pipe(
         tap((res) => {
           localStorage.setItem('token', res.token);
@@ -78,31 +77,42 @@ export class AuthService {
     );
   }
 
-  restoreSession() {
+  checkToken() {
     const token: string | null = localStorage.getItem('token');
-    const userDataString: string | null = localStorage.getItem('userData');
 
+    if (token) {
+      const { href } = new URL('auth/validate-token', this.apiUrl); // localhost:3000/api/auth/validate-token
 
-    if (token && userDataString) {
-      try {
-        const parsedData = JSON.parse(userDataString);
-
-        const parsedUser: UserResponse = {
-          ...parsedData,
-          createdAt: new Date(parsedData.createdAt),
-          updatedAt: parsedData.updatedAt ? new Date(parsedData.updatedAt) : undefined
-        };
-        this.userData.set(parsedUser);
-        this.isLoggedIn.set(true);
-      } catch (error) {
-        console.log("TEST")
-        this.logout();
-        //TODO: alter function to work with refresh tokens
-
-        // return throwError(() => new Error('Error restoring session'));
-      }
-
+      this.http.get(href, {withCredentials: true})
+        .pipe(
+          map(() => {
+            this.restoreSession();
+          }),
+          catchError((err) => {
+            console.log(err)
+            this.logout();
+            return of(null);
+          })
+        )
+        .subscribe();
     }
+  }
+
+  restoreSession() {
+        const userDataString: string | null = localStorage.getItem('userData');
+
+        if (userDataString) {
+          const parsedData = JSON.parse(userDataString);
+
+          const parsedUser: UserResponse = {
+            ...parsedData,
+            createdAt: new Date(parsedData.createdAt),
+            updatedAt: parsedData.updatedAt ? new Date(parsedData.updatedAt) : undefined
+          };
+          this.userData.set(parsedUser);
+        }
+
+        this.isLoggedIn.set(true);
   }
 
   logout() {
