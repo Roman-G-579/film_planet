@@ -83,9 +83,13 @@ export class UserAuthPanelComponent implements OnInit {
   }
 
   restoreSession() {
-    //TODO: make function flow less convoluted
-    this.authService.checkToken();
-    this.setProfileMenuItems();
+    this.authService.isTokenValid().subscribe((isValid) => {
+      if (isValid) {
+        this.authService.restoreSession();
+        this.setProfileMenuItems();
+      }
+    });
+
   }
 
   /**

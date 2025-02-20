@@ -77,25 +77,21 @@ export class AuthService {
     );
   }
 
-  checkToken() {
+  isTokenValid(): Observable<boolean> {
     const token: string | null = localStorage.getItem('token');
 
-    if (token) {
-      const { href } = new URL('auth/validate-token', this.apiUrl); // localhost:3000/api/auth/validate-token
+    if (!token) { return of(false); }
 
-      this.http.get(href, {withCredentials: true})
-        .pipe(
-          map(() => {
-            this.restoreSession();
-          }),
-          catchError((err) => {
-            console.log(err)
-            this.logout();
-            return of(null);
-          })
-        )
-        .subscribe();
-    }
+    const { href } = new URL('auth/validate-token', this.apiUrl); // localhost:3000/api/auth/validate-token
+
+    return this.http.get(href, {withCredentials: true}).pipe(
+        map(() => true), // Valid token - returns a 'true' observable
+        catchError((err) => {
+          console.error(err)
+          this.logout();
+          return of(false); // Invalid token - - returns a 'false' observable
+        })
+      );
   }
 
   restoreSession() {
