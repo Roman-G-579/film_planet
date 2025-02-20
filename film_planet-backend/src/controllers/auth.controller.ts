@@ -101,13 +101,13 @@ export async function refreshToken(req: Request, res: Response, next: NextFuncti
 
         const username = decodedToken.username;
         const user = await UserModel.findOne({ username });
-        console.log(user)
+
         if (!user) {
             return res.status(httpStatus.FORBIDDEN).json({ message: 'Invalid refresh token'});
         }
 
         const newToken = await generateAccessToken(user.username)
-        console.log(newToken)
+
         return res.status(httpStatus.OK).json({ token: newToken });
     } catch (err) {
         res.status(httpStatus.FORBIDDEN).json({ message: 'Invalid refresh token' });
@@ -151,7 +151,7 @@ async function usernameExists(username: string): Promise<boolean> {
 }
 
 async function generateAccessToken(username: string) {
-    return jwt.sign({ username: username}, Config.JWT_SECRET, { expiresIn: '10s' });
+    return jwt.sign({ username: username}, Config.JWT_SECRET, { expiresIn: '3m' });
 }
 
 async function generateRefreshToken(username: string) {
