@@ -26,6 +26,14 @@ export class AuthService {
     username: '',
   });
 
+  /**
+   * Sends a login request to the server with the given credentials
+   * If the credentials are valid, the server returns an access token and the User object
+   * with the relevant details, and the function calls the handleSuccessfulLogin function
+   * with the retrieved details
+   * @param username the given username string
+   * @param password the given password string
+   */
   login(username: string, password: string): Observable<{ token: string, user: UserResponse }> {
     const { href } = new URL('auth/login', this.apiUrl); // localhost:3000/api/auth/login
 
@@ -40,6 +48,11 @@ export class AuthService {
       );
   }
 
+  /**
+   * Sends a refresh token request to the server, which retrieves a new access token.
+   *
+   * The token is then saved in localStorage.
+   */
   refreshToken(): Observable<{ token: string }> {
     const { href } = new URL('auth/refresh-token', this.apiUrl); // localhost:3000/api/auth/refresh-token
 
@@ -77,6 +90,10 @@ export class AuthService {
     );
   }
 
+  /**
+   * Returns a 'true' observable if the user's access token is still valid,
+   * returns a 'false' observable otherwise
+   */
   isTokenValid(): Observable<boolean> {
     const token: string | null = localStorage.getItem('token');
 
@@ -94,6 +111,10 @@ export class AuthService {
       );
   }
 
+  /**
+   * Sets the user's data signal with the information stored in localStorage,
+   * and sets their isLoggedIn status to true
+   */
   restoreSession() {
         const userDataString: string | null = localStorage.getItem('userData');
 
@@ -111,6 +132,12 @@ export class AuthService {
         this.isLoggedIn.set(true);
   }
 
+  /**
+   * Logs the user out of the application:
+   * The userData signal is cleared, the isLoggedIn status is set to false,
+   * a logout request is sent to the server to clear the refresh token cookie,
+   * and the access token and userData are removed from localStorage
+   */
   logout() {
     const { href } = new URL('auth/logout', this.apiUrl); // localhost:3000/api/auth/logout
 

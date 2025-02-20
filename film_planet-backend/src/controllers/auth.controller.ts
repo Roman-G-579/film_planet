@@ -7,6 +7,10 @@ import {Config} from "../config/config";
 import {sendMail} from "./mail.controller";
 import {config} from "dotenv";
 
+/**
+ * Adds an account with the given details to the database if the email or username aren't taken,
+ * and sends a confirmation email to the user
+ */
 export async function registerUser(req: Request, res: Response, next: NextFunction) {
     try {
         const { username, password, firstName, lastName, email } = req.body;
@@ -51,6 +55,11 @@ export async function registerUser(req: Request, res: Response, next: NextFuncti
     }
 }
 
+/**
+ * Logs the user to the application of the username and password are valid,
+ * generates an access token and a refresh token, saves the refresh token as a cookie,
+ * and sends the access token along with the user object as a response in json form
+ */
 export async function login(req: Request, res: Response, next: NextFunction) {
     try {
         let { username, password } = req.body;
@@ -89,6 +98,10 @@ export async function login(req: Request, res: Response, next: NextFunction) {
     }
 }
 
+/**
+ * Generates a new access token for the user with the matching refresh token and returns
+ * the new token as a response in json form
+ */
 export async function refreshToken(req: Request, res: Response, next: NextFunction) {
     const refreshToken = req.cookies.refreshToken;
 
@@ -114,15 +127,26 @@ export async function refreshToken(req: Request, res: Response, next: NextFuncti
     }
 }
 
+/**
+ * Sends a token validation message
+ */
 export async function validateToken(req: Request, res: Response, next: NextFunction) {
     res.status(httpStatus.OK).json({ message: 'Token is valid' });
 }
 
+
+/**
+ * Clears the refreshToken cookie and returns a confirmation message
+ */
 export async function logout(req: Request, res: Response, next: NextFunction) {
     res.clearCookie('refreshToken');
     return res.status(httpStatus.OK).json({ message: 'Logged out'});
 }
 
+
+/**
+ * TODO: update function to return extra user information
+ */
 export async function getUserByToken(req: Request, res: Response, next: NextFunction) {
     try {
         req.user.password = undefined;
@@ -144,16 +168,30 @@ async function emailExists(email: string): Promise<boolean> {
     return !!exists;
 }
 
+/**
+ * Returns true if a user with the given username already exists in the database,
+ * otherwise returns false
+ * @param username the username to be checked
+ */
 async function usernameExists(username: string): Promise<boolean> {
     const exists = await UserModel.findOne({ username });
 
     return !!exists;
 }
 
+
+/**
+ * Generates a new access token for the given user
+ * @param username the user's username string
+ */
 async function generateAccessToken(username: string) {
     return jwt.sign({ username: username}, Config.JWT_SECRET, { expiresIn: '3m' });
 }
 
+/**
+ * Generates a new refresh token for the given user
+ * @param username the user's username string
+ */
 async function generateRefreshToken(username: string) {
     return jwt.sign({ username: username}, Config.REFRESH_SECRET);
 }

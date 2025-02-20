@@ -50,11 +50,14 @@ export class UserAuthPanelComponent implements OnInit {
 
   profileMenuItems: MenuItem[] | undefined;
 
-
   ngOnInit() {
     this.restoreSession();
   }
 
+  /**
+   * Checks the validity of the login form and attempts a login
+   * if all credentials are filled
+   */
   login() {
     this.isLoading.set(true);
     if (this.loginForm.invalid) {
@@ -82,6 +85,10 @@ export class UserAuthPanelComponent implements OnInit {
     })
   }
 
+  /**
+   * Checks whether the user's access token is valid, and restores
+   * the session if it is
+   */
   restoreSession() {
     this.authService.isTokenValid().subscribe((isValid) => {
       if (isValid) {
